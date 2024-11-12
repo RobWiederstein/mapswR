@@ -1,0 +1,8 @@
+classInt
+colorspace
+cowplot
+dplyr
+ggplot2
+magrittr
+kableExtra
+sf

@@ -1,0 +1,512 @@
+ggplot() +
+geom_sf(df1, mapping = aes(fill = eq_width), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+map
+breaks <- cut_width(df1$life_exp, n = 5, width = 5.36)
+# bar ----
+ggplot(df1, aes(x = eq_width,
+fill = eq_width)) +
+geom_bar(show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+breaks
+ggplot() +
+geom_sf(df1, mapping = aes(fill = eq_width), show.legend = T) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+map
+Green 63.7- 70.4
+70.4 - 63.7
+ggplot() +
+geom_sf(df1, mapping = aes(fill = eq_width), show.legend = T) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+map
+breaks <- cut_width(df1$life_exp, n = 5, width = 6.7)
+# bar ----
+ggplot(df1, aes(x = eq_width, fill = eq_width)) +
+geom_bar(show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+# count --> %
+ggplot(mtcars, aes(x = factor(hp))) +
+geom_bar(aes(y = (..count..)/sum(..count..))) +
+scale_y_continuous(labels = percent)
+# count --> %
+ggplot(mtcars, aes(x = factor(hp))) +
+geom_bar(aes(y = (..count..)/sum(..count..))) +
+scale_y_continuous(labels = scales::label_percent)
+# count --> %
+ggplot(mtcars, aes(x = factor(hp))) +
+geom_bar(aes(y = (..count..)/sum(..count..)))
+# count --> %
+ggplot(mtcars, aes(x = factor(hp))) +
+geom_bar(aes(y = (..count..)/sum(..count..))) +
+scale_y_continuous(labels = scales::label_percent())
+# bar ----
+ggplot(df1, aes(x = eq_width, fill = eq_width)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+# bar ----
+ggplot(df1, aes(x = eq_width, fill = eq_width)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(labels = scales::label_comma(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+# bar ----
+ggplot(df1, aes(x = eq_width, fill = eq_width)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(labels = scales::label_comma(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+# bar ----
+ggplot(df1, aes(x = eq_width, fill = eq_width)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = "cut_method", x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+# map ----
+map_life_expectancy <- function(cut_method){
+ggplot() +
+geom_sf(df1, mapping = aes_string(fill = cut_method), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+map
+# define breaks ----
+breaks <- classIntervals(df1$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot
+ggplot(df1, aes_string(x = cut_method,
+fill = cut_method)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+map_life_expectancy(cut_method = "eq_range")
+map_life_expectancy(cut_method = "sd")
+map_life_expectancy(cut_method = "equal")
+map_life_expectancy(cut_method = "pretty")
+map_life_expectancy(cut_method = "quantile")
+map_life_expectancy(cut_method = "sd")
+map_life_expectancy(cut_method = "equal")
+map_life_expectancy(cut_method = "pretty")
+map_life_expectancy(cut_method = "quantile")
+map_life_expectancy(cut_method = "kmeans")
+map_life_expectancy(cut_method = "fisher")
+map_life_expectancy(cut_method = "jenks")
+map_life_expectancy(cut_method = "dpih")
+map_life_expectancy(cut_method = "headtails")
+map_life_expectancy(cut_method = "maximum")
+map_life_expectancy(cut_method = "box")
+table(df1$eq_interval)
+table(df1$eq_number)
+table(df1$eq_width)
+?cut_interval
+classIntervals(df1$life_exp)
+classIntervals(df1$life_exp, n = 5)
+classIntervals(df1$life_exp, n = 5)$brks
+library(classInt)
+library(cowplot)
+library(dplyr)
+library(stringr)
+library(sf)
+library(ggplot2)
+library(colorspace)
+file <- "./data/2024-07-22_us_life_expectancy.rds"
+df <- readRDS(file = file)
+# distribution ----
+df %>%
+ggplot() +
+aes(life_exp) +
+geom_histogram(color = "gray20", fill = "gray80") +
+theme_minimal() +
+labs(title = "2019 U.S. Life Expectancy by County") +
+xlab("years") +
+ylab("counties")
+df %>%
+mutate(
+life_exp_f = cut(life_exp, classIntervals(life_exp, n = 5, style = "sd")[[2]], include.lowest = T)) -> df1
+# add interval columns ----
+map_life_expectancy <- function(cut_method){
+df %>%
+mutate(
+life_exp_f = cut(life_exp, classIntervals(life_exp, n = 5, style = cut_method)[[2]], include.lowest = T)) -> df1
+#classInt
+#sd       = cut(life_exp, classIntervals(life_exp, n = 5, style = "sd")[[2]], include.lowest = T),
+#equal    = cut(life_exp, classIntervals(life_exp, n = 5, style = "equal")[[2]], include.lowest = T),
+#pretty   = cut(life_exp, classIntervals(life_exp, n = 5, style = "pretty")[[2]], include.lowest = T),
+#quantile = cut(life_exp, classIntervals(life_exp, n = 5, style = "quantile")[[2]], include.lowest = T),
+#kmeans   = cut(life_exp, classIntervals(life_exp, n = 5, style = "kmeans")[[2]], include.lowest = T),
+#hclust   = cut(life_exp, classIntervals(life_exp, n = 5, style = "hclust")[[2]], include.lowest = T),
+#bclust   = cut(life_exp, classIntervals(life_exp, n = 5, style = "bclust")[[2]], include.lowest = T),
+#fisher   = cut(life_exp, classIntervals(life_exp, n = 5, style = "fisher")[[2]], include.lowest = T),
+#jenks    = cut(life_exp, classIntervals(life_exp, n = 5, style = "jenks")[[2]], include.lowest = T),
+#dpih     = cut(life_exp, classIntervals(life_exp, n = 5, style = "dpih")[[2]], include.lowest = T),
+#headtails= cut(life_exp, classIntervals(life_exp, n = 5, style = "headtails")[[2]], include.lowest = T),
+#maximum  = cut(life_exp, classIntervals(life_exp, n = 5, style = "maximum")[[2]], include.lowest = T),
+#box      = cut(life_exp, classIntervals(life_exp, n = 5, style = "box")[[2]], include.lowest = T)) -> df1
+# map ----
+ggplot() +
+geom_sf(df1, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+map
+# define breaks ----
+breaks <- classIntervals(df1$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot
+ggplot(df1, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+bar
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+map_life_expectancy(cut_method = "sd")
+map_life_expectancy(cut_method = "equal")
+map_life_expectancy(cut_method = "pretty")
+map_life_expectancy(cut_method = "quantile")
+map_life_expectancy(cut_method = "kmeans")
+map_life_expectancy(cut_method = "hclust")
+map_life_expectancy(cut_method = "bclust")
+map_life_expectancy(cut_method = "fisher")
+map_life_expectancy(cut_method = "jenks")
+map_life_expectancy(cut_method = "dpih")
+map_life_expectancy(cut_method = "headtails")
+map_life_expectancy(cut_method = "maximum")
+map_life_expectancy(cut_method = "box")
+map_life_expectancy(cut_method = "sd")
+map_life_expectancy(cut_method = "equal")
+map_life_expectancy(cut_method = "pretty")
+map_life_expectancy(cut_method = "quantile")
+#| echo: False
+map_life_expectancy <- function(cut_method){
+# read ----
+df <- readRDS(file = file) %>%
+mutate(
+life_exp_f = cut(
+life_exp,
+breaks = classIntervals(
+life_exp,
+n = 5,
+style = cut_method
+)[[2]],
+include.lowest = T))
+# map ----
+ggplot() +
+geom_sf(df, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+# define breaks ----
+breaks <- classIntervals(df$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot ----
+ggplot(df, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+# assemble ----
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+map_life_expectancy(cut_method = "quantile")
+#| echo: False
+map_life_expectancy <- function(cut_method){
+# read ----
+df <- readRDS(file = file) %>%
+mutate(
+life_exp_f = cut(
+life_exp,
+breaks = classIntervals(
+life_exp,
+n = 5,
+style = cut_method
+)[[2]],
+include.lowest = T))
+# map ----
+ggplot() +
+geom_sf(df, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+# define breaks ----
+breaks <- classIntervals(df$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot ----
+ggplot(df, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+# assemble ----
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+#| echo: False
+map_life_expectancy <- function(cut_method){
+# read ----
+file <- "../data/2024-07-22_us_life_expectancy.rds"
+df <- readRDS(file = file) %>%
+mutate(
+life_exp_f = cut(
+life_exp,
+breaks = classIntervals(
+life_exp,
+n = 5,
+style = cut_method
+)[[2]],
+include.lowest = T))
+# map ----
+ggplot() +
+geom_sf(df, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+# define breaks ----
+breaks <- classIntervals(df$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot ----
+ggplot(df, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+# assemble ----
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+#| echo: False
+map_life_expectancy <- function(cut_method){
+# read ----
+file <- "../data/2024-07-22_us_life_expectancy.rds"
+df <- readRDS(file = file) %>%
+mutate(
+life_exp_f = cut(
+life_exp,
+breaks = classIntervals(
+life_exp,
+n = 5,
+style = cut_method
+)[[2]],
+include.lowest = T))
+# map ----
+ggplot() +
+geom_sf(df, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+# define breaks ----
+breaks <- classIntervals(df$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot ----
+ggplot(df, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+# assemble ----
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+map_life_expectancy(cut_method = "quantile")
+library(classInt)
+library(cowplot)
+library(dplyr)
+library(stringr)
+library(sf)
+library(ggplot2)
+library(colorspace)
+file <- "./data/2024-07-22_us_life_expectancy.rds"
+df <- readRDS(file = file)
+# distribution ----
+df %>%
+ggplot() +
+aes(life_exp) +
+geom_histogram(color = "gray20", fill = "gray80") +
+theme_minimal() +
+labs(title = "2019 U.S. Life Expectancy by County") +
+xlab("years") +
+ylab("counties")
+# add interval columns ----
+map_life_expectancy <- function(cut_method){
+# read ----
+df <- readRDS(file = file) %>%
+mutate(
+life_exp_f = cut(
+life_exp,
+breaks = classIntervals(
+life_exp,
+n = 5,
+style = cut_method
+)[[2]],
+include.lowest = T))
+# map ----
+ggplot() +
+geom_sf(df, mapping = aes(fill = life_exp_f), show.legend = F) +
+coord_sf(xlim = c(-2036902.7, 5e6)) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+theme_map() +
+labs(title = "2019 U.S. Life Expectancy") -> map
+# define breaks ----
+breaks <- classIntervals(df$life_exp,
+n = 5,
+style = cut_method,
+include.lowest = T)$brks
+# bar plot ----
+ggplot(df, aes(x = life_exp_f,
+fill = life_exp_f)) +
+geom_bar(aes(y = (..count..)/sum(..count..)), show.legend = F) +
+scale_fill_discrete_diverging(palette = "Blue-Red2", rev = T) +
+scale_y_continuous(
+labels = scales::label_percent(),
+expand = expansion(mult = c(0, 0.05))) +
+labs(title = cut_method, x = "", y = "") +
+coord_flip() +
+theme_half_open() -> bar
+# assemble ----
+map +
+annotation_custom(
+grob = ggplotGrob(bar),
+xmin = 4.8e6,
+xmax = 2e6,
+ymin = -2e6,
+ymax = 1e3
+)
+}
+map_life_expectancy(cut_method = "sd")
+map_life_expectancy(cut_method = "equal")
+map_life_expectancy(cut_method = "pretty")
+map_life_expectancy(cut_method = "quantile")

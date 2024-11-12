@@ -1,0 +1,8 @@
+colorspace
+cowplot
+ggplot2
+ggspatial
+magrittr
+patchwork
+sf
+withr

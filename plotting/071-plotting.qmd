@@ -1,0 +1,239 @@
+---
+title: "Basic"
+fig-height: 3.5
+
+---
+
+# Objective
+
+The objective is to introduce the `mapdeck` package.
+
+# Introduction
+
+
+The `mapdeck` package is an "R library which lets you plot large data sets (as much as your GPU & browser can handle), on interactive maps using Mapbox GL and Deck.gl." `mapdeck` relies on Mapbox and deck.gl. [Mapbox](https://www.mapbox.com/) "equips innovators to keep up with a changing world through using real-time data and map rendering technologies that make it look easy." (For some perspective, my account allows for 50,000 map views and I've used 510.) [deck.gl](https://deck.gl/) "is a GPU-powered framework for visual exploratory data analysis of large datasets." deck.gl does not require a basemap.  To use Mapbox, you need to sign up for an account and get an access token. Add your token/key to your `.Renviron` file. The token can be retrieved using the `Sys.getenv("this_api_token")` function. The `mapdeck` package has excellent documentation and a [website](https://symbolixau.github.io/mapdeck/index.html) with a gallery of examples.
+
+
+# Packages Required 
+
+```{r}
+library(colorspace)
+library(colourvalues)
+library(dplyr)
+library(mapswrData)
+library(mapdeck)
+library(magrittr)
+library(sf)
+library(tibble)
+```
+
+# Set Key
+
+This is one method to set the key.  The key can be set in the `.Renviron` file.  The key can be retrieved using the `Sys.getenv("this_api_token")` function.
+
+```{r}
+key <- Sys.getenv("MAPBOX")
+mapdeck::set_token(key)
+```
+
+# Basic
+
+Below is a simple call to mapbox with the default style explicitly shown.
+
+```{r}
+#| label: "fig-call-map"
+#| fig-cap: "The most basic call to mapdeck."
+  mapdeck(token = key, style = "mapbox://styles/mapbox/streets-v9") 
+```
+
+## Themes
+
+`mapdeck` themes include "dark", "light", "outdoors", "streets", "satellite", "satellite-streets".  A convenience function allows for it to be set, i.e. `mapdeck_style("light")`.
+
+```{r}
+#| label: "fig-theme"
+#| fig-cap: "Mapdeck plot with dark theme."
+mapdeck(token = key, style = mapdeck_style("dark"))
+```
+
+## Location
+
+Like `leaflet` you can set the center of the map. Here, we'll set the center to the location of the developer's office in Melbourne, Australia.
+
+```{r}
+#| label: "fig-center"
+#| fig-cap: "Mapdeck centers plot at the location."
+mapdeck(token = key, location = c(144.940469, -37.802197))
+```
+
+## Zoom
+
+You can set the zoom level of the map. Here, we'll set the zoom to 14. Then, by setting both the `min_zoom` and `max_zoom` to 14, the zoom level will be locked at 14.
+
+```{r}
+#| label: "fig-zoom"
+#| fig-cap: "Mapdeck with zoom level frozen."
+mapdeck(
+  token = Sys.getenv("MAPBOX"),
+  style = mapdeck_style("light"),
+  location = c(144.940469, -37.802197),
+  zoom = 14,
+  min_zoom = 14,
+  max_zoom = 14)
+```
+
+## Pitch
+
+The pitch is the angle of the camera and it gives a three-dimensional perspective to the map.  The default is 0.  Here, we'll set the pitch to its maximum 60 for illustration. The viewpoint can also be changed via the `bearing` argument. Changing the bearing alters the default "north-is-up" orientation.
+
+```{r}
+#| label: "fig-pitch"
+#| fig-cap: "Mapdeck with pitch set to 60 degrees."
+mapdeck(
+  token = Sys.getenv("MAPBOX"),
+  style = mapdeck_style("light"),
+  location = c(144.940469, -37.802197),
+  zoom = 14,
+  min_zoom = 14,
+  max_zoom = 14,
+  pitch = 60)
+```
+
+## Colors
+
+As with all packages, colors can get complicated.  For starters, the `mapdeck` package defaults to a package called `colourvalues`.  The package has some solid choices so you can choose a palette with a proven track record like `RcolorBrewer` or `viridis`.  Where I was stumped was in how to find a qualitiative palette.  To start, peruse the available colors.  For a list of colors, execute `colourvalues::show_colours()` in the console.
+
+```{r}
+#| echo: FALSE
+colourvalues::colour_palettes()
+```
+
+The package will also plot the available colors too.  You can also see a plot of available colors with `colorvalues::show_colors()`.
+
+```{r}
+#| label: "fig-colorview-palettes"
+#| fig-cap: "Colorview palette options."
+#| echo: FALSE
+#| fig-height: 6
+colourvalues::show_colours()
+```
+
+
+# Melbourne One
+
+We'll start with creating a simple dataset consisting of a single point.  The first dataset is the location of the developer's office which was found on Google maps.  Good practice is to give each layer a unique identifier.  Here, we'll use "point". After the instantiation of the map, the "point" layer will be added via `add_scatterplot`.
+
+```{r}
+#| label: "fig-symbolix-office"
+#| fig-cap: "Symbolix office in Melbourne, Australia."
+#| cache: FALSE
+office <- tibble(
+  lat = c(-37.802197),
+  lon = c(144.940469),
+  name = c("Cooley - Symbolix")
+)
+mapdeck(
+  token = Sys.getenv("MAPBOX"),
+  style = mapdeck_style("light"),
+  location = c(144.94046, -37.802197),
+  zoom = 14,
+  min_zoom = 14,
+  max_zoom = 14,
+  pitch = 0
+) %>% 
+add_scatterplot(
+  data = office,
+  layer_id = "point",
+  lon = "lon",
+  lat = "lat",
+  radius = 100,
+  fill_colour = "#FFC300",
+  tooltip = "name"
+)
+```
+
+# Melbourne Two
+
+The second plot will consist of 12 random points with the Symbolix office as its center. The points are then assigned to one of three classes. A separate column for the manual assignment of "color" and separate column for "tooltip" were created.  There doesn't seem to be a "popup" feature on click but the tooltip can help.
+
+```{r}
+set.seed(1)
+values <- paste0(colorspace::qualitative_hcl(
+  n = 3, 
+  palette = "dark2"), "FF")
+(sites <-tibble(
+  name = paste0("Site_", 1:12),
+  class = gl(3, 4),
+  depth = rnorm(12, 3),
+  lat = rnorm(12, -37.802, .1),
+  lng = rnorm(12, 144.940, .1)
+  ) %>% 
+    mutate(colors = 
+             case_when(
+               class == 1 ~ values[1],
+               class == 2 ~ values[2],
+               class == 3 ~ values[3]
+             )
+    ) %>%
+    mutate(tooltip = paste0(name, " - Class_", class)) %>% 
+    sf::st_as_sf(coords = c("lng", "lat"), crs = 4326, remove = F)
+)
+
+```
+
+
+Colors are always difficult and, given the dataset above, a qualitative palette is appropriate for the class variable.  Native colors from within the package seemed like the easiast solution; however, I couldn't find a qualitative palette. My preferred package is `colorspace` and so a manual selection was the best option. `mapdeck` breaks out a separate [vignette](https://symbolixau.github.io/mapdeck/articles/colours.html#manual-colours-1) for colors and it's a great starting point. The `colorspace` package has a function called `qualitative_hcl` that will generate a qualitative palette.  However, `mapdeck` wouldn't recognize the colors as a character vector.  The problem was linked to the length of the color characters.  I was giving it a six character hex code (`"C87A8A"`), but it expects an eight character hex code (`"C87A8AFF"`).  The solution was to add two characters to the end of the color code. Evidently, the final two characters add the opacity and can span from "00" to "FF".  The code below demonstrates how to generate a qualitative palette and assign it to a column in a tibble.
+
+
+```{r}
+#| label: "fig-office-classes"
+#| fig-cap: "Symbolix office surrounded by 12 random sites in three classes."
+l1 <- mapdeck::legend_element(
+    variables = c("Class 1", "Class 2", "Class 3")
+    , colours = c("#C87A8AFF", "#6B9D59FF", "#5F96C2FF")
+    , colour_type = "fill"
+    , variable_type = "category"
+    , title = "Classes"
+)
+js <- mapdeck::mapdeck_legend(l1)
+mapdeck(
+  token = Sys.getenv("MAPBOX"),
+  style = mapdeck_style("light"),
+  location = c(144.94046, -37.802197)
+  ) %>% 
+  add_scatterplot(
+    data = office,
+    layer_id = "point",
+    lon = "lon",
+    lat = "lat",
+    radius = 1e3,
+    fill_colour = "#FFC300",
+    tooltip = "name"
+  ) %>% 
+  add_scatterplot(
+    data = sites,
+    layer_id = "sites",
+    lon = "lng",
+    lat = "lat",
+    radius = 1e3,
+    tooltip = "tooltip",
+    fill_colour = "colors",
+    legend = js
+    )
+
+```
+
+# Key Points
+
+- `mapdeck` is a powerful package for plotting large datasets on interactive maps.
+
+- Syntax or process is similar to leaflet in that you can set the center of the map and the zoom level.
+
+- Add "pitch" for a three-dimensional experience.
+
+- In setting the color attribute, the `mapdeck` package uses the United Kingdom spelling ("colour") versus the U.S. spelling ("color").
+
+
+- The `mapdeck` package has a separate vignette for colors. A six character hex color code will sometimes work and sometimes not.  Be prepared to append the last two characters of "FF".
+
+

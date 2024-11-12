@@ -1,0 +1,250 @@
+---
+title: "Mapview"
+fig-height: 3.5
+---
+
+# Objective
+
+The objective for this section is to introduce the `mapview` package.
+
+# Introduction
+
+Why `mapview`? There are a number of choices.  `tmap` , `mapview`, `mapdeck`, `leaflet`, and  `googleway` provide interactivity. However, `mapview` is designed to produce default maps with very little code. In fact, an interactive map can be generated with a single line of code. While the package is a wrapper around leaflet, it can be distinguished by its simplicity, ease of use, and scalability. Leaflet works really well with small datasets but stumbles with large ones. Leaflet code is also verbose when compared to mapview. For example, `mapview` will just generate legends without having to define them. There are three rendering engines in mapview: leaflet, leafgl, and mapdeck. And latency is not a problem for large datasets when the rendering engine is set to leafgl or mapdeck. "By default, mapview uses the leaflet JavaScript library to render the output maps, which is user-friendly and has a lot of features. However, some alternative rendering libraries could be more performant (work more smoothly on larger datasets). `mapview` allows the user to set alternative rendering libraries ("leafgl" and "mapdeck") in the `mapviewOptions()`" [@lovelace_geocomputation_2019].
+
+The `mapview` documentation can be found [here](https://r-spatial.github.io/mapview/).   Additionally, its author, Tim Appelhans, presented at the OpenGeoHub conference and the code can be found [here](https://github.com/tim-salabim/2020_opengeohub/blob/master/code/mapview_tutorial.R) and [here](https://github.com/tim-salabim/2020_opengeohub/blob/master/code/mapview_large.R). This section incorporates some of the examples from the vignettes and from his presentation.
+
+# Packages Required
+
+```{r}
+library(colorspace)
+library(cowplot)
+library(ggplot2)
+library(leafgl)
+library(leafem)
+library(leaflet)
+library(leaflet.extras2)
+library(mapview)
+library(mapswrData)
+library(magrittr)
+library(sf)
+```
+
+
+# Basic Plot
+
+The first default plot is rendered with a simple invocation of the main function `mapview`. The center of the plot is in the building where the package was developed in Biegenwiertel, Germany. The layers icon allows the user to select among five basemaps.
+
+```{r}
+#| label: "fig-default"
+#| fig.cap: "The default mapview plot."
+mapview::mapview()
+```
+
+The `franconia` dataset which ships with the `mapview` package is a simple dataset of the Franconia region in Germany. The dataset is used for the polygon and fill aspects of the mapping examples.
+
+```{r}
+#| label: "fig-franconia"
+#| fig.cap: "The franconia dataset."
+mapview(franconia)
+```
+
+The `breweries` dataset also ships with the `mapview` package. The dataset is a simple dataset of breweries in the Franconia region in Germany. The dataset is used for the "points" examples. Clicking on the points will show the full table.
+
+
+```{r}
+#| label: "fig-breweries"
+#| fig.cap: "The breweries dataset.  Note the label on hover and the full table on click."
+mapview(breweries)
+```
+
+## Layers
+
+`zcol` creates a separate layer for each column specified.
+
+```{r}
+#| label: "fig-zcol"
+#| fig.cap: "The brewery dataset with layers declared in the 'zcol' argument."
+mapview(breweries, zcol = c("brewery", "village", "founded"))
+```
+
+
+
+## Styling Options
+
+The three most basic options for styling are `color`, `col.regions`, and `alpha.regions`.  The `color` argument sets the color of the border, the `col.regions` argument sets the color of the fill, and the `alpha.regions` argument sets the transparency of the fill.
+
+```{r}
+#| label: "fig-styling"
+#| fig.cap: "The franconia dataset with the different styling attributes declared."
+mapview(franconia, color = "gray90", col.regions = "steelblue", alpha.regions = 0.5)
+```
+
+Below the `breweries` dataset is shown so the column types can be observed.
+
+```{r}
+dplyr::glimpse(breweries)
+```
+
+The `zcol` argument can be used to set the color of the points.  The `at` argument can be used to set the intervals. Here, the breaks were created for illustration only.  The `layer.name` argument can be used to set the label.
+
+```{r}
+#| label: "fig-breweries-styling"
+#| fig.cap: "The breweries point data with interval explicitly set."
+mapview(breweries, zcol = "founded", 
+        layer.name = "Year of <br> of founding:",
+        at = c(0, 1700, 2100))
+```
+
+The plot below shows only the most basic attributes.
+
+```{r}
+#| label: "fig-franconia-styling2"
+#| fig.cap: "The franconia dataset with regions colored, but legend and labels omitted."
+mapview(franconia, zcol = "district", legend = FALSE, label = FALSE)
+```
+
+## Color Polygons
+
+Coloring polygons is accomplished through the `colorRampPalette` function.  The `colorspace` package is used to select the color palette.
+
+```{r}
+#| label: "fig-franconia-district-color"
+#| fig.cap: "The franconia dataset with the 'district' column colored."
+clrs <- colorRampPalette(colorspace::qualitative_hcl(3, "Dark2"))
+mapview(franconia, zcol = "district", col.regions = clrs)
+```
+
+
+## Operators
+
+Multiple datasets can be added to a single layer via the "+" operator.
+
+```{r}
+#| label: "fig-operators-add"
+#| fig.cap: "The franconia dataset and the breweries dataset combined."
+mapview(franconia) + mapview(breweries)
+```
+
+
+The pipe "|" operator allows for the screen to be split between the two datasets. This can be particulary effective to show changes in time like "before" and "after".
+
+
+```{r}
+#| label: "fig-operators-pipe"
+mapview(franconia) | mapview(breweries)
+```
+
+## Bursting Layers
+
+Bursting layers is a feature that allows for all columns to be plotted.  This can be helpful when looking for outliers among many columns.
+
+
+```{r}
+#| label: "fig-burst"
+#| fig.cap: "The franconia dataset with all columns plotted."
+mapview(franconia, burst = T)
+```
+
+## Options
+
+Below are the options that can be set. The "platform" argument can be helpful for large datasets.
+
+
+```{r}
+mapviewOptions()
+```
+
+To reset the options, the default option can be set to TRUE.
+
+```{r}
+mapviewOptions(default = TRUE)
+```
+
+## `leafgl`
+
+In the video tutorial, the creator showed how `mapview` performs with large datasets.  I set up the code on my local machine and it was amazing with 500k points.  I omitted the code and plot here because object size was 650 MB.
+
+# Atlanta
+
+```{r}
+#| echo: FALSE
+library(mapswrData)
+data("atlanta")
+```
+
+Here is the `atlanta` dataset from the `mapswrData` package. The dataset is an `sf` class object, meaning the polygons are a part of the dataset.  The Atlanta Metropolitan Statistical Area (MSA) is a 5-county region that includes the city of Atlanta, Georgia. The dataset was created using the `tidycensus` package and includes three variables, aside from identifiers: estimated median age, percent of the population having a bachelor's degree or higher, and the percent of the population above the age of 18 that formerly served in the U.S. military.
+
+```{r}
+atlanta %>% 
+  dplyr::select(!geometry) %>% 
+  dplyr::glimpse()
+```
+
+## Bin
+
+It's always a good practice to plot a distribution of the data to see any aberrations from the normal distribution.  With a 1006 tracts, we get a pretty good approximation of the bell curve.
+
+```{r}
+#| label: "fig-atlanta-histogram"
+#| fig.cap: "The Atlanta dataset with the 'estimate_median_age' displayed in a histogram."
+atlanta %>% 
+  ggplot(aes(x = estimate_median_age)) +
+  geom_histogram(binwidth = 1, fill = "gray90", col = "black") +
+  scale_y_continuous(expand = c(0.0, .05)) +
+  labs(title = "Atlanta MSA Median Age by Tract",
+       x = "Median Age",
+       y = "Tracts") +
+  theme_cowplot()
+```
+
+Intervals were cut using the "Fisher-Jenks" algorithm within the 'classInt` package.
+
+```{r, warning=FALSE}
+(brks <- classInt::classIntervals(atlanta$estimate_median_age, n = 5, style = "fisher")$brks)
+```
+
+
+## Color
+
+The `colorspace` package is used to generate the color palette.
+
+```{r}
+(clrs <- colorspace::sequential_hcl(n = 5, palette = "mint", rev = TRUE))
+```
+
+## Map
+
+```{r}
+#| label: "fig-atlanta-map-1"
+#| fig.cap: "The Atlanta dataset with the 'estimate_median_age' colored."
+#| cache: FALSE
+library(mapswrData)
+data(atlanta)
+mapview::mapview(atlanta, 
+        zcol = "estimate_median_age", 
+        at = brks, 
+        col.regions = clrs, 
+        col.alpha = .65)
+```
+
+
+# Key Points
+
+- `mapview` was designed for quick production and insight, not journal quality plots.
+
+- it's really, really fast when the package for rendering is `leafgl` or `mapdeck`.
+
+- when compared to `leaflet`, the syntax is brief.
+
+- the `zcol` argument selects the variable(s) for plotting; `burst` selects all variables.
+
+- styling includes basic options like `color`, `col.regions`, and `alpha.regions`.
+
+- the `at` argument sets the intervals.
+
+<hr>
+:::{#refs-plotting-060-rspatial}
+:::
+:::{#refs-plotting-060-packages}
+:::
+

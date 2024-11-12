@@ -1,0 +1,21 @@
+---
+title: "References"
+nocite: '@*'
+---
+
+## Articles
+
+::: {#refs-articles}
+:::
+
+## Packages
+
+::: {#refs-packages}
+:::
+
+## Web Tools
+
+::: {#refs-webtools}
+:::
+
+

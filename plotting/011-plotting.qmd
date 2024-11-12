@@ -1,0 +1,44 @@
+---
+title: "Elements"
+---
+
+```{r}
+#| label: fig-plotting-overview-elements
+#| fig-cap: "A basic map of Hawaii prepared with `ggplot2` to show common elements in maps.  Prepared after review of and modeled on a similar graph by ArcGIS.[@ingram_cartography_2021]"
+#| echo: false
+knitr::include_graphics(here::here("images/plotting_overview_map_elements_ann.jpg"))
+```
+
+# Elements
+
+A map is composed of multiple parts known as elements. By tradition, there is an expectation that all maps contain certain elements and there is a general but not complete consensus. A map should contain most of the elements below unless there is good reason to omit one.
+
+
+
+
+```{r, echo=FALSE}
+tibble::tribble(
+    ~Number, ~Element, ~Description,
+    "1", "Title", "The title should describe the contents with specificity.  'Hawaii' is not particularly helpful.",
+    "2", "Neat Line", "The element serves as a frame around the entire map and helps users to find the center.",
+    "3", "Labels", "Labels assist in understanding what is being plotted.", 
+    "4", "Medium", "The medium is method by which the plot is conveyed.  Traditionally, the medium was paper, but now includes digital.",
+    "5", "Body", "The main body of the map, the content contained within the neat line.",
+    "6", "Legend Title", "Here, it tells the viewer what the meaing of the colors is.",
+    "7", "Legend", "The legend gives a palette of colors, or other geoms, for the viewer to match to the map.",
+    "8", "Ancillary Text", "This could provide a variety of information including where the data was found, who surveyed the map, and what the map projection is.",
+    "9", "Visual variable", "The visual variable cues the reader and invites comparisons between the different objects.",
+    "10", "Scale", "The scale gives the viewer insight as to the proportionality of the map to the thing plotted.",
+    "11", "Units", "Without a declaration as to units, the map will not be helpful. The problem is particulary bad for those countries still adhering to the imperial measurement.",
+    "12", "Direction", "Direction is a crucial element as well.  Maps are nearly always oriented with North being to the top of the page, but it could be different depending on the orientation of the page. ",
+    "13", "Grid/Graticule", "An element that in some projections can imitate the curvature of the earth when present. Note that in the current plot, the graticules are placed under the polygons.",
+    "14", "Axis Labels", "Axis labels can be in degrees or distances and must be formatted so the viewer can make sense of them. Some maps will have axes labeled on all sides and include the labels within the neat line."
+) |> 
+    kableExtra::kbl() |> 
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+<hr>
+:::{#refs-plotting-011-rspatial}
+:::
+

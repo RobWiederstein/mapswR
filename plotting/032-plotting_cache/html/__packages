@@ -1,0 +1,11 @@
+colorspace
+dplyr
+ggplot2
+ggrepel
+magrittr
+sfheaders
+sf
+tibble
+tidyr
+tmap
+patchwork

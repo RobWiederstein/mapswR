@@ -1,0 +1,164 @@
+---
+title: "Advanced"
+fig-height: 3.5
+cache: FALSE
+---
+
+# Objective
+
+The objective is to introduce the "layers" functions in `mapdeck` which follow the form `add_*`.
+
+# Introduction
+
+The `mapdeck` package documentation includes 14 different geoms/layers. Here, six will be introduced: `add_arc`, `add_animated_arc`, `add_greatcircle`, `add_path`, `add_heatmap`, and `add_hexagon`.  
+
+# Packages Required
+
+```{r}
+library(mapdeck)
+library(mapswrData)
+library(sf)
+```
+
+# Set Key
+
+This is one method to set the key.  The key can be set in the `.Renviron` file.  The key can be retrieved using the `Sys.getenv("this_api_token")` function.
+
+```{r}
+key <- Sys.getenv("MAPBOX")
+mapdeck::set_token(key)
+```
+
+# Arcs
+
+The `blue_riband` dataset will be used to create arcs and is one of my favorite datasets because of its small size and historical significance.  The "Blue Riband" was an award to the fastest passenger liner crossing the Atlantic Ocean in regular service with the highest average speed.  The award was given from 1838 to 1952.
+
+```{r}
+#| label: fig-arcs
+#| fig-cap: "Routes of Blue Riband as arcs."
+mapdeck(style = 'mapbox://styles/mapbox/dark-v9', pitch = 15 ) %>%
+  add_arc(
+    data = blue_riband
+    , layer_id = "arc_layer"
+    , origin = c("from_lng", "from_lat")
+    , destination = c("to_lng", "to_lat")
+    , stroke_from = "from_city"
+    , stroke_to = "to_city"
+    , stroke_width = "stroke"
+  )
+```
+
+# Animated Arcs
+
+```{r}
+#| label: fig-animated-arcs
+#| fig-cap: "Routes of Blue Riband as animated arcs."
+mapdeck(style = 'mapbox://styles/mapbox/dark-v9', pitch = 15 ) %>%
+  add_animated_arc(
+    data = blue_riband
+    , layer_id = "arc_layer"
+    , origin = c("from_lng", "from_lat")
+    , destination = c("to_lng", "to_lat")
+    , stroke_from = "from_city"
+    , stroke_to = "to_city"
+    , stroke_width = "stroke"
+  )
+```
+
+# Great Circles
+
+```{r}
+#| label: fig-great-circles
+#| fig-cap: "Routes of Blue Riband as great circles."
+mapdeck(style = mapdeck_style('dark'), pitch = 5 ) %>%
+  add_greatcircle(
+    data = blue_riband
+    , layer_id = "arc_layer"
+    , origin = c("from_lng", "from_lat")
+    , destination = c("to_lng", "to_lat")
+    , stroke_from = "from_city"
+    , stroke_to = "to_city"
+    , stroke_width = "stroke"
+  )
+```
+
+# Paths
+
+The `white_shark` dataset consists of location readings on 10 great white sharks around Guadalope Island off the Baja peninsula in Mexico.   Only two are displayed.  The coordinates are transformed to the standard "EPSG:4326" and then cast as linestrings.  This will display the shark locations as paths, instead of points.
+
+```{r}
+data("white_shark")
+white_shark %>% 
+  dplyr::filter(shark %in% c("WS1", "WS2")) %>% 
+  st_as_sf(coords = c("lng", "lat"), crs = 4326) %>% 
+  dplyr::group_by(shark) %>% 
+  dplyr::summarize() %>% 
+  st_cast(to = "LINESTRING") -> shark_paths
+```
+
+```{r}
+#| label: fig-shark-paths
+#| fig-cap: "Paths of White Sharks WS1 and WS2."
+mapdeck(
+  token = key
+  , style = mapdeck_style("light")
+  , zoom = 10) %>%
+  add_path(
+    data = shark_paths
+    , stroke_colour = "shark"
+    , layer_id = "path_layer_1"
+    , palette = "plasma"
+    , legend = TRUE
+  ) 
+```
+
+# Heatmap
+
+The heatmap will use the `red_tide` dataset.  The dataset consists of salt water samples taken from the coastline in the Gulf of Mexico.  The samples that were negative for Karenia Brevis, the algae responsible for red tides, were omitted.  The water samples are from 1953 to 2023.  The `cellcount` variable will be used to determine the intensity of the heatmap.
+
+```{r}
+#| label: fig-redtide-heatmap
+#| fig-cap: "Heatmap for salt water samples positive for Karenia Brevis."
+data(red_tide)
+mapdeck( style = mapdeck_style('light'), pitch = 45 ) %>%
+ add_heatmap(
+   data = red_tide
+   , layer_id = "path_layer_1"
+   , lat = "latitude"
+   , lon = "longitude"
+   , weight = "cellcount",
+   , colour_range = colourvalues::colour_values(1:6, palette = "inferno")
+)
+```
+
+# Hexagons
+
+```{r}
+#| label: fig-redtide-hexagons
+#| fig-cap: "Salt water samples positive for Karenia Brevis."
+#| cache: FALSE
+mapdeck( style = mapdeck_style("light"), pitch = 45) %>%
+  add_hexagon(
+    data = red_tide
+    , lat = "latitude"
+    , lon = "longitude"
+    , layer_id = "hex_layer"
+    , elevation_scale = 100
+    , colour_range = colourvalues::colour_values(1:6, palette = colourvalues::get_palette("viridis")[70:256,])
+  )
+```
+
+# Key Points
+
+- `mapdeck` package offers 14 possible geom/layers.
+
+- Remember to set the key via the `set_key()` or `token` argument.
+
+- The `add_*` functions have a `layer_id` argument which is used to name the layer.
+
+- The `add_*` functions are used to add layers of different geoms to the map.
+
+
+
+
+

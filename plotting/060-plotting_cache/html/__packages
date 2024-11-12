@@ -1,0 +1,11 @@
+colorspace
+cowplot
+ggplot2
+leafgl
+leafem
+leaflet
+leaflet.extras2
+mapview
+mapswrData
+magrittr
+sf

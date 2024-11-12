@@ -1,0 +1,121 @@
+---
+title: "Maps with R"
+subtitle: "Welcome to Maps with R!"
+details: "Work with two-dimensional, geospatial data within the R environment how to create maps with popular tools like ggplot2, tmap, and leaflet."
+page-layout: full
+sidebar: false
+toc: false
+editor: source
+css: index.css
+number-sections: false
+format:
+  html:
+    template-partials:
+      - html/home/title-block.html
+---
+
+
+::: {.home}
+
+<h1 class="package-title">Plotting</h1>
+
+:::: {.grid .package-details}
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/ggplot2_nz.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">ggplot2</h3>
+    <p class="card-text">R's most popular plotting package can handle geospatial data with "geom_sf()" and the optional addition of "coord_sf()".</p>
+    <a href="/plotting/031-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/tmap_squareland.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">tmap</h3>
+    <p class="card-text">Flexible and layer-based, tmap can quickly generate thematic maps, such as chorpleths and bubble maps.</p>
+    <a href="/plotting/040-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/leaflet_usa.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">leaflet</h3>
+    <p class="card-text">Create and customize interactive maps using the popular 'Leaflet' JavaScript library. These maps can be used in web applications.</p>
+    <a href="/plotting/051-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/mapview_atlanta_600_x_386.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">mapview</h3>
+    <p class="card-text">Render quick plots during the development phase with large datasets to view geometries and their attributes.</p>
+    <a href="/plotting/060-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/mapdeck_san_francisco_600_x_374.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">mapdeck</h3>
+    <p class="card-text">mapdeck is an R library which lets you plot really, really large data sets on interactive maps using Mapbox GL and Deck.gl</p>
+    <a href="/plotting/071-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+
+```{=html}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/html/flowmapblue_dc_600_x_375.png" alt="Card image cap">
+  <div class="card-body">
+    <h3 class="card-title">flowmapblue</h3>
+    <p class="card-text">Create interactive flow maps  to visualize commuting patterns, bicycle patterns, migration, paths and many other topics.</p>
+    <a href="/plotting/080-plotting.html" class="btn btn-primary">Start</a>
+  </div>
+</div>
+```
+
+:::
+
+::::
+
+<!--
+```{r, child="./html/tools.qmd"}
+```
+-->
+
+
+:::

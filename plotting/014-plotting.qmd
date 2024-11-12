@@ -1,0 +1,162 @@
+---
+title: "Colors"
+---
+
+```{r}
+#| label: plotting-colors-libs-load
+#| include: false
+library(colorspace)
+library(patchwork)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+library(tibble)
+library(sf)
+here::i_am("plotting/014-plotting.qmd")
+```
+## Objective
+
+The viewer will be able to choose sequential, diverging and qualitative color palettes for maps using the `colorspace` package.
+
+## Introduction
+
+Your efforts will garner more views if you make the content  accessible. Colors can be an important part of the effort because colorblindness affects about 8% of males and .5% of females. Government sponsored content requires that accessibility standards be met.  For example, accessibility is required by law for all (U.S.) federal information and communication technology products with a few minor exceptions.[@gsa18f_accessibility_2024]. The European Union adopted web accessibility standards in 2016 which became effective in 2021.[@eu_directive_2016]  The premier standard for accessibility is the Web Content and Accessibility Guidelines.[@wcag_web_2008] The bottom line is that there are "colorblind friendly" palettes available and they should be used.
+
+## Packages
+
+Users should select a color palette from a proven package. The overwhelming consensus is that those lacking design experience should "instead draw from preconstructed ramps." [@smart_color_2020] The good news is that "automatically generated color ramps" can perform at least as well as designer ramps in many circumstances. [@smart_color_2020] Several excellent packages are available: [`RColorBrewer`](https://colorbrewer2.org/#), [`colorspace`](https://cran.r-project.org/web/packages/colorspace/vignettes/colorspace.html) and [`rcartocolor`](https://jakubnowosad.com/rcartocolor/) to name a few. There are also a couple of packages that aggregate palettes: [`pal`](https://kwstat.github.io/pals/) and [`paletteer`](https://emilhvitfeldt.github.io/paletteer/).
+
+
+## In General
+
+In addition to the previous discussion on map aesthetics, some basic color observations are in order.  An appropriate color selection should accomplish three things. First, the colors should not be unappealing. [@zeileis_colorspace_2019]  Large areas of highly saturated colors should be avoided as viewers quickly tire and it can cause after-image effects.[@zeileis_colorspace_2019] Second, the colors should "cooperate" with each other, meaning that any one color should both be appealing by itself and when viewed with the others.  [@zeileis_colorspace_2019]  Third, "the colors should work everywhere". [@zeileis_colorspace_2019] The colors should be distinguishable regardless of how they are displayed.  The plot should convey the same meaning if it's shown on a projector, a computer screen or a facsimile.
+
+## Palette Types
+
+Colors are organized in three ways depending on the data type:
+
+- **Qualitative** palettes are used for categorical data "where no particular ordering of catgories is available and every color should receive the same perceptual weight."
+
+- **Sequential** palettes are used for "coding ordered/numeric information where colors go from high to low or vice versa."
+
+- **Diverging** palettes are "designed for coding numeric information around a central neutral value."  Their use shows contrasts between two extremes.
+
+## Colorspace
+
+Here, we will limit the number of palettes. The color palettes within the `colorspace` package will be the default and we will try to limit colors to only 5 or so on the maps. If you'd like to view all of the palettes, you can run `hcl_palettes(plot = T)`.
+
+## Palettes
+
+```{r}
+#| label: fig-qualitative-colors
+#| fig-cap: "Qualitative color palettes from within the `colorspace` package."
+#| echo: false
+hcl_palettes(type = "qualitative", 
+             palette = c("Pastel 1", 
+                         "Dark 2",
+                         "Warm",
+                         "Cold",
+                         "Harmonic",
+                         "Dynamic"
+                         ), plot = T)
+```
+
+```{r}
+#| label: fig-plotting-colors-sequential-single-hue
+#| fig-cap: "Sequential (single-hue) color palettes from within the `colorspace` package."
+#| echo: false
+hcl_palettes(type = "sequential (single-hue)", 
+             palette = c("Grays", "Blues 2", "Purples 2",
+                         "Reds 2", "Greens 2"), plot = T)
+```
+
+```{r}
+#| label: fig-sequential-colors-multi-hue
+#| fig-cap: "Sequential (multi-hue) color palettes from within the `colorspace` package."
+#| echo: false
+hcl_palettes(type = "sequential (multi-hue)", 
+             c("Red-Blue",
+               "Terrain",
+               "Viridis",
+               "Plasma",
+               "Sunset"), plot = T)
+```
+
+```{r}
+#| label: fig-diverging-colors
+#| fig-cap: "Divering color palettes from within the `colorspace` package."
+#| echo: false
+hcl_palettes(type = "diverging",
+             c("Blue-Red", "Purple-Brown", 
+"Blue-Yellow",
+"Tropic", 
+"Cork"),plot = T)
+
+```
+
+
+## ggplot2 
+
+
+Within the `ggplot2` framework, the `colorspace` syntax follows the form: "`<scale_<aesthetic>_<datatype>_<colorscale>()`, where `<aesthetic>` is the name of the aesthetic (fill, color, colour), `<datatype>` is the type of the variable plotted (discrete or continuous) and `<colorscale>` sets the type of the color scale used (qualitative, sequential, diverging, divergingx)."
+
+```{r}
+#| label: plotting-colors-ggplot2-examples
+#| eval: False
+scale_fill_discrete_qualitative(palette = "Pastel1")
+scale_fill_continuous_sequential(palette= "Greens 2")
+scale_fill_continuous_sequential(palette= "Sunset", rev = T)
+scale_fill_continuous_diverging(palette = "Tropic")
+```
+
+
+```{r}
+#| label: plotting-colors-ggplot2-nc
+#| fig-cap: "Four examples of `colorspace`
+#|  palette applied to the `sf` `nc` dataset. 'A' is a 'Pastel 1' palette  applied to a qualitative variable; 'B' is a 'Greens 2' palette applied to a continuous variable; 'C' is the 'Sunset' multi-hue palette applied to a continuous variable; and 'D' is a the diverging palette 'Tropic' applied to a continuous variable." 
+#| echo: false
+nc <- st_read(system.file("shape/nc.shp", package="sf"), quiet = T)   %>% 
+    mutate(var_cont = rnorm(100))
+
+
+p_discrete <- 
+    nc %>% 
+    ggplot() +
+    aes(geometry = geometry, 
+        fill = NAME) +
+    geom_sf(show.legend = F) +
+    coord_sf(expand = T) +
+    theme_void()
+p_cont <- 
+    nc %>% 
+    ggplot() +
+    aes(geometry = geometry, 
+        fill = var_cont) +
+    geom_sf(show.legend = F) +
+    coord_sf(expand = T) +
+    theme_void()
+
+p1 <- p_discrete + scale_fill_discrete_qualitative(palette = "Pastel1")
+p2 <- p_cont + scale_fill_continuous_sequential(palette= "Greens 2")
+p3 <- p_cont + scale_fill_continuous_sequential(palette= "Sunset", rev = T)
+p4 <- p_cont + scale_fill_continuous_diverging(palette = "Tropic")
+(p1 + p2) / (p3 + p4) + plot_annotation(tag_levels = "A")
+```
+## Key Points
+
+- Choose color ramps from proven packages
+
+- `colorspace` is the preferred package for all color requirements
+
+- Qualitative palettes are used for categorical data
+
+- Sequential palettes are used for ordered/numeric information
+
+- Diverging palettes show contrasts between two extremes
+
+- In `ggplot2`, the syntax is `<scale_<aesthetic>_<datatype>_<colorscale>()`
+
+<hr>
+:::{#refs-plotting-014-rspatial}
+:::
+

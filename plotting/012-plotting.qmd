@@ -1,0 +1,139 @@
+---
+title: "Aesthetics"
+---
+
+More subjective than the "Elements" section, this page is a litany of advice from accomplished experts in the field of visualization and cartography.  Where their advice dealt with maps or contained advice on elements common to all visualizations, including maps, it was added.  Their advice was often gleaned from narratives where it was wedged between examples of good and bad practice.  The reader is encouraged to follow the hyperlinks for more complete explanations and greater context.
+
+# General
+
+"Above all else show the data" [@tufte_visual_2001].
+
+"Not only is it easy to lie with maps, it's essential. To portray meaningful relationships for a complex, three-dimensional world on a flat sheet of paper or a screen, a map must distort reality. There's no escape from the cartographic paradox: to present a useful and truthful picture an accurate map must tell white lies" [@monmonier_how_2018].
+
+"While it is tempting to simply start laying down the law about what works and what doesn’t, the process of making a really good or really useful graph cannot be boiled down to a list of simple rules to be followed without exception in all circumstances" [@healy_data_2018].
+
+"A good map tells a multitude of little white lies; it suppresses truth to help the user see what needs to be seen. Reality is three-dimensional, rich in detail, and far too factual to allow a  complete yet uncluttered two dimensional graphic scale model. Indeed, a map that did not generalize would be useless. But the value of a map depends on how well its generalized geometry, and content reflect a chosen aspect of reality" [@monmonier_how_2018].
+
+"Maximize the data-ink ratio" [@tufte_visual_2001]. (more data; less ink.)
+
+"Every bit of ink on a graphic requires a reason. And nearly always that reason should be that the ink presents new information" [@tufte_visual_2001].
+
+"Erase non-data-ink, within reason" [@tufte_visual_2001].
+
+"Erase redundant data-ink, within reason" [@tufte_visual_2001].
+
+"A good map establishes a visual hierarchy that ensures that the most important elements are at the top of this hierarchy and the least important are at the bottom. Typically, the top elements should consist of the main map body, the title (if this is a standalone map) and a legend (when appropriate)" [@gimond_intro_2023].
+
+"Layout on a page or across a screen is an act of balancing empty spaces. If you have an empty space in one corner, you can position other map elements to produce empty spaces that are similar in size and other parts of the display to balance that gap" [@brewer_designing_2024].
+
+"Aesthetics describe every aspect of a given graphical element" [@wilke_fundamentals_2019]. Aesthetics include position, shape, size, color, line width, and line type.
+
+"Maps have three basic attributes: scale, projection, and symbolization. Each element is a source of distortion. As a group, they describe the essence of the map's possibilities and limitations. No one can use maps or make maps safely and effectively without understanding map scales, map, projections, and map symbols" [@monmonier_how_2018].
+
+"Put effort into aesthetics, and it can help readers understand your charts better by providing readability through visual hierarchy, a common identity across a broader theme, and a signal that time and effort was spent on the visualization. Plus, it's fun to make nice things. Default settings are no fun." [@yau_visualize_2024]
+
+# Direction and Scale
+
+"Map readers are used to most maps showing North as up. Unless you have a good reason to have north pointing anywhere but up you should not buck this trend" [@ingram_cartography_2021].
+
+"Scale bars and north arrows should be used judiciously and need not be present in every map. These elements are used to measure orientation and distances. Such elements are critical in reference maps such as USGS Topo maps and navigation maps but serve little purpose in a thematic map where the goal is to highlight differences between aerial units " [@gimond_intro_2023].
+
+"A north arrow is rarely the most important feature on a map, so keep that in mind when designing the element. Do not let it get so large or elaborate that it draws attention away from the map content" [@brewer_designing_2024].
+
+"A map can state its scale in three ways: as a ratio, as a short sentence, or as a simple graph" [@monmonier_how_2018].
+
+"Ratio and verbal scales are useless on digital maps, since screens and thus the map scales vary widely and unpredictably" [@monmonier_how_2018].
+
+"A good scale bar presents rounded units that the map reader can easily use" [@brewer_designing_2024].
+
+You rarely have data at the exact scale that matches your map, so choose a slightly larger scale source and remove detail, rather than choosing a smaller scale source" [@brewer_designing_2024].
+
+
+# Graticules/Grid
+
+"One of the more sedate graphical elements, the grid should usually be muted or completely supressed so that its presence is only implicit-- lest it compete with the data" [@tufte_visual_2001].
+
+"You should include graticule on a map if the map reader will be referencing coordinate locations throughout the map. A graticule should use meaningful divisions and meaningful units. Typically the graticule is omitted from a thematic map as thematic maps wish to convey the spatial distribution of a theme and are not to be used for determining precise locations" [@ingram_cartography_2021].
+
+# Title
+
+"The job of the title is to accurately convey to the reader what the figure is about, what point it makes" [@wilke_fundamentals_2019].
+
+"A title does not have to be a complete sentence, though short sentences making a clear assertion can serve as titles" [@wilke_fundamentals_2019].
+
+"A good map title is brief and will typically include where, what, and when as related to the map’s topic. Every map should have a map title, however, a common reason not to put a title on the map is if the map is a figure in a larger body of text and in it, the map will have a caption. In that case, place a map title as the caption text"  [@ingram_cartography_2021].
+
+"Title and other text elements should be concise and to the point. If the map is to be embedded in a write-up such as a journal article, book or web page, title and text(s) elements should be omitted in favor of figure captions and written description in the accompanying text" [@gimond_intro_2023].
+
+# Legends
+
+"When designing a legend you should not include the word “legend” as a map reader knows that it is a legend. Instead, you could put some other meaningful text at the top of the legend or no text at all if it is not needed" [@ingram_cartography_2021].
+
+# Labels
+
+"If you are having difficulty balancing brevity and accuracy for title and legend wording, consider adding a note that explains the calculation" [@brewer_designing_2024].
+
+"Clear, detailed, and thorough labeling should be used . . . . Write out explanations of the data on the graphic itself.  Label important events in the data" [@tufte_visual_2001].
+
+Early when maps were first being drawn, surveys could take years and sometimes decades to complete. Monmonier councils that "maps are like milk: their information is perishable, and it is wise to check the date" [@monmonier_how_2018]. There can be a significant lapse between the time the information is gathered and the time of publication. Make sure to confirm which date is relevant and include with the map. 
+
+"[A]xes and legends need titles as well" [@wilke_fundamentals_2019].
+
+"I emphasize that for all numerical variables (body mass, head length, and skull size) the relevant titles not only state the variables shown but also the units in which the variables are measured. This is good practice and should be done whenever possible. Categorical variables (such as sex) do not require units" [@wilke_fundamentals_2019].
+
+"If you take away only one single lesson from this book, make it this one: Pay attention to your axis labels, axis tick labels, and other assorted plot annotations. Chances are that they are too small. In my experience, nearly all plot libraries and graphing software have poor defaults. If you use the default values, you’re almost certainly making a poor choice"  [@wilke_fundamentals_2019].
+
+Spell words out; avoid abbreviations [@tufte_visual_2001].
+
+When creating choropleth maps, "the analyst should qualify any description or interpretation by stating the type of geographic unit used" [@monmonier_how_2018]. For example, if the data is being grouped at the county level, the label should read "at the county unit level" to suggest that a different trend might arise if the data were grouped in some other way. 
+
+
+# Color
+
+"Color is a cartographic quagmire. Color can make a map visually attractive, as well as fulfill the need for contrast . . . . Yet the complexity and seductiveness of color overwhelm many map makers . . . and reveal a widespread ignorance of how color can help or hurt a map" [@monmonier_how_2018].
+
+"Color often generates graphical puzzles.  Despite our experiences with the spectrum in science textbooks and rainbows, the minds eye does not readily give a visual ordering to colors, except possibly red to reflect higher levels than other colors, as in the hot spots of the cancer map" [@tufte_visual_2001].
+
+"Because they do have a natural visual hierarch, varying shades of gray show varying quanitities better than color" [@tufte_visual_2001].
+
+"Hue (color) differences usually fail at portraying differences in percentages, rates, median values, and other intensity measures because spectral hues have no logical ordering in the mind's eye" [@monmonier_how_2018].
+
+"Color if used, are chosen so that color-deficient and color-blind (5 to 10 percent of viewers) can make sense of the graphic" [@tufte_visual_2001].
+
+"As a rule of thumb, qualitative color scales work best when there are three to five different categories that need to be colored. Once we reach eight to ten different categories or more, the task of matching colors to categories becomes too burdensome to be useful" [@wilke_fundamentals_2019].
+
+"Whenever we are choosing colors for a visualization, we need to keep in mind that a good proportion of our readers may have some form of color-vision deficiency"   [@wilke_fundamentals_2019].
+
+With regard to choropleths, "[w]e are not good at recognizing a specific color value and matching it against a continuous scale. Therefore, it is often appropriate to bin the data values into discrete groups that are represented with distinct colors. On the order of four to six bins is a good choice" [@wilke_fundamentals_2019].
+
+"An unordered categorical variable like “Country” or “Sex”, for example, requires distinct colors that won’t be easily confused with one another. An ordered categorical variable like “Level of Education”, on the other hand, requires a graded color scheme of some kind running from less to more or earlier to later" [@healy_data_2018].
+
+# Text
+
+"Type is upper-and-lower case with serifs" [@tufte_visual_2001].
+
+"The choice of typeface (font family) and font (size, weight and style of a typeface) can impact the legibility of the map. A rule of thumb is to limit the number of fonts to two: a serif and a sans serif font" [@gimond_intro_2023].
+
+"A single map will contain few fonts. Usually only two fonts are used, one serif and one sans serif. These two choices should complement one another" [@brewer_designing_2024].
+
+"Serif fonts are generally used to label natural features such as mountain ridges and water body names. Sans serif fonts are usually used to label anthropogenic features such as roads, cities and countries" [@gimond_intro_2023].
+
+"Fonts are the personality of a map. They may be serious and authoritative or carefree and inviting. Whatever their tone they need to be legible in the challenging context that are characteristic of mapping. They must be easily read at small sizes and odd angles in various display media" [@brewer_designing_2024].
+
+
+# Lines
+
+"Lines in data graphics should be thin" [@tufte_visual_2001].
+
+# Perspective
+
+"If the nature of the data suggests the shape of the graphic follow that suggestion.  Otherwise, move toward horizontal graphics about 50% wider than tall" [@tufte_visual_2001].
+
+# Projection
+
+"All projected maps are distorted in someway. Your job as a mapmaker is to choose a projection that relegates those distortions to places on the map that are not important for your message" [@brewer_designing_2024].
+
+<hr>
+:::{#refs-plotting-012-rspatial}
+:::
+

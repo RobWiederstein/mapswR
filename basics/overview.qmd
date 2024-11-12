@@ -1,0 +1,70 @@
+---
+title: "Overview"
+---
+
+## Welcome
+
+Welcome to Maps with R!  This website is about creating maps in R.  It fills the gap between comprehensive geospatial resources, like [Geospatial Data in R](https://r.geocompx.org/), and cookbook approaches like the [R-graph gallery](https://r-graph-gallery.com/). Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is "shape" data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.
+
+Working with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called "geometry", where shapes are stored and a "coordinate reference system" assigned.  These are the features that allow for maps to be created.
+
+## Who this website is for
+
+This website is for people who are comfortable working in R within the Rstudio environment.  It assumes the reader has a working knowledge of the `tidyverse`, can install and load R packages and can plot data with `ggplot2`.  While some code is in base, most of the code is in `dplyr`, `sf` and `ggplot2`. Programmers looking for how to plot spatial vector data and needing to perform some transformations on existing data sets will find this website helpful. Programmers looking to improve their proficiency with R should start with ["R for Data Science (2e)"](https://r4ds.hadley.nz/) and a review of ["ggplot2: Elegant Graphics for Data Analysis (3e)"](https://ggplot2-book.org/) is recommended too as much of the lexicon is repeated here.
+
+## What you won't learn
+
+Modelling. 
+
+
+## Prerequisites
+
+One of the more intimidating aspects of geospatial data is the sheer number of packages that are loaded prior to writing a line of code.  And working with spatial data in R requires _lots_ of packages. The packages are in three categories: (1) manipulating geospatial data in R, (2) plotting interactive and static maps in R, and (3) data packages. If you're looking for a specific package and its not included here, there is a github repo styled [`awesome-maps-r`](https://github.com/RobWiederstein/awesome-maps-r) on GitHub.
+
+```{r}
+#| echo: false
+library(DT)
+library(readxl)
+package_list <- readxl::read_xlsx("../data/package_list.xlsx") 
+DT::datatable(package_list, escape = F)
+```
+
+## Conventions
+
+1. Books and journals retain the title of a plot in the caption below the figure.  This is a website that is similar to the book format.  In the materials that follow, titles were sometimes placed in the plot and sometimes inserted in the caption. 
+
+2. When packages or functions are referenced, they are enclosed with backticks and the font color is purple like in `ggplot2` or `cut_interval()`. Some abiguity is created where the usage is both an `R` package and a javascript library. `leaflet` is a package in the `R` universe and "leaflet" is a javascript library. 
+
+3. The American Psychological Association, 7th Edition, Guidelines were followed, but only roughly.  Citations were included to find the reference in the future and give credit to the original authors.  However, page numbers to specific quotes were omitted.
+
+## Terms
+
+**Coordinate Reference System (CRS)** - defines how the spatial elements of the data relate to the surface of the Earth.
+
+**Datum** - a broader, more detailed description of a CRS that includes what ellipsoid to use. Datum can be geocentric like WGS84 or local like NAD83. 
+
+**EPSG** - According to wikipedia, "EPSG Geodetic Parameter Dataset (also EPSG registry) is a public registry of geodetic datums, spatial reference systems, Earth ellipsoids, coordinate transformations and related units of measurement, originated by a member of the European Petroleum Survey Group (EPSG) in 1985."
+
+**Geocentric Datum** - the center is located in the Earth’s center of gravity and is not optimized for a specific location. 
+
+**Local Datum** - the ellipsoidal surface is shifted to align with the surface at a particular location. A local datum allows local variations in the Earth’s surface like large mountain ranges.
+
+**Geographic CRS** - identify any location on the Earth’s surface using longitude and latitude. Distances are not measured in meters. 
+
+**Plate Carrée** - The plate carrée map projection is an equidistant cylindrical projection with the standard parallel located at the equator. A grid of parallels and meridians forms perfect squares from east to west and from pole to pole.
+
+**Projected CRS** - All projected CRSs are based on a geographic CRS and must convert the three-dimensional surface of the Earth into X and Y values. Basically, you're converting a globe to a map and it will result in deformations.
+
+**WKT** - well-known text string. The Open Geospatial Consortium, which also developed the simple features specification, developed the open standard format for describing CRSs. 
+
+
+## Acknowledgements
+
+There are many selfless individuals who contribute to improving the study of maps while remaining within the `R` environment.  Thank you. Aside from compilation, organization and format, there is very little original material here.  Rather, the inspirational and creative components were found in the many authors' materials listed in the [references](http://localhost:3333/references/).  I'm indebted to them and the organizations that support them.  If in review of the material, you find content that was taken beyond the scope of the original license or insufficient attribution, please open an issue on GitHub and it will be remedied promptly.
+
+
+
+
+
+
+

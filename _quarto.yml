@@ -1,0 +1,226 @@
+project:
+  type: website
+  output-dir: docs
+  #resources:
+  preview:
+    port: 3333
+
+website:
+  title: "Maps with R"
+  description: "How to create maps with R using the sf package"
+  navbar:
+    background: primary
+    search: true
+    title: false
+    collapse-below: lg
+    left:
+      - href: index.qmd
+    right:
+      - text: "Basics"
+        file: basics/overview.qmd
+      - text: "Advanced"
+        file: advanced/index.qmd
+      - text: "Plotting"
+        file: plotting/index.qmd
+      - text: "References"
+        file: references/index.qmd
+    tools:
+      - icon: twitter
+        href: https://twitter.com
+        title: "twitter"
+        aria-label: "twitter"
+      - icon: github
+        menu:
+          - text: Source Code
+            href:  https://code.com
+            title: "source code"
+            aria-label: "source code"
+          - text: Report a Bug
+            href:  https://bugs.com
+            title: "report bug"
+            aria-label: "report bug"
+  sidebar:
+    - title: "Basics"
+      style: "docked"
+      search: true
+      background: light
+      collapse-level: 2
+      contents:
+        - text: "Overview"
+          file: basics/overview.qmd
+        - section: "Geospatial Stuff"
+          contents:
+            - text: "01: Introduction"
+              file: basics/01-basics.qmd
+            - text: "02: Geometry Creation"
+              file: basics/02-basics.qmd
+            - text: "03: Attribute Operations"
+              file: basics/03-basics.qmd
+    - title: "Advanced"
+      contents:
+        - section: "Overview"
+          file: advanced/index.qmd
+          contents:
+            - text: "01: Advanced"
+              file: advanced/01-advanced.qmd
+            - text: "02: Advanced"
+              file: advanced/02-advanced.qmd
+        - section: "How to Start"
+          contents:
+            - text: "03: Advanced"
+            - text: "04: Advanced"
+        - section: "How to Stop"
+          contents:
+            - text: "05: Advanced"
+            - text: "06: Advanced"
+        - section: "Conclusion"
+          contents:
+            - text: "07: Advanced"
+            - text: "08: Advanced"
+    - title: "Plotting"
+      contents:
+        - section: "General Concepts"
+          file: plotting/index.qmd
+          contents:
+            - text: "010: Maps"
+              file: plotting/010-plotting.qmd
+            - text: "011: Elements"
+              file: plotting/011-plotting.qmd
+            - text: "012: Aesthetics"
+              file: plotting/012-plotting.qmd
+            - text: "013: Data Structures"
+              file: plotting/013-plotting.qmd
+            - text: "014: Color"
+              file: plotting/014-plotting.qmd
+            - text: "015: Choropleths"
+              file: plotting/015-plotting.qmd
+            - text: "016: Binning"
+              file: plotting/016-plotting.qmd
+        - section: "Static Maps"
+          file: plotting/static_maps.qmd
+          contents:
+            - text: "020: base"
+              file: plotting/020-plotting.qmd
+            - section: "030: ggplot2"
+              contents:
+              - text: "031: Square Land"
+                file: plotting/031-plotting.qmd
+              - text: "032: Text and Labels"
+                file: plotting/032-plotting.qmd
+              - text: "033: New Zealand"
+                file: plotting/033-plotting.qmd
+              - text: "034: United States"
+                file: plotting/034-plotting.qmd
+            - text: "040: tmap"
+              file: plotting/040-plotting.qmd
+        - section: "Interactive Maps"
+          contents:
+            - section: "050: Leaflet"
+              contents:
+              - text: "051: Basics"
+                file: plotting/051-plotting.qmd
+              - text: "052: Choropleth"
+                file: plotting/052-plotting.qmd
+            - text: "060: Mapview"
+              file: plotting/060-plotting.qmd
+            - section: "070: Mapdeck"
+              contents:
+              - text: "071: Basic"
+                file: plotting/071-plotting.qmd
+              - text: "072: Advanced"
+                file: plotting/072-plotting.qmd
+              - text: "073: Hexagons"
+                file: plotting/073-plotting.qmd
+            - text: "080: FlowmapBlue"
+              file: plotting/080-plotting.qmd
+            - text: "090: Shiny"
+
+  repo-url: https://github.com/quarto-dev/quarto-demo
+  repo-actions: [edit, issue]
+
+
+  page-footer:
+    right: "This page is built with [Quarto](https://quarto.org/)."
+    left: "&copy; CC-By Rob Wiederstein, 2024"
+format:
+  html:
+    theme:
+      light: [sandstone, theme.scss, custom.scss]
+      dark: [sandstone, theme-dark.scss, custom.scss]
+    fontsize: 1.2em
+    linestretch: 1.5
+    toc: true
+    toc-depth: 2
+    toc-expand: true
+    toc-title: "On this page"
+    toc-location: right
+    number-sections: true
+    number-depth: 3
+    mainfont: "Atkinson Hyperlegible"
+    code-copy: true
+    code-overflow: scroll
+    highlight-style: a11y
+    grid:
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 300px
+      gutter-width: 1.5rem
+    code-annotations: hover
+    code-line-numbers: true
+knitr:
+  opts_chunk:
+    background: "#FCFCFC" # code chunk color in latex
+    comment: "#>"
+    collapse: TRUE
+    cache: TRUE
+    fig-pos: "t"
+    fig-path: "figures/"
+    fig-align: "center"
+    message: false
+    warning: false
+    #dpi: 105 # see the  EmilHvitfeldt/smltar repo
+    R.options:
+      digits: 3
+      dplyr.print_min: 5
+      dplyr.print_max: 5
+filters:
+  - highlight-text
+  - multibib
+validate-yaml: false
+execute:
+  freeze: auto
+editor: source
+bibliography:
+  articles: ./bibs/articles.bib
+  packages: ./bibs/packages.bib
+  webtools: ./bibs/webtools.bib
+  plotting-010-rspatial: ./bibs/rspatial.bib
+  plotting-011-rspatial: ./bibs/rspatial.bib
+  plotting-012-rspatial: ./bibs/rspatial.bib
+  plotting-013-rspatial: ./bibs/rspatial.bib
+  plotting-014-rspatial: ./bibs/rspatial.bib
+  plotting-015-rspatial: ./bibs/rspatial.bib
+  plotting-015-packages: ./bibs/packages.bib
+  plotting-016-rspatial: ./bibs/rspatial.bib
+  plotting-016-packages: ./bibs/packages.bib
+  plotting-020-rspatial: ./bibs/rspatial.bib
+  plotting-021-rspatial: ./bibs/rspatial.bib
+  plotting-022-rspatial: ./bibs/rspatial.bib
+  plotting-023-rspatial: ./bibs/rspatial.bib
+  plotting-024-rspatial: ./bibs/rspatial.bib
+  plotting-025-rspatial: ./bibs/rspatial.bib
+  plotting-025-packages: ./bibs/packages.bib
+  plotting-040-packages: ./bibs/rspatial.bib
+  plotting-051-rspatial: ./bibs/rspatial.bib
+  plotting-051-packages: ./bibs/packages.bib
+  plotting-052-rspatial: ./bibs/rspatial.bib
+  plotting-052-packages: ./bibs/packages.bib
+  plotting-060-rspatial: ./bibs/rspatial.bib
+  plotting-060-packages: ./bibs/packages.bib
+  plotting-080-rspatial: ./bibs/rspatial.bib
+  plotting-080-packages: ./bibs/packages.bib
+
+csl: ./bibs/apa.csl
+nocite: ''
+citeproc: false
+lightbox: auto

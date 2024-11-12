@@ -1,0 +1,309 @@
+---
+title: "FlowmapBlue"
+cache: FALSE
+---
+
+# Objective
+
+The objective is to introduce the `flowmapblue` package and show its diverse applications.
+
+# Introduction
+
+A flow map shows the movement of people, resources, money from one location to another. A flow map is comprised of locations and flows. The R package `flowmapblue` is a wrapper around a tool of the same name. Its [website](https://www.flowmap.blue/) describes the application as a "free tool for representing aggregated numbers of movements between geographic locations as flow maps. It is used to visualize urban mobility, commuting behavior, bus, subway and air travels, bicycle sharing, human and bird migration, refugee flows, freight transportation, trade, supply chains, scientific collaboration, epidemiological and historical data and many other topics."
+
+Network analysis and flow maps are closely related. The main distinction between the two is that a flow map must have a location with a latitude and longitude assigned. One of the challenges in this area is the variety of terminology.  For example, the locations are sometimes called nodes, sites, centroids, or origins/destinations, whereas the flows are sometimes called edges, links, paths, trips or connections. Packages commonly use different terminology to mean the same thing. The `flowmapblue` package uses as its arguments the terms `locations` and `flows`.    
+
+The `flowmapblue` locations requires four columns: an ID, name, latitude and longitude.  The `flows` argument requires three columns: origin, destination, and count.  The `count` column is the number of flows between the origin and destination.  The `flowmapblue` package also allows for the creation of animated flow maps where a date column is included. The package is available on CRAN.
+ 
+# Packages Required
+ 
+```{r}
+library(dplyr)
+library(flowmapblue)
+library(mapswrData)
+library(tibble)
+```
+
+
+# Bridges of Konigsberg
+
+The Bridges of Königsberg is one the most famous problems in graph theory. Konigsberg is a city in Russia that was renamed Kalinigrad in 1946. The city of Königsberg was set on both sides of the Pregel River, and included two islands which were connected to each other and the mainland by seven bridges. A debate existed among Königsberg residents whether one could could end a walk where one began having crossed the seven bridges of Konigsberg exactly once. Swiss mathematician Leonhard Euler proved that it was impossible. There are two islands in the Pregel in the centre of Königsberg named Kneiphof, the smaller of the two, and Lomse. The northern side of the river is known as Altstadt and the southern side of the river is known as Vorsstadt. This historic mathmatical riddle will be superimposed on a current map of Kalinigrad. Some of the bridges no longer exist and some names have been changed [@gribkovskaia_bridges_2007].
+
+## Sites/Locations
+
+The `tibble` package contains the `tribble` function which allows you to create data frames using rows.
+
+```{r}
+kb_sites <-
+	  tribble(
+    ~id,   ~name,         ~lat,      ~lon,
+    "A",   "Altstadt",    54.709429, 20.508293,
+    "LB",  "Lobnicht",    54.708472, 20.511237,
+    "V",   "Vorsstadt1",  54.704114, 20.505533,
+    "V2",  "Vorsstadt2",  54.704300, 20.510823,
+    "K",   "Kneiphof",    54.706776, 20.509098,
+    "L",   "Lomse",       54.704778, 20.520022,
+  )
+
+```
+
+## Flows
+
+```{r}
+kb_flows <-
+	  tribble(
+    ~origin, ~dest, ~count,
+    "A",     "K",    1,
+    "K",     "A",    1,
+    "K",     "V",    1,
+    "V",     "K",    1,
+    "K",     "L",    1,
+    "L",     "K",    1,
+    "L",     "V",    1,
+    "L",     "A",    1,
+    "LB",    "K",    1,
+    "K",     "V2",   1,
+  )
+```
+
+
+## Flowmap
+
+
+```{r}
+flowmap <- flowmapblue(
+	locations = kb_sites,
+	flows = kb_flows,
+	mapboxAccessToken = Sys.getenv('MAPBOX'),
+	clustering = TRUE,
+	darkMode = TRUE,
+	animation = FALSE
+)
+```
+
+```{r}
+#| label: fig-flowmap-kb
+#| fig-cap: "Bridges of Konigsberg Flowmap."
+#| echo: FALSE
+htmlwidgets::saveWidget(
+  flowmap, 
+  "../_site/plotting/080-kberg.html"
+)
+shiny::tags$iframe(
+  src = "../plotting/080-kberg.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+
+
+# Around-the-World
+
+Here, we'll pick some random locations across the world and construct a flowmap. 
+
+## Sites
+
+```{r}
+tribble(
+  ~id,   ~name,            ~lat,       ~lon,
+  1,     "New York",        40.713543, -74.011219,
+  2,     "London",          51.507425,  -0.127738,
+  3,     "Rio de Janeiro", -22.906241, -43.180244,
+  4,     "Capetown",       -34.023118,  18.510251
+) -> sites
+```
+
+## Flows
+
+```{r}
+tribble(
+  ~origin, ~dest, ~count,
+  1,       2,     42,
+  2,       1,     51,
+  3,       1,     50,
+  2,       3,     40,
+  1,       3,     22,
+  3,       2,     42,
+  4,       3,     30,
+  3,       4,     45,
+  4,       2,     45
+) -> flows
+```
+
+
+## Flowmap
+
+```{r}
+flowmapblue(
+  sites, 
+  flows, 
+  mapboxAccessToken = Sys.getenv("MAPBOX"),
+  clustering = TRUE, 
+  darkMode = FALSE, 
+  animation = FALSE) -> flowmap 
+```
+
+```{r}
+#| label: fig-around-the-world
+#| fig-cap: "Around-the-world Flowmap."
+#| echo: FALSE
+htmlwidgets::saveWidget(
+  flowmap, 
+  "../_site/plotting/080-flowmap.html")
+shiny::tags$iframe(
+  src = "../plotting/080-flowmap.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+# Animated Flow
+
+The `flowmapblue` package allows for the creation of animated flowmaps. Below is a simple demonstration.
+
+## Sites
+
+```{r}
+tribble(
+	~id,    ~name,   ~lat,   ~lon,
+	"A",    "A",     0,     0,
+	"B",    "B",     1,     0,
+	"C",    "C",     1,     1,
+	"D",    "D",     0,     1
+) -> sites
+```
+
+## Flows
+
+```{r}
+tribble(
+	~time,           ~origin,     ~dest,       ~count,
+	"2020-01-01",    "A",         "B",         1,
+	"2020-01-02",    "B",         "C",         1,
+	"2020-01-03",    "C",         "D",         1,
+	"2020-01-04",    "D",         "A",         1
+) %>% mutate(time = as.POSIXct(time)) -> flows
+```
+
+## Flowmap
+
+```{r}
+flowmap <- flowmapblue(
+	locations = sites,
+	flows = flows,
+	mapboxAccessToken = Sys.getenv('MAPBOX_API_TOKEN'),
+	clustering = TRUE,
+	darkMode = TRUE,
+	animation = FALSE
+)
+```
+
+```{r}
+#| label: fig-flowmap-animated
+#| fig-cap: "Animated Flowmap."
+#| echo: FALSE
+htmlwidgets::saveWidget(flowmap, "../_site/plotting/080-animated.html")
+shiny::tags$iframe(
+  src = "../plotting/080-animated.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+# Commuters
+
+The U.S. Census Bureau periodically asks respondents about their primary workplace location.  The responses are then linked with the person's county of residence.  This allows for the construction of an origin-destination flow.  Below is the flow of inbound commuters to Washington D.C. for counties with greater than 100 commuters.  D.C. was chosen because as the seat of national government, some commuters likely travel large distances to work there.  Some commuters travel from as far away as California and Florida.  Yet, the plot also shows the typical flow in that surrounding/adjacent counties have the highest number of commuters into Washington D.C.  
+
+```{r}
+flowmapblue(
+  dc_sites, 
+  dc_flows, 
+  mapboxAccessToken = Sys.getenv("MAPBOX"),
+  clustering = TRUE, 
+  darkMode = FALSE, 
+  animation = FALSE) -> flowmap 
+```
+
+```{r}
+#| label: fig-flowmapblue-commuters
+#| fig-cap: "Washington D.C. Inbound Commuters."
+#| echo: FALSE
+htmlwidgets::saveWidget(flowmap, "../_site/plotting/080-commuters.html")
+shiny::tags$iframe(
+  src = "../plotting/080-commuters.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+# Migration
+
+Migration can be composed of international or domestic migration.  Here, the data is domestic migration and was filtered to U.S. residents moving between states.  Internal Revenue Service (IRS) tax returns form the basis for the data. For example, a taxpayer who files a return in 2020 from California and then files a return in 2021 from Texas is considered to have moved from California to Texas.  The plot below shows the flow of taxpayers between states.  The size of the Florida and North Carolina nodes suggest that the states are a popular destination. The data is also available at the county level.
+
+```{r}
+flowmapblue(
+  txpyr_sites, 
+  txpyr_flows, 
+  mapboxAccessToken = Sys.getenv("MAPBOX"),
+  clustering = TRUE, 
+  darkMode = FALSE, 
+  animation = FALSE) -> flowmap 
+```
+
+```{r}
+#| label: fig-flowmapblue_migration
+#| fig-cap: "Interstate Taxpayer Migration."
+#| echo: FALSE
+htmlwidgets::saveWidget(flowmap, "../_site/plotting/080-txpyr_migration.html")
+shiny::tags$iframe(
+  src = "../plotting/080-txpyr_migration.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+# Bike Sharing
+
+A bike-sharing system allows for people to rent bicycles for short trips.  Capital Bikeshare is a bike-sharing system in Washington D.C.  While the system is available in surrounding counties, the data was filtered to contain just those locations within D.C. proper.  The data below shows the flow of riders between stations in September 2024. To give perspective as to the scale of the program, wikipedia reports that had 700+ stations and 5,400 bikes.  Capital Bikeshare freely distributes the data on its website. 
+
+```{r}
+flowmap <- flowmapblue(
+	bkshr_sites,
+	bkshr_flows,
+	mapboxAccessToken = Sys.getenv('MAPBOX'),
+	clustering = TRUE,
+	darkMode = FALSE,
+	animation = FALSE
+)
+```
+
+```{r}
+#| label: fig-flowmapblue_bikesharing
+#| fig-cap: "Capital Bikeshare Rides September, 2024."
+#| echo: FALSE
+htmlwidgets::saveWidget(flowmap, "../_site/plotting/080-bkshr_riders.html")
+shiny::tags$iframe(
+  src = "../plotting/080-bkshr_riders.html", 
+  width = "100%", 
+  height = "500px"
+)
+```
+
+# Key Points
+
+- The `flowmapblue` package is a wrapper around a tool of the same name.
+
+- The package is used to visualize the flow of people, resources, and money.
+
+- The package requires two data frames: `locations` and `flows`.
+
+- The `locations` data frame requires four columns: an ID, name, latitude, and longitude.
+
+- The `flows` data frame requires three columns but can contain an optional fourth: date, origin, destination, and count.
+
+<hr>
+:::{#refs-plotting-080-rspatial}
+:::
+:::{#refs-plotting-080-packages}
+:::

@@ -1,0 +1,176 @@
+---
+title: "Hexagons"
+cache: FALSE
+---
+
+# Objective
+
+The objective is to more fully investigate the `add_hexagon` function in `mapdeck` using homicide data from San Francisco.
+
+# Introduction
+
+Hexagons are a form of two dimensional binning and thus are helpful for visualizing point density.  They can be helpful when there are many points and overplotting is a concern. The `add_hexagon` function in `mapdeck` has a number of features. There are so many features that it may be difficult to grasp with the quick review in the previous section. 
+
+# Packages Required
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(hexbin)
+library(magrittr)
+library(mapdeck)
+library(mapswrData)
+library(scales)
+library(sf)
+```
+
+# Set Key
+
+```{r}
+key <- Sys.getenv("MAPBOX")
+mapdeck::set_token(key)
+```
+
+# Hexagons
+
+## Noise
+
+Here is a simple, traditional scatter plot.
+
+```{r}
+#| label: "fig-ggplot2-noise"
+#| fig-cap: "Scatter plot of random points or noise."
+noise <- tibble(
+  lat = runif(n = 2e3, min = 37.7, max = 37.8),
+  lon = runif(n = 2e3, min = -122.5, max = -122.4)
+)
+
+library(ggplot2)
+ggplot(noise, aes(lon, lat)) +
+  geom_point(alpha = .5) +
+  scale_x_continuous(labels = number_format(accuracy = 0.01)) +
+  scale_y_continuous(labels = number_format(accuracy = 0.01)) +
+  theme_bw()
+```
+
+
+Next the random points will be plotted using hexagonal binning.
+
+```{r}
+#| label: "fig-ggplot2-hex"
+#| fig-cap: "Hexagonal binning of random points or noise."
+ggplot(noise, aes(lon, lat)) + 
+  geom_hex() + 
+  scale_x_continuous(labels = number_format(accuracy = 0.01)) +
+  scale_y_continuous(labels = number_format(accuracy = 0.01)) +
+  theme_bw()
+```
+
+## Signal
+
+Next, we'll add some pattern or signal to the data. This will be done by adding two clusters of points.
+
+```{r}
+#| label: "fig-ggplot2-signal"
+#| fig-cap: "Hexagonal binning of random points and signal."
+signal <- tibble(
+  lat = c(rnorm(1000, mean = 37.775, sd = .01), rnorm(1000, mean = 37.725, sd = .01)),
+  lon = c(rnorm(1000, mean = -122.425, sd = .01), rnorm(1000, mean = -122.475, sd = .01))
+)
+dt <- dplyr::bind_rows(noise, signal)
+ggplot(dt, aes(lon, lat)) + 
+geom_point(alpha = .25) + 
+scale_x_continuous(labels = number_format(accuracy = 0.01)) +
+scale_y_continuous(labels = number_format(accuracy = 0.01)) +
+theme_bw()
+```
+
+## `ggplot`
+
+Next, we'll show the noise and signal on a `ggplot2` hexbin plot.
+
+```{r}
+#| label: "fig-ggplot2-hex-signal"
+#| fig-cap: "Hexagonal binning of noise and signal."
+ggplot(dt, aes(lon, lat)) + 
+  geom_hex() + 
+  scale_x_continuous(labels = number_format(accuracy = 0.01)) +
+  scale_y_continuous(labels = number_format(accuracy = 0.01)) +
+  theme_bw()
+```
+
+## `mapdeck`
+
+This same data that was plotted with `ggplot2` will be plotted using `mapdeck` with a map used as a base layer. The coordinates match up with San Francisco!  
+
+```{r}
+#| label: "fig-mapdeck-hex-signal"
+#| fig-cap: "Hexagonal binning of noise and signal on a map."
+mapdeck( style = mapdeck_style("light")
+         , location = c(-122.45, 37.75)
+         , pitch = 45
+         , zoom = 11) %>%
+  add_hexagon(
+    data = dt
+    , lat = "lat"
+    , lon = "lon"
+    , layer_id = "hex_layer"
+    , elevation_scale = 10
+    , legend = TRUE
+    , legend_options = list( digits = 0 )
+    , radius = 100
+    , update_view = F
+  )
+```
+
+# San Francisco
+
+Here, we use the San Francisco crime data subset to homicides for five years 2018 to 2023.
+
+```{r}
+data(homicide)
+```
+
+```{r}
+#| label: "fig-ggplot2-homicides"
+#| fig-cap: "Hexagonal binning of homicides in San Francisco."
+homicides %>% 
+  ggplot() +
+  aes(lon, lat) +
+  geom_hex(binwidth = .01) +
+  scale_x_continuous(labels = number_format(accuracy = 0.01)) +
+  scale_y_continuous(labels = number_format(accuracy = 0.01)) +
+  theme_bw()
+```
+
+
+```{r}
+#| label: "fig-mapdeck-homicides"
+#| fig-cap: "Hexagonal binning of homicides in San Francisco using `mapdeck`."
+data(homicides)
+mapdeck( 
+  style = mapdeck_style("light")
+ , location = c(-122.45, 37.75)
+ , pitch = 45
+ , zoom = 10
+) %>% 
+add_hexagon(
+  data = homicides
+  , lat = "lat"
+  , lon = "lon"
+  , layer_id = "hex_layer_1"
+  , elevation_scale = 10
+  , radius = 500
+  , update_view = F,
+  , legend = TRUE
+  , legend_options = list(title = "Homicides", digits = 0)
+)
+```
+
+# Key Points
+
+- Two dimensional binning can be helpful when there are many points and overplotting is a concern.
+
+- Hexagonal binning is a form of two dimensional binning and makes for an attractive plot.
+
+- `mapdeck` has a `add_hexagon` function that can be used to create hexagonal binning plots.

@@ -1,0 +1,8 @@
+```{=html}
+<h1> Tools </h1>
+<div class="grid">
+        <div class="col-sm-4", style="background-color: gray">a</div>
+        <div class="g-col-4" style="background-color: gray">b</div>
+        <div class="g-col-4" style="background-color: gray">c</div>
+</div>
+```

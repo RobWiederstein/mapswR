@@ -1,0 +1,5 @@
+---
+title: "Static Maps"
+---
+
+This section introduces plotting in (1) `base`, (2) `ggplot2` and (3) `tmap`.
