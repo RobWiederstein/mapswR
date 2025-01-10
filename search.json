@@ -1,5 +1,149 @@
 [
   {
+    "objectID": "plotting/016-plotting.html",
+    "href": "plotting/016-plotting.html",
+    "title": "Binning",
+    "section": "",
+    "text": "library(classInt)\nlibrary(colorspace)\nlibrary(cowplot)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(magrittr)\nlibrary(kableExtra)\nlibrary(sf)",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#general",
+    "href": "plotting/016-plotting.html#general",
+    "title": "Binning",
+    "section": "3.1 General",
+    "text": "3.1 General\nEarly debates in cartography centered on whether mapping should be of a continuous or discrete variable. The matter is largely resolved with consensus being in favor of discrete variables. (Schneider et al., 2023) The next question is how many classifications are necessary. Some authors have suggested five to seven can be “well distinguished” and recalled. (Schneider et al., 2023) Schneider and others (2023) advocated that the number of categories should be dependent on the underlying data and be chosen in a way to maximize insight. When choosing intervals, the most basic approaches divide the interval into equal lengths or place an equal number of observations into each bin.\nWhile easy to explain and interpret, these strategies overlook nuances in the distribution like skewness and clustering. (Schneider et al., 2023) More sophisticated, mathematical algorithms exist to divide the interval. The most common approach was proposed in statistics by W.D. Fisher (1958) and in geography by George Jenks (1963) . This approach attempts to find the split of the data that minimizes the variance of points within each class (Brewer & Pickle, 2002; Schneider et al., 2023) For a description of George Jenks’ impact in cartography, see (McMaster & McMaster, 2002). McMasters and others (2002) proposed the following three criteria within the context of earthquake hazard maps:\n\n\nLikeness. The classes in the classification scheme should contain all data that are alike, based on a quantitative measure, and should break apart data that are not alike.\n\n\n\n\nSufficiency and completeness. There should be enough (but not too many) scale breaks in order to be able to immediately see the primary patterns in the data.\n\n\n\n\nSignification. Scale breaks should ideally signify meaningful values or changes in the distribution rather than arbitrarily selected values.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#sec-brewer-pickle",
+    "href": "plotting/016-plotting.html#sec-brewer-pickle",
+    "title": "Binning",
+    "section": "3.2 Brewer and Pickle",
+    "text": "3.2 Brewer and Pickle\nBrewer and Pickle (2002) compared seven classification methods using responses from 55 Penn State students involving choropleth maps based on U.S. mortality data. An important part of this study was that the respondents were asked questions about individual maps and asked to make comparisons across series of maps. Thus, common scales and coloring schemes aided interpretation when comparing multiple maps. Having previously used quantiles–a somewhat simplistic approach– in the preparation of previous mortality maps, the authors were asked to revisit whether more sophisticated classification methods, like Fisher/Jenks, were more appropriate when looking at a series of maps. Stating that “the results may surprise cartographers”, Brewer and Pickle (2002) found that the simplest method —quantiles— trumped the other methods:\n\n“Quantiles seem to be one of the best methods for facilitating comparison as well as aiding general map-reading. The rational advantages of careful optimization processes seem to offer no benefit over the simpler quantile method for the general map-reading tasks” (Brewer and Pickle, 2002, p. 679) (pdf)\n\nThe authors expanded on their finding noting that there were hints throughout the cartographic literature that quantile methods are robust. The failure of other methods was ascribed to the middle classes holding a large portion of the data: boxplot and standard deviation having the largest portion of middle values. (Brewer & Pickle, 2002)\n\n\n\n\nTable 1: Results from Brewer and Pickle (2002). Description edited for brevity.\n\n\n\n\n\n\nClassification Method\nOverall Accuracy\nDescription\n\n\n\n\nQuantile\n75.6%\nThe quantile method places equal numbers of observations into each class. For example, an interval cut into five classes would have twenty percent of the observations in each class.\n\n\nMinimum Boundary Error\n72.6%\nThe minimum-boundary-error method is an iterative optimizing method. The spatial distribution or topology of the observations is considered, rather than their statistical distribution.\n\n\nNatural Breaks (Jenks)\n69.9%\nThe natural-breaks method is the implementation of the Jenks optimization procedure. The optimization minimized within-class variance and maximized between-class variance in an iterative series of calculations.\n\n\nHybrid equal interval\n69.4%\nThe hybrid equal interval classification that was developed used the upper whisker of a box plot to define the highest category of outliers. The remaining range of the data below the upper whisker was divided into equal intervals.\n\n\nStandard deviation\n67.6%\nThe standard deviation classification had a middle class centered on the mean with a range of 1 standard deviation (0.5 standard deviation to either side of the mean). Classes above and below this mean class were also one standard deviation in range, from \u0003(0.5 to 1.5) standard deviations. The high and low classes contained remaining data that fell outside \u00031.5 standard deviations.\n\n\nShared area\n66.4%\nThe shared-area method used an ordered list of polygons ranked by data value to accumulate specific land areas in each class. With five classes, the extreme classes each covered ten percent of the map area.\n\n\nBox plot\n64.6%\nThe box-plot-based method had a middle class containing data in the interquartile range (the middle 50 percent of the data straddling the median). The adjacent classes extended from the hinges of the box plot to the whiskers, and the extreme classes contained outside and extreme values beyond the whiskers.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#cut",
+    "href": "plotting/016-plotting.html#cut",
+    "title": "Binning",
+    "section": "5.1 cut()",
+    "text": "5.1 cut()\nThe base package includes the cut() function. Many of the gritty details of the cut() function are inspected since it is the foundation for the other functions. The arguments to the cut() function can be used in the ggplot2 version too. Aside from the object to be segmented, the function contains five arguments:\n\nbreaks\nlabels\ninclude.lowest\nright\nordered_result\n\nAssuming the labels argument is unspecified, the factor level labels will read (b1, b2] (b2, b3], where b is for break. Here, all numbers greater than “b1” up to and including “b2” will be in the first break while all numbers greater than “b2” and up to and including “b3” will be in the second break. If ordered_result = T, then the factor level labels will read (b1, b2] &lt; (b2, b3]. The numbers in the first break are less than the numbers in the second break.\nLet’s begin with a continuous array of five numbers arranged from 99 to 102. Pay special attention to the end points 99 and 102 to see which interval, if at all, they are assigned.\n\n(numbers &lt;- c(99, 99.5:101.5, 102))\n#&gt; [1]  99.0  99.5 100.5 101.5 102.0\n\nbreaks can either be a single number for the number of bins or a vector of cut points. Below, each number is assigned to one of three intervals. 99 is assigned to the first interval, while 102 is assigned to the last.\n\ncut(numbers, breaks = 3)\n#&gt; [1] (99,100]  (99,100]  (100,101] (101,102] (101,102]\n#&gt; Levels: (99,100] (100,101] (101,102]\n\nThe breaks or cut points can be explicitly set. Where the breaks are set the number 99 is set to NA. This would seem to be handled inconsistently.\n\ncut(numbers, breaks = 99:102)\n#&gt; [1] &lt;NA&gt;      (99,100]  (100,101] (101,102] (101,102]\n#&gt; Levels: (99,100] (100,101] (101,102]\n\nHowever, the cut() details section states that, in the case of a single number, the outer limits are “moved away by 0.1% of the range to ensure that the extreme values both fall within the break intervals.” Thus, 99 was included where breaks = 3, but set to NA when set explicitly. Where a number is outside the intervals, then it is set to NA as are NaN and Inf.\n\ncut(c(NA, NaN, Inf, -Inf, numbers, 104), breaks = 99:102)\n#&gt;  [1] &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;      (99,100]  (100,101]\n#&gt;  [8] (101,102] (101,102] &lt;NA&gt;     \n#&gt; Levels: (99,100] (100,101] (101,102]\n\nIf the lowest value in the sequence is equal to the first break point, it can be included by specifying include.lowest = T. Note that the lowest value is no longer set to NA, but the first interval and it begins with a [.\n\ncut(numbers, breaks = 99:102, include.lowest = T)\n#&gt; [1] [99,100]  [99,100]  (100,101] (101,102] (101,102]\n#&gt; Levels: [99,100] (100,101] (101,102]\n\nThe interval’s endpoints can be reversed by change the default behavior from right = T to right = F.\n\n# default\ncut(numbers, breaks = 99:102, include.lowest = T, right = T)\n#&gt; [1] [99,100]  [99,100]  (100,101] (101,102] (101,102]\n#&gt; Levels: [99,100] (100,101] (101,102]\n\nNotice that the brackets above have changed from (100,101] above to [100,101) below.\n\n# not default\ncut(numbers, breaks = 99:102, include.lowest = T, right = F)\n#&gt; [1] [99,100)  [99,100)  [100,101) [101,102] [101,102]\n#&gt; Levels: [99,100) [100,101) [101,102]\n\nFinally, labels will be added.\n\ncut(numbers, \n    breaks = 99:102,\n    include.lowest = T,\n    labels = c(\"low\", \"avg\", \"high\"))\n#&gt; [1] low  low  avg  high high\n#&gt; Levels: low avg high",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#cut_",
+    "href": "plotting/016-plotting.html#cut_",
+    "title": "Binning",
+    "section": "5.2 cut_*()",
+    "text": "5.2 cut_*()\nggplot contains three functions to bin data:\n\ncut_interval() makes n groups with equal range\ncut_number() makes n groups with equal numbers of observations\ncut_width() makes groups of a set width\n\nRather than using an array like in the preceding section, the ggplot2 functions will be illustrated using a tibble/dataframe as this will likely mimic the common workflow.\n\n(dt &lt;- tibble::tibble(numbers = numbers))\n#&gt; # A tibble: 5 × 1\n#&gt;   numbers\n#&gt;     &lt;dbl&gt;\n#&gt; 1    99  \n#&gt; 2    99.5\n#&gt; 3   100. \n#&gt; 4   102. \n#&gt; 5   102\n\nBelow each column illustrates one of the ggplot2::cut_*() functions.\n\ndt %&gt;% \n    mutate(eq_range = cut_interval(numbers, n = 3)) %&gt;% \n    mutate(eq_number = cut_number(numbers, n = 3)) %&gt;% \n    mutate(width = cut_width(numbers, width = 1)) %&gt;% \n    mutate(labels = cut_width(numbers, width = 1, \n                              labels = c(\"a\", \"b\",\"c\", \"d\"))) %&gt;% \n    kableExtra::kbl()\n\n\n\n\nnumbers\neq_range\neq_number\nwidth\nlabels\n\n\n\n\n99.0\n[99,100]\n[99,99.8]\n[98.5,99.5]\na\n\n\n99.5\n[99,100]\n[99,99.8]\n[98.5,99.5]\na\n\n\n100.5\n(100,101]\n(99.8,101]\n(99.5,100.5]\nb\n\n\n101.5\n(101,102]\n(101,102]\n(100.5,101.5]\nc\n\n\n102.0\n(101,102]\n(101,102]\n(101.5,102.5]\nd",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#classintervals",
+    "href": "plotting/016-plotting.html#classintervals",
+    "title": "Binning",
+    "section": "5.3 classIntervals()",
+    "text": "5.3 classIntervals()\nThe classInt package includes the classIntervals() function. According to the documentation, it “provides a uniform interface to finding class intervals for continuous numerical variables” and can be used to choose colors and symbols. The styles available to cut the interval include “fixed”, “sd”, “equal”, “pretty”, “quantile”, “kmeans”, “hclust”, “bclust”, “fisher”, “jenks”, “dpih”, “headtails”, “maximum”, or “box”.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#quantiles",
+    "href": "plotting/016-plotting.html#quantiles",
+    "title": "Binning",
+    "section": "6.1 Quantiles",
+    "text": "6.1 Quantiles\nThe “quantile” style provides quantile breaks; arguments to quantile may be passed through the function. This style is the equivalent to the ggplot2::cut_number() function. If the reader will recall, this style was also the highest performing algorithm in Brewer and Pickle (2002) in Table 1.\n\n\n\n\n\n\n\n\nFigure 2: 2019 U.S. Life Expectancy with quantiles style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#equal",
+    "href": "plotting/016-plotting.html#equal",
+    "title": "Binning",
+    "section": "6.2 Equal",
+    "text": "6.2 Equal\nThe “equal” style divides the range of the variable into n parts. The equivalent in ggplot2 is the cut_interval() function. As opposed to the vibrant and contrasting colors in the quantiles plot above, the “equal” style looks flat. The reason is that the bulk of the observations are clustered in the middle. This was a problem described in the Brewer and Pickle study (2002).\n\n\n\n\n\n\n\n\nFigure 3: 2019 U.S. Life Expectancy with equal style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#pretty",
+    "href": "plotting/016-plotting.html#pretty",
+    "title": "Binning",
+    "section": "6.3 Pretty",
+    "text": "6.3 Pretty\nThe “pretty” style chooses a number of breaks not necessarily equal to n using pretty, but likely to be legible; arguments to pretty may be passed through. While the legend breaks are pretty due to rounding, the colors are flat since the observations clustered in the (80, 75] breaks.\n\n\n\n\n\n\n\n\nFigure 4: 2019 U.S. Life Expectancy with pretty style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#fisher-jenks",
+    "href": "plotting/016-plotting.html#fisher-jenks",
+    "title": "Binning",
+    "section": "6.4 Fisher-Jenks",
+    "text": "6.4 Fisher-Jenks\nUse the “fisher” style in the classInterval() function. There is confusion around the “jenks” algorithm because of its opaque origin and the convuluted code associated with it. (Charlton & Brunsdon, 2016) The confusion persists because the “jenks” algorithm is the default option for choropleths in commercial mapping software. Interestingly, George Jenks himself was not confused stating,\n\nIt is the author’s view that the Fisher algorithm is the best external grouping technique. The algorithm was first proposed by W.D. Fisher in a paper entitled, “On Grouping for Maximum Homogeneity.” (Jenks, 1977)\n\nThe good news is that either algorithm produces an attractive plot and has been widely used for decades.\n\n\n\n\n\n\n\n\nFigure 5: 2019 U.S. Life Expectancy with Fisher style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#headtails",
+    "href": "plotting/016-plotting.html#headtails",
+    "title": "Binning",
+    "section": "6.5 Headtails",
+    "text": "6.5 Headtails\nThe “headtails” style uses the algorithm proposed by Bin Jiang (2013), in order to find groupings or hierarchy for data with a heavy-tailed distribution. This classification scheme partitions all of the data values around the mean into two parts and continues the process iteratively for the values (above the mean) in the head until the head part values are no longer heavy-tailed distributed.\n\n\n\n\n\n\n\n\nFigure 6: 2019 U.S. Life Expectancy with Headtails style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/016-plotting.html#box",
+    "href": "plotting/016-plotting.html#box",
+    "title": "Binning",
+    "section": "6.6 Box",
+    "text": "6.6 Box\nThe “box” style generates 7 breaks (therefore 6 categories) based on a box-and-whisker plot. First and last categories include the data values considered as outliers, and the four remaining categories are defined by the percentiles 25, 50 and 75 of the data distribution. By default, the identification of outliers is based on the interquantile range (IQR), so values lower than percentile 25 - 1.5 * IQR or higher than percentile 75 + 1.5 * IQR are considered as outliers.\n\n\n\n\n\n\n\n\nFigure 7: 2019 U.S. Life Expectancy with Box style.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "016: Binning"
+    ]
+  },
+  {
     "objectID": "plotting/014-plotting.html",
     "href": "plotting/014-plotting.html",
     "title": "Colors",
@@ -778,6 +922,18 @@
       "Plotting",
       "General Concepts",
       "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/015-plotting.html",
+    "href": "plotting/015-plotting.html",
+    "title": "Choropleths",
+    "section": "",
+    "text": "1 Objective\nThe objective for this section is for the viewer to use choropleth maps responsibly and to understand common problems in their creation.\n\n\n2 Introduction\nIn Latin, choro means “place” and pleth means “value.” Originating in 1824, choropleths contain different geometries that are shaded based on some variable. (They were at one time referred to as “ratio maps”). Choropleths lack insight when the plot is actually a proxy for population density (Healy, 2018; Munroe, 2010). Healy counsels that “much county-state and national data is not properly spatial, insofar as it is really about individuals (or some other unit of interest) rather than the geographical distribution of those units per se” (Healy, 2018).\n\n\n3 Caveats\nSplashed across the web, print and social media, choropleth maps can be seen everywhere. Their inclusion may give the statistics they represent an added force since shaded maps are usually the province of sophisticated analysts/programmers. The “halo effect” of wrapping data in a map was described by the author of How to Lie with Maps Mark Monmonier. “When combined with the public’s naive acceptance of maps as objective representations, cartographic generalization becomes an open invitation to both deliberate and unintentional prevarication” (Monmonier, 2005). Choropleths can be both insightful and highly misleading (Healy, 2018; Tufte, 2001; Wilke, 2019) “By manipulating breaks between categories of data to be shaded on a choropleth map, for instance, a map maker can often create two distinctly different spatial patterns” (Monmonier, 2005).\n\n\n4 Ratios\nChoropleth maps should be created and interpreted with caution. “In particular, choropleth maps are best suited for visualizing rates, percentages, or statistical values that are normalized for the population of areal units. They are not ideal when the analyst wants to compare counts (or estimated counts) themselves, however” (Walker, 2023). Professor Manny Gimond illustrated the concept in class notes, showing how “non-uniform aerial units” can be a result of the aggregation method instead of a spatial pattern. The solution is “to represent counts as ratios such as number of deaths per number of people or number of people per square kilometer” (Gimond, 2023). Several statistical transformations are available for producing accurate choropleth maps. (Dykes & Unwin, 1998)\n\n\n5 Coloring & Binning\nTwo points are in order. First, darker colors indicate higher values and lighter colors lower values. “We tend to associate darker colors with higher intensities when the background color of the figure is light. However, we can also pick a color scale where high values light up on a dark background.” (Wilke, 2019) Second, binned or discrete scales are preferred so that readers match the geometry color to the legend. Wilke noted that “[w]e are not very good at recognizing a specific color value and matching it against a continuous scale” and suggested it was “appropriate to bin the data values into discrete groups that are represented with distinct colors. On the order of four to six bins is a good choice” (Wilke, 2019).\n\n\n6 Legends\nThere are a number of design choices that must be made to style a choropleth legend. Professor Cynthia Brewer lists several in her book Designing Better Maps:\n\nrounding the numbers in the legend\nincrementing the numbers, for example, 0-10 and 10-20, or 0-9 and 10-19\nusing the word “to” or a dash “-” between the numbers\nordering the legend with the highest numbers at the top or bottom\nusing the actual minimum and maximum of the dataset or collapse to a category like “less than 10” or “more than 90”\nadding annotations for futher explanation. (Brewer, 2024)\n\n\n\n7 Key Points\n\nDetermine whether the data have a spatial component\nFor a light background, use a dark color to indicate high intensity\nFor a dark background, a light color can be used to indicate high intensity\nUse ratios\nBin the data between four and six bins\nStyle legend breaks\nConsider whether a cartogram is more appropriate\n\n\n\n\nBrewer, C. A. (2024). Designing better maps: A guide for GIS users. Esri Press. https://books.google.com/books?id=-emK0AEACAAJ\n\n\nDykes, J., & Unwin, D. (1998). Maps of the Census: A rough guide. Case Studies of Visualization in the Social Sciences, Technical Report 43 Volume, 43.\n\n\nGimond, M. (2023). Intro to GIS and Spatial Analysis. https://mgimond.github.io/Spatial/index.html\n\n\nHealy, K. (2018). Data Visualization: A Practical Introduction. Princeton University Press. https://books.google.com/books?id=3XOYDwAAQBAJ\n\n\nMonmonier, M. (2005). Lying with maps. Statistical Science, 215–222.\n\n\nMunroe, R. (2010). Heatmap. In xkcd. https://xkcd.com/1138/\n\n\nTufte, E. R. (2001). The Visual Display of Quantitative Information (Second edition). Cheshire, Conn. : Graphics Press. https://www.edwardtufte.com/tufte/books_vdqi\n\n\nWalker, K. (2023). Analyzing US Census Data: Methods, Maps, and Models in R (1st ed.). Chapman and Hall/CRC. https://doi.org/10.1201/9780203711415\n\n\nWilke, C. O. (2019). Fundamentals of data visualization: A primer on making informative and compelling figures. O’Reilly Media. https://books.google.com/books?id=WmmNDwAAQBAJ",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "015: Choropleths"
     ]
   }
 ]
