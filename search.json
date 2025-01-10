@@ -1,5 +1,18 @@
 [
   {
+    "objectID": "plotting/052-plotting.html",
+    "href": "plotting/052-plotting.html",
+    "title": "Choropleth",
+    "section": "",
+    "text": "1 Objectives\nThe objective for this section is to create an interactive choropleth map with leaflet.\n\n\n2 Introduction\nPrior to creating an interactive choropleth map in leafet, a creator should ask this question: what’s the benefit to the reader in adding interactivity? The effort will result in larger file sizes with only marginal gain in user insight.\nThere are two primary benefits to interactivity. The map tiles can assist a user in understanding the geography of the data, particularly where the region is unfamiliar. If the audience is from the U.S., they have seen a map of the U.S. many times. However, if the geographies are census tracts of Michigan’s upper peninsula, then interactivity will aid the discussion. Few people may know that Marquette borders Lake Superior. A second benefit is that the user can hover over a polygon to see the data value. Rather than solely relying on the legend, the user can see the exact value for a geometry and, sometimes, that matters. If neither of those benefits are important, then a static map is the better choice.\nThere are two tutorials available for building choropleth maps in leaflet. The first is on the Rstudio site and the second is on the “leaflet” site. Both of these were consulted prior to the creation of this section. This section departs from the tutorials in that it adds attributes like color to the underlying data frame rather than in the addPolygons function. The leaflet package contains some convenience functions like colorBin that speed development but add abstraction. Large leaflet maps are clunky, fragile, and difficult to debug when using these convenience functions. I prefer not to use them. This is a personal preference and not a requirement.\nThe example here is taken from the U.S. Census Bureau’s American Community Survey (ACS) data. The workflow resembles the common process of combining data with geometries, binning the data into groups, creating a color palette, and merging it with the underlying data frame. Then a leaflet map is made with a table in the popup. The data is the percentage of the population 65 years or older by state. Because Hawaii and Alaska are displaced, the map tiles are not loaded as the two states would be superimposed on Mexico.\n\n\n3 Packages Required\n\nlibrary(colorspace)\nlibrary(ggplot2)\nlibrary(leaflet)\nlibrary(leafpop)\nlibrary(magrittr)\nlibrary(tigris)\nlibrary(tidycensus)\nlibrary(tidyverse)\n\n\n\n4 Census Data\nThe first step is to retrieve the data from the ACS. The tidycensus package is used to get the data. tidycensus is “[a]n integrated R interface to several United States Census Bureau APIs and the US Census Bureau’s geographic boundary files. Allows R users to return Census and ACS data as tidyverse-ready data frames, and optionally returns a list-column with feature geometry for mapping and spatial analysis (Walker & Herman, 2024). Prior to retrieving the data, you’ll need to register for an API key (Walker, 2023, Section 2.1). The data is the percentage of the population 65 years or older by state.\n\n# census_api_key(\"YOUR KEY GOES HERE\", install = TRUE)\nget_acs(\n    geography = \"state\",\n    variables = c(\"DP05_0001\", \"DP05_0029\"),\n    year = 2020\n) -&gt; acs_2020\n\n\n\n5 Convert to Ratio\nThe variables DP05_0001 and DP05_0029 are the total population and the population 65 years or older, respectively. The percentage of the population 65 years or older is calculated by dividing the population 65 years or older by the total population and multiplying by 100. Puerto Rico and the District of Columbia are removed from the data frame, leaving 50 observations.\n\nacs_2020 %&gt;% \nrename_with(~janitor::make_clean_names(.)) %&gt;%\nselect(-moe) %&gt;% \ntidyr::pivot_wider(names_from = variable, values_from = estimate) %&gt;% \ndplyr::filter(!name %in% c(\"Puerto Rico\", \"District of Columbia\")) %&gt;% \nmutate(pct_65_or_older = (DP05_0029 / DP05_0001) * 100) %&gt;%\nselect(geoid, name, pct_65_or_older) %&gt;%\narrange(desc(pct_65_or_older)) -&gt; acs_2020_pct_65_or_older\n\n\n\n6 Geometries\nThe geometries are retrieved from the tigris package and form the states’ boundaries. The tigris package “allows users to directly download and use TIGER/Line and cartographic boundary shapefiles from the US Census Bureau in R.” (Walker, 2024) The geometries are filtered to exclude the District of Columbia and Puerto Rico. The shift_geometry function is used to shift the geometries of Hawaii and Alaska to the lower left corner of the map, just below Texas.\n\nstates(cb = TRUE, resolution = \"20m\") %&gt;%\nrename_with(~janitor::make_clean_names(.)) %&gt;%\nshift_geometry(position = \"below\") %&gt;% \nfilter(!name %in% c(\"District of Columbia\", \"Puerto Rico\")) %&gt;%  \nselect(name, geometry) -&gt; us_states\n\n\n\n7 Merge\nRemember the order of the merge matters. “The most common type of attribute join on spatial data takes an sf object as the first argument and adds columns to it from a data.frame specified as the second argument” (Lovelace et al., 2019, Section 3.2.4). The “us_states” data frame is first because it preserves the sf class for the eventual call to leaflet below.\n\nleft_join(us_states, acs_2020_pct_65_or_older, by = c(\"name\" = \"name\")) -&gt; us_states\n\n\n\n8 Bin Variable\nThe ggplot2::cut_number function is used to bin the percentage of the population 65 years or older into five groups. The group variable is added to the data frame. An alternative that contains many more methods for binning data is the classInt package. (Bivand, 2023)\n\nus_states %&gt;% \nmutate(group = ggplot2::cut_number(pct_65_or_older, n = 5), \n       .before = geometry) -&gt; us_states\n\n\n\n9 Create Palette\nA multi-hue palette is created with the colorspace package. A singule-hue palette was explored, but the light colors were “washed out” when placed on the gray background.\n\ntibble::tibble(\n    group = levels(us_states$group),\n    color = sequential_hcl(5, palette = \"PinkYl\", rev = TRUE)\n    ) -&gt; color_palette\n\nleft_join(us_states, color_palette, by = \"group\", keep = T) -&gt; us_states\n\n\n\n10 Map\nUpon clicking a state polygon, the popup will display the state name and the percentage of the population 65 years or older. The popupTable function is used to create the table and is a function from the leafpop package. The function can save a lot of time of creating customized html for inclusion in the popup. The power of the leafpop package is only hinted at here, but also allows, in addition to a table, the placement of an image or chart (Appelhans & Detsch, 2021). Note also, the leafletOptions function is used to set the coordinate reference system (CRS) to L.CRS.Simple and the minimum zoom level to -100.\n\nlibrary(leaflet)\nleaflet(us_states, \n        options = leafletOptions(\n            crs = leafletCRS(crsClass = \"L.CRS.Simple\"),\n            minZoom = -100)) %&gt;%\n    addPolygons(data = us_states,\n                fillColor = ~color,\n                fillOpacity = 0.7,\n                color = \"white\",\n                weight = 1,\n                popup = popupTable(us_states, c(\"name\", \"pct_65_or_older\"))\n    ) %&gt;% \n    addLegend(\n        position = \"bottomright\",\n        colors = sequential_hcl(5, palette = \"PinkYl\", rev = TRUE),\n        labels = levels(us_states$group.x),\n        title = \"Pct. 65 or older\",\n        opacity = 1\n    )\n\n\n\n\n\n\n\nFigure 1: Choropleth map of the percentage of the population 65 years or older by state (U.S. Census Bureau, 2020).\n\n\n\n\n\n\n11 Key Points\n\nThe tidycensus and tigris packages give convenient access to the data and shapefiles of the U.S. Census Bureau.\nThe shift_geometry function can place Hawaii and Alaska either below or outside the continental U.S.\nleafpop allows for the inclusion of a table, image, or chart in the popup.\n\n\n\n\nLovelace, R., Nowosad, J., & Muenchow, J. (2019). Geocomputation with R. Chapman and Hall/CRC. https://doi.org/10.1201/9780203730058\n\n\nU.S. Census Bureau. (2020). American Community Survey. https://doi.org/10.1056/NEJMp2022162\n\n\nWalker, K. (2023). Analyzing US Census Data: Methods, Maps, and Models in R (1st ed.). Chapman and Hall/CRC. https://doi.org/10.1201/9780203711415\n\n\n\n\nAppelhans, T., & Detsch, F. (2021). Leafpop: Include tables, images and graphs in leaflet pop-ups. https://CRAN.R-project.org/package=leafpop\n\n\nBivand, R. (2023). classInt: Choose univariate class intervals. https://CRAN.R-project.org/package=classInt\n\n\nWalker, K. (2024). Tigris: Load census TIGER/line shapefiles. https://CRAN.R-project.org/package=tigris\n\n\nWalker, K., & Herman, M. (2024). Tidycensus: Load US census boundary and attribute data as ’tidyverse’ and ’sf’-ready data frames. https://CRAN.R-project.org/package=tidycensus",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "052: Choropleth"
+    ]
+  },
+  {
     "objectID": "plotting/040-plotting.html",
     "href": "plotting/040-plotting.html",
     "title": "tmap",
@@ -1339,6 +1352,201 @@
       "Static Maps",
       "030: ggplot2",
       "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html",
+    "href": "plotting/051-plotting.html",
+    "title": "Basics",
+    "section": "",
+    "text": "The objective for this section is to introduce leaflet functions to create an interactive map.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#set-view",
+    "href": "plotting/051-plotting.html#set-view",
+    "title": "Basics",
+    "section": "4.1 Set View",
+    "text": "4.1 Set View\n\nleaflet() %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16)\n\n\n\n\n\n\n\nFigure 2: Leaflet map with Boston, Massachusettes, as center.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#add-marker",
+    "href": "plotting/051-plotting.html#add-marker",
+    "title": "Basics",
+    "section": "4.2 Add Marker",
+    "text": "4.2 Add Marker\n\nleaflet() %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054)\n\n\n\n\n\n\n\nFigure 3: Leaflet map with marker at center",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#add-popup",
+    "href": "plotting/051-plotting.html#add-popup",
+    "title": "Basics",
+    "section": "4.3 Add Popup",
+    "text": "4.3 Add Popup\n\nleaflet() %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\")\n\n\n\n\n\n\n\nFigure 4: Leaflet map with marker at center and popup.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#add-popup-text",
+    "href": "plotting/051-plotting.html#add-popup-text",
+    "title": "Basics",
+    "section": "4.4 Add Popup Text",
+    "text": "4.4 Add Popup Text\n\nleaflet() %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, \n               popup = paste(\n                   \"&lt;strong&gt; Value # 1: &lt;/strong&gt;\", \"7\", \"&lt;br&gt;\",\n                   \"&lt;strong&gt; Value # 2: &lt;/strong&gt;\", \"3\", \"&lt;br&gt;\",\n                   \"Center of map!\"))\n\n\n\n\n\n\n\nFigure 5: Leaflet map with marker at center and popup text. Note the use of HTML tags.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#remove-zoom-controls",
+    "href": "plotting/051-plotting.html#remove-zoom-controls",
+    "title": "Basics",
+    "section": "5.1 Remove Zoom Controls",
+    "text": "5.1 Remove Zoom Controls\n\nleaflet(options = leafletOptions(zoomControl = FALSE)) %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\")\n\n\n\n\n\n\n\nFigure 6: Leaflet map with zoom controls removed. Note the +/- box is no longer in the left, upper corner of the map.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#freeze-zoom",
+    "href": "plotting/051-plotting.html#freeze-zoom",
+    "title": "Basics",
+    "section": "5.2 Freeze Zoom",
+    "text": "5.2 Freeze Zoom\n\nleaflet(options = leafletOptions(zoomControl = FALSE,\n                                 minZoom = 16, \n                                 maxZoom = 16)) %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\")\n\n\n\n\n\n\n\nFigure 7: Leaflet map with zoom frozen at 16. Note that both the minZoom and maxZoom are set to 16.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#dragging",
+    "href": "plotting/051-plotting.html#dragging",
+    "title": "Basics",
+    "section": "5.3 Dragging",
+    "text": "5.3 Dragging\n\nleaflet(options = leafletOptions(zoomControl = FALSE,\n                                 minZoom = 16, \n                                 maxZoom = 16,\n                                 dragging = FALSE)) %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 16) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\")\n\n\n\n\n\n\n\nFigure 8: Leaflet map with dragging disabled. Interactivity is wholly disabled with the exception of the popup.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#set-max-bounds",
+    "href": "plotting/051-plotting.html#set-max-bounds",
+    "title": "Basics",
+    "section": "5.4 Set Max Bounds",
+    "text": "5.4 Set Max Bounds\n\nleaflet(options = leafletOptions(zoomControl = FALSE,\n                                 minZoom = 14, \n                                 maxZoom = 16,\n                                 dragging = TRUE)) %&gt;% \n    addTiles() %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 14) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\") %&gt;%\n    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)\n\n\n\n\n\n\n\nFigure 9: Leaflet map with max bounds set. The map will not move outside of the bounds set. The user can zoom in, but is confined to the boundaries set.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#light",
+    "href": "plotting/051-plotting.html#light",
+    "title": "Basics",
+    "section": "6.1 Light",
+    "text": "6.1 Light\n\nleaflet(options = leafletOptions(zoomControl = FALSE,\n                                 minZoom = 14, \n                                 maxZoom = 16,\n                                 dragging = TRUE)) %&gt;% \n    addProviderTiles(\"Esri.WorldGrayCanvas\") %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 14) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\") %&gt;%\n    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)\n\n\n\n\n\n\n\nFigure 10: Leaflet map with light tiles.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#dark",
+    "href": "plotting/051-plotting.html#dark",
+    "title": "Basics",
+    "section": "6.2 Dark",
+    "text": "6.2 Dark\n\nleaflet(options = leafletOptions(zoomControl = FALSE,\n                                 minZoom = 14, \n                                 maxZoom = 16,\n                                 dragging = TRUE)) %&gt;% \n    addProviderTiles(\"Stadia.AlidadeSmoothDark\") %&gt;% \n    setView(-71.0382679, 42.3489054, zoom = 14) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\") %&gt;%\n    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)\n\n\n\n\n\n\n\nFigure 11: Leaflet map with dark tiles.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#wms",
+    "href": "plotting/051-plotting.html#wms",
+    "title": "Basics",
+    "section": "6.3 WMS",
+    "text": "6.3 WMS\nAnother type of tile layer that can be added to a map is called Web Mapping Service (WMS) tile layer. WMS tiles are requested and transferred images over the web using HTTP (Crickard, 2014). The function in R is addWMSTiles() and it requires the URL of the WMS server and the layer name. The leaflet documentation states that, with regard to the layers name, they are defined in the “GetCapabilities” XML document; however, it can be difficult to understand. leaflet recommends using software like QGIS to see what layers are available.\n\nleaflet() %&gt;% \n     setView(-71.0382679, 42.3489054, zoom = 14) %&gt;% \n    addWMSTiles(\n        \"https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WmsServer\",\n        layers = \"0\",\n        options = WMSTileOptions(format = \"image/png\", transparent = TRUE),\n        attribution = \"USGS\"\n    ) \n\n\n\n\n\n\n\nFigure 12: Leaflet map with WMS tiles. These tiles are from the United States Geographic Service.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#options-1",
+    "href": "plotting/051-plotting.html#options-1",
+    "title": "Basics",
+    "section": "6.4 Options",
+    "text": "6.4 Options\n\nleaflet() %&gt;% \n    addProviderTiles(\"Esri.WorldGrayCanvas\",\n                     options = providerTileOptions(minZoom = 14, maxZoom = 16, attribution = \"source\")\n    ) %&gt;%\n    setView(-71.0382679, 42.3489054, zoom = 14) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\") %&gt;%\n    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)\n\n\n\n\n\n\n\nFigure 13: Leaflet map with tile options set.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#create",
+    "href": "plotting/051-plotting.html#create",
+    "title": "Basics",
+    "section": "7.1 Create",
+    "text": "7.1 Create\n\nsf::st_polygon(list(rbind(c(-71.13, 42.24), c(-71.13, 42.44), c(-70.93, 42.44), c(-70.93, 42.24), c(-71.13, 42.24)))) %&gt;% \nsf::st_sfc() %&gt;% \nsf::st_sf(name = \"district\") -&gt; poly\n\nlng &lt;- seq(from = -71.13, to = -70.93, by = .01)\nlat &lt;- seq(from = 42.24, to = 42.44, by = .01)\npoints &lt;- data.frame(lng = sample(lng, size = 10),\n                     lat = sample(lat, size = 10),\n                     name = letters[1:10])",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
+    ]
+  },
+  {
+    "objectID": "plotting/051-plotting.html#plot",
+    "href": "plotting/051-plotting.html#plot",
+    "title": "Basics",
+    "section": "7.2 Plot",
+    "text": "7.2 Plot\n\nleaflet() %&gt;% \n    addProviderTiles(\"Esri.WorldGrayCanvas\",\n                     options = providerTileOptions(\n                         minZoom = 10, \n                         maxZoom = 16, \n                         attribution = \"source\")\n                     ) %&gt;%\n    setView(-71.0382679, 42.3489054, zoom = 10) %&gt;% \n    addMarkers(-71.0382679, 42.3489054, popup = \"Center of map!\") %&gt;%\n    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44) %&gt;%\n    addPolygons(data = poly, popup = ~name, color = \"red\", weight = 2, opacity = 1, fill = TRUE, fillColor = \"blue\", fillOpacity = 0.2) %&gt;%\n    addCircleMarkers(data = points, lng = ~lng, lat = ~lat, popup = ~name, radius = 10, color = \"green\", fillColor = \"yellow\", fillOpacity = 0.5)\n\n\n\n\n\n\n\nFigure 14: Leaflet map with polygons, markers, and circles.",
+    "crumbs": [
+      "Plotting",
+      "Interactive Maps",
+      "050: Leaflet",
+      "051: Basics"
     ]
   }
 ]
