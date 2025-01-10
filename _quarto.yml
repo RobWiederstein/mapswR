@@ -4,7 +4,12 @@ project:
   #resources:
   preview:
     port: 3333
-
+  # render:
+  #   - "index.qmd"
+  #   - "basics/"
+  #   - "plotting/"
+  #   - "!advanced/"
+    
 website:
   title: "Maps with R"
   description: "How to create maps with R using the sf package"
@@ -134,6 +139,7 @@ website:
             - text: "080: FlowmapBlue"
               file: plotting/080-plotting.qmd
             - text: "090: Shiny"
+              file: plotting/090-plotting.qmd
 
   repo-url: https://github.com/quarto-dev/quarto-demo
   repo-actions: [edit, issue]
@@ -187,8 +193,8 @@ filters:
   - highlight-text
   - multibib
 validate-yaml: false
-execute:
-  freeze: auto
+#execute:
+#  freeze: auto
 editor: source
 bibliography:
   articles: ./bibs/articles.bib

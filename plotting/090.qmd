@@ -1,5 +1,0 @@
----
-title: "Mobility Flows"
----
-
-"The flowmapblue package (Boyandin 2023) is a FlowmapBlue widget for R that can be used to easily map mobility data between locations. An example on the use of flowmapblue showing population flows in Spain derived from cellphone location data can be seen at this blog post. Flow data can also be depicted with the visualization functions of the epiflows package for the prediction of the spread of infectious diseases (Piatkowski et al. 2018; Moraga et al. 2019)."
