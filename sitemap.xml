@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://RobWiederstein.github.io/mapswR/plotting/034-plotting.html</loc>
+    <lastmod>2025-01-10T12:29:26.179Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobWiederstein.github.io/mapswR/plotting/032-plotting.html</loc>
+    <lastmod>2025-01-10T12:29:26.171Z</lastmod>
+  </url>
+  <url>
     <loc>https://RobWiederstein.github.io/mapswR/plotting/020-plotting.html</loc>
     <lastmod>2025-01-10T12:29:26.157Z</lastmod>
   </url>
@@ -71,5 +79,13 @@
   <url>
     <loc>https://RobWiederstein.github.io/mapswR/plotting/016-plotting.html</loc>
     <lastmod>2025-01-10T12:29:26.151Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobWiederstein.github.io/mapswR/plotting/031-plotting.html</loc>
+    <lastmod>2025-01-10T12:29:26.162Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobWiederstein.github.io/mapswR/plotting/033-plotting.html</loc>
+    <lastmod>2025-01-10T12:29:26.175Z</lastmod>
   </url>
 </urlset>

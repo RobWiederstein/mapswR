@@ -1,5 +1,174 @@
 [
   {
+    "objectID": "plotting/034-plotting.html",
+    "href": "plotting/034-plotting.html",
+    "title": "United States",
+    "section": "",
+    "text": "The objective for this section is to create a choropleth map of the 50 United States, including Hawaii and Alaska.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/034-plotting.html#data",
+    "href": "plotting/034-plotting.html#data",
+    "title": "United States",
+    "section": "4.1 Data",
+    "text": "4.1 Data\n\nne_states(country = 'united states of america') %&gt;%\nselect(name, postal, geometry) %&gt;%\nfilter(postal != \"DC\") %&gt;%\n1mutate(cont_var = rnorm(n = 50), .before = geometry) %&gt;%\n2mutate(\n    fact_var = cut_interval(\n        cont_var, \n        n = 5, \n        labels = c(\"very low\", \"low\", \"average\",\n                   \"high\", \"very high\" )\n    ),\n    ordered_result = T\n) %&gt;%\nrmapshaper::ms_simplify(method = \"vis\", weighting = .05) %&gt;%\nst_transform(2163) -&gt; us\n3us %&gt;% mutate(fact_var = fct_rev(fact_var)) -&gt; us\n#&gt; ── R CMD build ─────────────────────────────────────────────────────────────────\n#&gt; * checking for file ‘/private/var/folders/hm/r4s1x8yd7t3drh0tjd1gkwl00000gn/T/RtmpXFszOR/remotesce67305d3fe3/ropensci-rnaturalearthhires-e02c28d/DESCRIPTION’ ... OK\n#&gt; * preparing ‘rnaturalearthhires’:\n#&gt; * checking DESCRIPTION meta-information ... OK\n#&gt; * checking for LF line-endings in source and make files and shell scripts\n#&gt; * checking for empty or unneeded directories\n#&gt; * building ‘rnaturalearthhires_1.0.0.9000.tar.gz’\n\n\n1\n\nCreate random, continuous variable.\n\n2\n\nGroup continuous variable into five groups.\n\n3\n\nReverse the factor order so legend entries are reversed.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/034-plotting.html#mainland",
+    "href": "plotting/034-plotting.html#mainland",
+    "title": "United States",
+    "section": "4.2 Mainland",
+    "text": "4.2 Mainland\nWith the original dataset already created, the individual states must be extracted and plotted. The largest grouping of states is the 48 contiguous states which is named “main” in the code below.\n\nggplot() +\ngeom_sf(us, mapping = aes(geometry = geometry,\n1                      fill = fact_var),\n        linewidth = .4,\n        color = \"gray80\") +\n2scale_fill_discrete_sequential(palette = \"Emrld\", rev = F) +\ngeom_sf_text(us, \n             mapping = aes(label = postal), \n             size = 3, \n3             check_overlap = T) +\n4coord_sf(crs = st_crs(2163),\n         xlim = c(-2500000, 2500000),\n         ylim = c(-2300000, 730000)) +\n5labs(fill = \"Factor\") +\n6theme_nothing() -&gt; main\n\n\n1\n\nDeclare polygon fill variable.\n\n2\n\nFunction is from the colorspace package.\n\n3\n\nUsed the check_overlap argument to clean map text.\n\n4\n\nSet window to continental U.S.\n\n5\n\nRename legend.\n\n6\n\ntheme_nothing() passes clean grob to code below.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/034-plotting.html#alaska",
+    "href": "plotting/034-plotting.html#alaska",
+    "title": "United States",
+    "section": "4.3 Alaska",
+    "text": "4.3 Alaska\nAlaska is projected using CRS 3467 which has the nice effect of rotating it as well for the final placement.\n\nggplot(data = us) +\ngeom_sf(mapping = aes(fill = fact_var), show.legend = F) +\ncoord_sf(\n    crs = st_crs(3467),\n    xlim = c(-2400000, 1600000),\n    ylim = c(200000, 2500000),\n    expand = FALSE,\n    datum = NA) +\nscale_fill_discrete_sequential(palette = \"Emrld\", rev = F) +\ngeom_sf_text(data = us, mapping = aes(label = postal), size = 3) +\ntheme_nothing() -&gt; ak",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/034-plotting.html#hawaii",
+    "href": "plotting/034-plotting.html#hawaii",
+    "title": "United States",
+    "section": "4.4 Hawaii",
+    "text": "4.4 Hawaii\nThe same basic approach for Alaska is applied here too, with the exception of the CRS being set to 4135.\n\nggplot(data = us) +\ngeom_sf(mapping = aes(fill = fact_var), show.legend = F) +\ncoord_sf(crs = st_crs(4135),\n         xlim = c(-161, -154),\n         ylim = c(18, 23),\n         expand = FALSE,\n         datum = NA) +\nscale_fill_discrete_sequential(palette = \"Emrld\", rev = F) +\ngeom_sf_text(data = us, \n             mapping = aes(label = postal), \n             size = 3,\n             check_overlap = T) +\ntheme_nothing() -&gt; hi",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "034: United States"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html",
+    "href": "plotting/032-plotting.html",
+    "title": "Text and Labels",
+    "section": "",
+    "text": "The objective for this section is to learn how to label map features with either labels or text.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#polygons",
+    "href": "plotting/032-plotting.html#polygons",
+    "title": "Text and Labels",
+    "section": "4.1 Polygons",
+    "text": "4.1 Polygons\n\n\nCode\ncreate_polys &lt;- function(n_obs = 5, side_length = 5){\n    lat_range &lt;- seq(-85, 85, by = 5)\n    lng_range &lt;- seq(-175, 175, by = 5)\n    y_origin &lt;- sample(lat_range, n_obs, replace = F)\n    x_origin &lt;- sample(lng_range, n_obs, replace = F)\n    df &lt;- tibble()\n    for(i in 1:length(x_origin)){\n        p &lt;-\n            tibble(\n                id = i,\n                x_1 = x_origin[i],\n                y_1 = y_origin[i],\n                x_2 = x_origin[i],\n                y_2 = y_origin[i] + side_length,\n                x_3 = x_origin[i] + side_length,\n                y_3 = y_origin[i] + side_length,\n                x_4 = x_origin[i] + side_length,\n                y_4 = y_origin[i],\n                x_5 = x_origin[i],\n                y_5 = y_origin[i]\n                )\n        p_xy &lt;-\n            p |&gt;\n            pivot_longer(cols = x_1:y_5) |&gt;\n            separate(name, into = c(\"axis\", \"call\"), sep = \"_\") |&gt;\n            select(id, call, everything()) |&gt;\n            pivot_wider(names_from = axis, values_from = value) |&gt;\n            select(-call)\n        df &lt;- dplyr::bind_rows(df, p_xy)\n    }\n\n    sf &lt;- sfheaders::sf_polygon(\n        obj = df,\n        , x = \"x\"\n        , y = \"y\"\n        , polygon_id = \"id\"\n    )\n    sf::st_crs(sf) &lt;- \"WGS84\"\n    sf$var_cont &lt;- rnorm(n_obs)\n    sf$var_fact &lt;- ggplot2::cut_interval(sf$var_cont, n = 5, labels = c(letters[1:5]))\n    sf$id &lt;- as.character(sf$id)\n    sf\n}\npolys &lt;- create_polys(n_obs = 25)",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#polygon-centers",
+    "href": "plotting/032-plotting.html#polygon-centers",
+    "title": "Text and Labels",
+    "section": "4.2 Polygon Centers",
+    "text": "4.2 Polygon Centers\nUsually in labeling, “point” data is necessary to anchor the label to the plot. This can be accomplished by the sf::st_centroid() function. The code block below is used ad nauseum for this purpose.\n\npoly_ctr &lt;-\n    polys %&gt;%\n    sf::st_centroid() %&gt;%\n    dplyr::mutate(lon = sf::st_coordinates(.)[, 1],\n                  lat = sf::st_coordinates(.)[, 2])",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#base-layer",
+    "href": "plotting/032-plotting.html#base-layer",
+    "title": "Text and Labels",
+    "section": "5.1 Base Layer",
+    "text": "5.1 Base Layer\nThe base layer was generated using the polygon function. The function creates random, same-sized squares on a “WGS 84” plotting grid where latitude is from -90 to 90 and longitude is -180 to 180. The first plot is just to show the base features.\n\nggplot() +\n    geom_sf(data = polys, fill = \"steelblue\") +\n    coord_sf(expand = F) +\n    theme_bw()\n\n\n\n\n\n\n\nFigure 2: Plot of random squares.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#labels---factor",
+    "href": "plotting/032-plotting.html#labels---factor",
+    "title": "Text and Labels",
+    "section": "5.2 Labels - Factor",
+    "text": "5.2 Labels - Factor\nThe first plot is with data where one column is a factor variable; the annotation is a label; and the colors are from a colorspace qualitative HCL palette named “Pastel 1”. Some arguments to the geom_label_repel() function were chosen to illustrate functionality.\n\ncolors &lt;- qualitative_hcl(n = 5, palette = \"pastel1\")\nggplot() +\ngeom_sf(data = polys, mapping = aes(fill = var_fact), \n        show.legend = T) +\nscale_fill_manual(\"Factor\", values = colors) +\ngeom_sf(data = poly_ctr, size = .75, show.legend = F) +\n1geom_label_repel(data = poly_ctr,\n                aes(x = lon, y = lat, label = id),\n                fill = alpha(\"yellow\", .35),\n                nudge_y = 10,\n                nudge_x = 10,\n                min.segment.length = 0,\n                label.size = 1\n)  +\ncoord_sf(expand = F) +\ntheme_bw() +\ntheme(\n    panel.grid.major = element_line(\n        color = gray(.5),\n        linetype = \"dotted\",\n        linewidth = 0.25\n        ),\n    panel.background = element_rect(\n        fill = \"lightskyblue1\"\n        )\n) +\nlabs(title = \"Square Land - Factor Variable\",\n     subtitle = \"ggrepel - geom_label_repel\",\n     caption = \"Source: My data\") +\nxlab(\"Longitude\") +\nylab(\"Latitude\")\n\n\n1\n\nOperative lines for the geom_label_repel() function.\n\n\n\n\n\n\n\n\n\n\nFigure 3: Plot of random squares with labels. Note how the repel algorithm moves the labels. The plotted factor variable has 5 categories.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#labels---continuous",
+    "href": "plotting/032-plotting.html#labels---continuous",
+    "title": "Text and Labels",
+    "section": "5.3 Labels - Continuous",
+    "text": "5.3 Labels - Continuous\nThe second plot is with data where a second column is a continuous variable; the annotation is a label; and the colors are from colorspace diverging HCL palette named “Tropic”.\n\ncolors &lt;- diverge_hcl(n = 5, palette = \"tropic\") \nggplot() +\ngeom_sf(data = polys, mapping = aes(fill = var_cont),  \n        show.legend = T) + \nscale_fill_gradientn(\"Continuous\", colours = colors) + \ngeom_sf(data = poly_ctr, size = .75, show.legend = F) +\n1geom_label_repel(data = poly_ctr,\n                 aes(x = lon, y = lat, label = id),\n                 nudge_y = 10,\n                 nudge_x = 10,\n                 min.segment.length = 0,\n                 box.padding = .5,\n                 label.padding = .5,\n                 label.r = .75\n) +\ncoord_sf(expand = F) +\ntheme_bw() +\ntheme(\n    panel.grid.major = element_line(\n        color = gray(.5),\n        linetype = \"dotted\",\n        linewidth = 0.25\n    ),\n    panel.background = element_rect(\n        fill = \"lightskyblue1\"\n    )\n) +\nlabs(title = \"Square Land - Continuous Variable\",\n     subtitle = \"ggrepel - geom_label_repel\",\n     caption = \"Source: My data\") +\nxlab(\"Longitude\") +\nylab(\"Latitude\")\n\n\n1\n\nOperative code lines for geom_label_repel().\n\n\n\n\n\n\n\n\n\n\nFigure 4: Plot of random squares with labels. Note how the repel alogrithm moves some of the labels. A diverging color palette was chosen to emphasize the outliers in both tails of the distribution.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#text---factor",
+    "href": "plotting/032-plotting.html#text---factor",
+    "title": "Text and Labels",
+    "section": "5.4 Text - Factor",
+    "text": "5.4 Text - Factor\nThe third plot is with data where a column is a factor variable; the annotation is text; and the colors are from colorspace qualitative HCL palette named “Pastel 1”. Because of the switch from label to text, there are fewer options for the styling of the annotation. However, the line segment can be styled and an arrow head added.\n\ncolors &lt;- colorspace::qualitative_hcl(n = 5, palette = \"pastel1\")\nggplot() +\ngeom_sf(data = polys, mapping = aes(fill = var_fact), show.legend = T) +\nscale_fill_manual(\"Factor\", values = colors) +\ngeom_sf(data = poly_ctr, size = .75, show.legend = F) +\n1geom_text_repel(data = poly_ctr,\n                 aes(x = lon, y = lat, label = id),\n                 nudge_y = 0,\n                 nudge_x = 0,\n                 min.segment.length = 0,\n                 color = \"red\",\n                 box.padding = 1,\n                arrow = arrow(length = unit(0.03, \"npc\"),\n                              type = \"open\"),\n                 size = 5\n) +\ncoord_sf(expand = F) +\ntheme_bw() +\ntheme(\n    panel.grid.major = element_line(\n        color = gray(.5),\n        linetype = \"dotted\",\n        linewidth = 0.25\n    ),\n    panel.background = element_rect(\n        fill = \"lightskyblue1\"\n    )\n) +\nlabs(title = \"Square Land - Factor Variable\",\n     subtitle = \"ggrepel - geom_text_repel\",\n     caption = \"Source: My data\") +\nxlab(\"Longitude\") +\nylab(\"Latitude\")\n\n\n1\n\nOperative code lines for geom_text_repel().\n\n\n\n\n\n\n\n\n\n\nFigure 5: Plot of random squares with text as annotation.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
+    "objectID": "plotting/032-plotting.html#text---continuous",
+    "href": "plotting/032-plotting.html#text---continuous",
+    "title": "Text and Labels",
+    "section": "5.5 Text - Continuous",
+    "text": "5.5 Text - Continuous\nThe fourth plot is with data where a column is a continuous variable; the annotation is text; and the colors are from colorspace diverging HCL palette named “Green-Orange”.\n\ncolors &lt;- diverge_hcl(n = 5, palette = \"green-orange\")\nggplot() +\ngeom_sf(data = polys, mapping = aes(fill = var_cont), \n        show.legend = T) +\nscale_fill_gradientn(\"Continuous\", colours = colors) +\ngeom_sf(data = poly_ctr, size = .75, show.legend = F) +\n1geom_text_repel(data = poly_ctr,\n                 mapping = aes(x = lon, y = lat, \n                     label = id, size = var_cont),\n                 nudge_y = 10,\n                 nudge_x = 10,\n                 min.segment.length = 0,\n                show.legend = F\n) +\ncoord_sf(expand = F) +\ntheme_bw() +\ntheme(\n    panel.grid.major = element_line(\n        color = gray(.5),\n        linetype = \"dotted\",\n        linewidth = 0.25\n    ),\n    panel.background = element_rect(\n        fill = \"lightskyblue1\"\n    )\n) +\nlabs(title = \"Square Land - Continuous Variable\",\n     subtitle = \"ggrepel - geom_text_repel\",\n     caption = \"Source: My data\") +\nxlab(\"Longitude\") +\nylab(\"Latitude\")\n\n\n1\n\nOperative code lines for geom_text_repel(). Note that a variable is being mapped to the size attribute for the text.\n\n\n\n\n\n\n\n\n\n\nFigure 6: Plot of random squares with text as annotation. Note that the column var_cont is being mapped to the size attribute. Large numbers result in larger font sizes.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "032: Text and Labels"
+    ]
+  },
+  {
     "objectID": "plotting/020-plotting.html",
     "href": "plotting/020-plotting.html",
     "title": "Base Plots",
@@ -970,6 +1139,110 @@
       "Plotting",
       "General Concepts",
       "016: Binning"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html",
+    "href": "plotting/031-plotting.html",
+    "title": "Square Land",
+    "section": "",
+    "text": "The objective for this section is to introduce the ggplot2 functions for plotting spatial data.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#create-object",
+    "href": "plotting/031-plotting.html#create-object",
+    "title": "Square Land",
+    "section": "4.1 Create Object",
+    "text": "4.1 Create Object\nTo get started, a square polygon will be created at the (0, 0), the intersection of the Prime Meridian and the Equator. Each side will be one unit in length and because the CRS “WGS 84 / 4326” will be assigned, that unit is a degree.\n\nsf::st_polygon(list(rbind(c(0,0), c(0,1), c(1,1), \n                          c(1,0), c(0,0)))) %&gt;%\nst_sfc(., crs = 4326) %&gt;%\nst_sf(name = \"square\", .) -&gt; square",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#syntax",
+    "href": "plotting/031-plotting.html#syntax",
+    "title": "Square Land",
+    "section": "4.2 Syntax",
+    "text": "4.2 Syntax\nThe three plots are put side-by-side to show that while the syntax changes, the output does not. You can expect the syntax to change throughout the discussion.\n\n1square |&gt;\nggplot() +\ngeom_sf() -&gt; p1\n\n2ggplot(square) +\ngeom_sf() -&gt; p2\n\n3ggplot() +\ngeom_sf(data = square)  -&gt; p3\n\n4p1 + p2 + p3 + plot_annotation(tag_levels = \"A\")\n\n\n1\n\nA plot where the dataset is “piped” into the gglot() function.\n\n2\n\nA plot where the dataset is within the ggplot() call.\n\n3\n\nA plot where the datset is included within the geom_sf().\n\n4\n\nThe three plots were saved and then placed on a grid using the patchwork package.\n\n\n\n\n\n\n\n\n\n\nFigure 1: Simple Square Polygon. Parts (1) - (3) show that the same syntax results in the identical plot.\n\n\n\n\n\nTerrific! With a minimal effort, a plot was generated using ggplot2. I know it doesn’t look like much, but don’t worry, we’ll continue to improve upon it.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#layering",
+    "href": "plotting/031-plotting.html#layering",
+    "title": "Square Land",
+    "section": "4.3 Layering",
+    "text": "4.3 Layering\nPlots and maps are created by layer. It is useful to think about the order in which they will be drawn. There are as many layers as there are potential datasets. At some point, the map becomes so jumbled that adding an additional layer is not possible and certainly not attractive. Here, is a basic illustration.\n\nlibrary(ggplot2)\n1sf::st_polygon(list(rbind(c(0,0), c(0,1), c(1,1),\n                          c(1,0),  c(0,0)))) %&gt;%\nst_sfc(., crs = 4326) %&gt;%\nst_sf(name = \"Square\", geometry = .) -&gt; country\n\n2country %&gt;% st_boundary(.) -&gt; boundary\n\n3st_sfc(st_point(c(.5, .1)),\n       st_point(c(.8, .9)), \n       st_point(c(.2, .4)), \n       crs = 4326) %&gt;% \nst_sf(name = letters[1:3], .) -&gt; cities\n\n4country %&gt;% st_centroid(.) -&gt; center\n\n5ggplot() +\ngeom_sf(data = country) +\ncoord_sf(label_axes = \"----\") -&gt; layer_1\nlayer_1 + geom_sf(data = country, fill = \"antiquewhite\") +\ncoord_sf(label_axes = \"----\") -&gt; layer_2\nlayer_2 + geom_sf(data = boundary, lwd = 1) +\ncoord_sf(label_axes = \"----\") -&gt; layer_3\nlayer_3 + geom_sf(data = cities, size = 2) +\ncoord_sf(label_axes = \"----\") -&gt; layer_4\nlayer_4 + geom_sf_text(data = cities, \n                 mapping = aes(label = name), \n                 nudge_x = -.07, \n                 size = 3) +\ncoord_sf(label_axes = \"----\") +\nlabs(x = \"\", y = \"\") -&gt; layer_5\nlayer_5 + geom_sf_label(data = center, \n                  mapping = aes(label = name), \n                  size = 4,\n                  label.size = 1) +\n    coord_sf(label_axes = \"----\") -&gt; layer_6\nlayer_6 + \n    coord_sf(label_axes = \"----\") +\n    theme(panel.background = element_rect(fill = \"lightblue\")) -&gt; layer_7\n\ncowplot::plot_grid(\n    layer_1, layer_2, layer_3, layer_4, layer_5,\n    layer_6, layer_7,\n    nrow = 3,\n    ncol = 3,\n    labels = 1:7\n    )\n# (layer_1 + layer_2 + layer_3) /\n# (layer_4 + layer_5 + layer_6) /\n# (layer_7 + plot_spacer() + plot_spacer())\n\n\n1\n\nA square polygon created and assigned to variable country.\n\n2\n\nThe boundary is created from the country.\n\n3\n\nThree random points are created and assigned to variable cities.\n\n4\n\nCenter of country is calculated for label placement.\n\n5\n\nSeven layers are created.\n\n\n\n\n\n\n\n\n\n\nFigure 2: Map creation through layering. In order, the parts are (1) base plot initiated, (2) polygon filled, (3) border added, (4) cities added (5) cities labelled, (6) country labeled, and (7) background colored light blue to resemble water.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#themes",
+    "href": "plotting/031-plotting.html#themes",
+    "title": "Square Land",
+    "section": "4.4 Themes",
+    "text": "4.4 Themes\nThemes are a great way to quickly spruce up a plot and ggplot2 offers quite a few of them. You can learn more by checking help ?ggplot2::themes. I prefer to use minimal ornamentation and you’ll find the theme_void() can be helpful when assembling plots in a grid.\n\nsquare %&gt;%\nggplot() +\ngeom_sf(fill = \"antiquewhite\") +\ncoord_sf(label_axes = \"----\") +\nscale_x_continuous(limits = c(-.5, 1.5)) +\nscale_y_continuous(limits = c(-.5, 1.5)) -&gt; square_map\n\nsquare_map + theme_void()    -&gt; theme_1\nsquare_map + theme_minimal() -&gt; theme_2\nsquare_map + theme_bw()      -&gt; theme_3\nsquare_map + theme_light()   -&gt; theme_4\n\nplot_grid(theme_1, theme_2, theme_3, theme_4,\n          nrow = 2, labels = 1:4)\n\n\n\n\n\n\n\nFigure 3: A polygon in four themes: (1) theme void(), (2) theme minimal(), (3) theme_bw(), and (4) theme_light().",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#create",
+    "href": "plotting/031-plotting.html#create",
+    "title": "Square Land",
+    "section": "5.1 Create",
+    "text": "5.1 Create\nThis second example will begin to resemble an actual map. First, Africa will be added as a base layer via the rnaturalearth package. Then, two sf class squares will be created. These will be squares again around the intersection of the Equator and the Prime Meridian. Then, a mountain, a lake, the Equator and Prime Meridian will be added along with the accompanying text and labels. Finally, the background will be colored blue to resemble water.\n\n1afrc &lt;- rnaturalearth::ne_countries(continent = \"Africa\")\n\n2land_1 &lt;- st_polygon(list(rbind(\n    c(-10, -10), c(-10, -15), c(-15, -15), \n    c(-15, -10), c(-10, -10)))) \nland_2 &lt;- land_1 * .75 + 7\nlake &lt;- land_1 * .25\nmountain &lt;- st_centroid(land_1 - 1)\npm &lt;- st_linestring(matrix(c(0, -20, 0, 20), ncol = 2, byrow = T))\neq &lt;- st_linestring(matrix(c(-20, 0, 20, 0), ncol = 2, byrow = T))\n\n\n3land_sfc = st_sfc(list(land_1, land_2))\nlake_sfc = st_sfc(lake)\nmountain_sfc &lt;- st_sfc(mountain)\npm_sfc &lt;- st_sfc(pm)\neq_sfc &lt;- st_sfc(eq)\n\n\n\n4land_sfc_wgs = st_sfc(land_sfc, crs = \"OGC:CRS84\")\nlake_sfc_wgs = st_sfc(lake_sfc, crs = \"OGC:CRS84\")\nmountain_sfc_wgs &lt;- st_sfc(mountain_sfc, crs = \"OGC:CRS84\")\npm_sfc_wgs &lt;- st_sfc(pm_sfc, crs = \"OGC:CRS84\")\neq_sfc_wgs &lt;- st_sfc(eq_sfc, crs = \"OGC:CRS84\")\n\n\n5country &lt;- c(\"A\", \"B\")\nland_sfc_wgs_df = st_sf(country = country, land_sfc_wgs)\nname &lt;- \"Mt. High\"\nmountain_sfc_wgs_df = st_sf(name = name, mountain_sfc_wgs)\nname &lt;- \"Lake Clear\"\nlake_sfc_wgs_df &lt;- st_sf(name = name, lake_sfc_wgs)\nname &lt;- \"Equator\"\neq_sfc_wgs_df &lt;- st_sf(name = name, eq_sfc_wgs)\nname &lt;- \"Prime Meridian\"\npm_sfc_wgs_df &lt;- st_sf(name = name, pm_sfc_wgs)\n\n\n1\n\nAdd the base layer Africa.\n\n2\n\nCreate simple features of sfg class\n\n3\n\nCombine some shapes and convert all to sfc class.\n\n4\n\nAssign CRS.\n\n5\n\nAdd attributes/labels and convert to sf.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/031-plotting.html#plot",
+    "href": "plotting/031-plotting.html#plot",
+    "title": "Square Land",
+    "section": "5.2 Plot",
+    "text": "5.2 Plot\nFrom the sheer length of the code below, you can see that creating and plotting maps can be a lengthy and tedious process. Label/text placement can take a lot of time. While there are some improvements to be made, I think the plot encapsulates the process and gives you a strategy to plot your own.\n\n1ggplot() +\n2geom_sf(data = afrc, fill = \"antiquewhite\") +\ngeom_sf(data = land_sfc_wgs_df, fill = \"antiquewhite\") +\ngeom_sf(data = lake_sfc_wgs_df, fill = \"lightblue\") +\ngeom_sf(data = mountain_sfc_wgs_df, \n        color = \"red\", shape = 17, size = 3) +\ngeom_sf(data = pm_sfc_wgs_df, linetype = \"dashed\") +\ngeom_sf(data = eq_sfc_wgs_df, linetype = \"dashed\") +\n3geom_sf_text(data = land_sfc_wgs_df,\n             aes(label = country),\n             nudge_y = 1) + \ngeom_sf_text(data = mountain_sfc_wgs_df,\n             aes(label = name),\n             nudge_y = -.75,\n             nudge_x = .75) +\ngeom_sf_text(data = lake_sfc_wgs_df,\n             aes(label = name),\n             nudge_y = -1) +\ngeom_sf_text(data = eq_sfc_wgs_df,\n             aes(label = name),\n             nudge_y = .75,\n             nudge_x = 2.5,\n             color = \"gray50\",\n             fontface = \"italic\") +\nannotate(geom = \"text\", x = -.75, y = -15, label = \"Prime Meridian\",\n         fontface = \"italic\", color = \"grey50\", angle = 90) +\n4coord_sf(xlim = c(-20, 15),\n         ylim = c(-20, 10),\n         expand = F) +\n5annotation_north_arrow(\n    which_north = \"grid\",\n    height = unit(.75, \"cm\"),\n    width = unit(.75, \"cm\"),\n    location = \"br\",\n    pad_x = unit(3.2, \"cm\"),\n    pad_y = unit(1, \"cm\")\n    ) +\n6    annotation_scale(pad_x = unit(2.75, \"in\")) +\n7labs(title = \"Square Land\",\n     subtitle = \"ggplot2\",\n     x = \"longitude\",\n     y = \"latitude\",\n     caption = \"Source: My Data Source\") +\n8theme_bw() +\n9theme(panel.grid.major = element_line(\n    color = gray(.5),\n    linetype = \"dotted\",\n    linewidth = 0.25),\n    panel.background = element_rect(\n        fill = \"lightblue\") \n)\n\n\n1\n\nCall ggplot.\n\n2\n\nAdd geom_sf layers.\n\n3\n\nAdd text/label annotations.\n\n4\n\nLimit window to area of interest.\n\n5\n\nAdd directional indicator.\n\n6\n\nAdd scale.\n\n7\n\nAdd axis and title labels.\n\n8\n\nSet theme.\n\n9\n\nModify theme.\n\n\n\n\n\n\n\n\n\n\nFigure 4: Square Land. Combining and layering of a number of simple features to create a map. Title, Subtitle, and data source included to show presentation outside of a standing narrative text.",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "031: Square Land"
+    ]
+  },
+  {
+    "objectID": "plotting/033-plotting.html",
+    "href": "plotting/033-plotting.html",
+    "title": "New Zealand",
+    "section": "",
+    "text": "1 Objectives\nThe objective in this section is to produce a choropleth map of New Zealand with ggplot2.\n\n\n2 Introduction\nUp until now, the ggplot2 examples were demonstrating basic principles in map building. Here, we’ll build our first real choropleth map using New Zealand as an example. We’ll go through the full production pipline by (1) importing an sf data frame, (2) cutting the variable into bins, (3) labeling the factor variable and (4) plotting multiple layers of the map.\n\n\n3 Packages Required\n\nlibrary(colorspace)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(ggrepel)\nlibrary(magrittr)\nlibrary(sf)\nlibrary(tibble)\nlibrary(mapswrData)\n\n\n\n4 Create\nThe first step is to load the nz_business data from the mapswrData package.\n\ndata(nz_business)\nnz_business %&gt;% st_drop_geometry() %&gt;% slice_head(n = 5)\n#&gt;   country island      region indicator count  total pct_business lng   lat\n#&gt; 1      NZ  South   Southland   2024M04 14217 626373         2.27 168 -45.7\n#&gt; 2      NZ  South Marlborough   2024M04  7233 626373         1.15 174 -41.7\n#&gt; 3      NZ  South      Nelson   2024M04  6636 626373         1.06 173 -41.2\n#&gt; 4      NZ  South      Tasman   2024M04  7581 626373         1.21 173 -41.4\n#&gt; 5      NZ  South  West Coast   2024M04  3822 626373         0.61 171 -42.8\n\n\n\n5 Business Indicators\nThe data comes from the official New Zealand Statistics agency. The metadata state that it is “a monthly count of enterprises as at the end of each month, mostly sourced from administrative data” and includes only “economically significant enterprises. It can be an individual, private-sector and public-sector enterprises.” These enterprises have a “GST turnover greater than $30,000 per year” (Stats New Zealand, 2024). The column “pct_business” will be assigned to a bin for the choropleth map.\n\nnz_business %&gt;% \nmutate(pct_bus_f = cut_interval(pct_business, n = 4, dig.lab = 1), \n       .before = geometry) -&gt; nz_bus\nlevels(nz_bus$pct_bus_f) &lt;- c(\".61% to 9.1%\",\n                               \"9.1% to 18%\",\n                               \"18% to 26%\",\n                               \"26% to 35%\")\n\n\n\n6 Choropleth\n\n1values = colorspace::sequential_hcl(4, palette = \"TealGrn\", rev = T)\nggplot() +\ngeom_sf(data = nz_bus, mapping = aes(fill = pct_bus_f), \n        lwd = .5, col = \"gray70\") +\nscale_fill_manual(name = \"Pct.Total\\nBusinesses\", values = values) +\n2geom_label_repel(data = nz_bus,\n                mapping = aes(x = lng, y = lat, label = region),\n                force = 10,\n                fill = alpha(c(\"white\"),0.75),\n                label.padding = .2,\n                box.padding = .6,\n                min.segment.length = 1.2,\n                arrow = arrow(length = unit(0.01, \"npc\"),\n                              type = \"open\"),\n                size = 4) +\ntheme_void() +\n3theme(\n    legend.text = element_text(size = 11),\n    legend.title = element_text(margin = margin(t = 0, r = 0, b = 4, l = 0, unit = \"pt\"), size = 12),\n    legend.box.margin = margin(t = 0, r = 5, b = 0, l = 5, unit = \"pt\"),\n    legend.key.spacing.x = unit(1, units = \"pt\"),\n    legend.key.spacing.y = unit(2, units = \"pt\"),\n    \n    plot.background = element_rect(\n        fill = \"white\",\n        colour = \"black\",\n        linewidth = .5\n  )\n)\n\n\n1\n\nUse rev = T to have dark color indicate high intensity.\n\n2\n\nRequires a lot of time for attractive labels.\n\n3\n\nMost changes dealt with legend appearance.\n\n\n\n\n\n\n\n\n\n\nFigure 1: May 2024 New Zealand Percentage of Businesses by District. Auckland, the home of the largest city, leads with 34.7% of the nation’s businesses. Source is the New Zealand National Statistics. (If you’re from New Zealand, this may not be all that enlightening!)\n\n\n\n\n\n\n\n7 Key Points\n\nGeometries will often include unexpected territories and features that require design choices as to whether they should be included or omitted\nFactor variables may need to be relabeled for attractive legends\nThe colorspace package includes a rev = argument that can be helpful in reversing the color palette\nAttractive annotations in the form of labels and text are time intensive\nAlter theme defaults only at the end of the project\n\n\n\n\nStats New Zealand. (2024). Enterprises Count (3ec6697f-2ec6-473b-ab41-a86e7de1fa9a). https://datainfoplus.stats.govt.nz/Item/nz.govt.stats/041540ba-fc68-4497-814a-74b2cc4beffd",
+    "crumbs": [
+      "Plotting",
+      "Static Maps",
+      "030: ggplot2",
+      "033: New Zealand"
     ]
   }
 ]

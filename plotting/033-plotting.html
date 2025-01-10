@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Plotting Spatial Data – Maps with R</title>
+<title>New Zealand – Maps with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -137,7 +191,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/index.html">General Concepts</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/020-plotting.html">Static Maps</a></li><li class="breadcrumb-item"><a href="../plotting/031-plotting.html">030: ggplot2</a></li><li class="breadcrumb-item"><a href="../plotting/033-plotting.html">033: New Zealand</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -159,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../plotting/index.html" class="sidebar-item-text sidebar-link active">
+            <a href="../plotting/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">General Concepts</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -227,13 +281,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">030: ggplot2</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../plotting/031-plotting.html" class="sidebar-item-text sidebar-link">
@@ -248,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../plotting/033-plotting.html" class="sidebar-item-text sidebar-link">
+  <a href="../plotting/033-plotting.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">033: New Zealand</span></a>
   </div>
 </li>
@@ -359,17 +413,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#package-downloads" id="toc-package-downloads" class="nav-link active" data-scroll-target="#package-downloads"><span class="header-section-number">1</span> Package Downloads</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2</span> Summary</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives"><span class="header-section-number">1</span> Objectives</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">2</span> Introduction</a></li>
+  <li><a href="#packages-required" id="toc-packages-required" class="nav-link" data-scroll-target="#packages-required"><span class="header-section-number">3</span> Packages Required</a></li>
+  <li><a href="#create" id="toc-create" class="nav-link" data-scroll-target="#create"><span class="header-section-number">4</span> Create</a></li>
+  <li><a href="#business-indicators" id="toc-business-indicators" class="nav-link" data-scroll-target="#business-indicators"><span class="header-section-number">5</span> Business Indicators</a></li>
+  <li><a href="#choropleth" id="toc-choropleth" class="nav-link" data-scroll-target="#choropleth"><span class="header-section-number">6</span> Choropleth</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">7</span> Key Points</a></li>
   </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/033-plotting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/020-plotting.html">Static Maps</a></li><li class="breadcrumb-item"><a href="../plotting/031-plotting.html">030: ggplot2</a></li><li class="breadcrumb-item"><a href="../plotting/033-plotting.html">033: New Zealand</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Plotting Spatial Data</h1>
+<h1 class="title">New Zealand</h1>
 </div>
 
 
@@ -386,86 +445,131 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Plotting spatial data is divided into three categories: (1) general concepts, (2) static maps and (3) interactive maps. The first section “general concepts” covers some background about plotting and expands the ideas to maps. For example, maps are expected to contain certain elements like a compass rose, whereas that element would not be expected in a garden-variety scatterplot. The second and third sections deal with R packages for producing maps. To give context and a summary, a plot is included of package downloads and a table summarizing their uses.</p>
-<section id="package-downloads" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Package Downloads</h1>
+<section id="objectives" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Objectives</h1>
+<p>The objective in this section is to produce a choropleth map of New Zealand with <code>ggplot2</code>.</p>
+</section>
+<section id="introduction" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
+<p>Up until now, the <code>ggplot2</code> examples were demonstrating basic principles in map building. Here, we’ll build our first real choropleth map using New Zealand as an example. We’ll go through the full production pipline by (1) importing an <code>sf</code> data frame, (2) cutting the variable into bins, (3) labeling the factor variable and (4) plotting multiple layers of the map.</p>
+</section>
+<section id="packages-required" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Packages Required</h1>
 <div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="fig-package-downloads" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="t" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-package-downloads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../figures/fig-package-downloads-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Package downloads for static and interactive mapping packages."><img src="../figures/fig-package-downloads-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-fig-pos="t" width="672"></a>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(mapswrData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-package-downloads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Package downloads for static and interactive mapping packages.
+</section>
+<section id="create" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Create</h1>
+<p>The first step is to load the <code>nz_business</code> data from the <code>mapswrData</code> package.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">data</span>(nz_business)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>nz_business <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;   country island      region indicator count  total pct_business lng   lat</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; 1      NZ  South   Southland   2024M04 14217 626373         2.27 168 -45.7</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; 2      NZ  South Marlborough   2024M04  7233 626373         1.15 174 -41.7</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; 3      NZ  South      Nelson   2024M04  6636 626373         1.06 173 -41.2</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; 4      NZ  South      Tasman   2024M04  7581 626373         1.21 173 -41.4</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; 5      NZ  South  West Coast   2024M04  3822 626373         0.61 171 -42.8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="business-indicators" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Business Indicators</h1>
+<p>The data comes from the official New Zealand Statistics agency. The metadata state that it is “a monthly count of enterprises as at the end of each month, mostly sourced from administrative data” and includes only “economically significant enterprises. It can be an individual, private-sector and public-sector enterprises.” These enterprises have a “GST turnover greater than $30,000 per year” <span class="citation" data-cites="statsnz_enterprises_2024">(<a href="#ref-statsnz_enterprises_2024" role="doc-biblioref">Stats New Zealand, 2024</a>)</span>. The column “pct_business” will be assigned to a bin for the choropleth map.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>nz_business <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">mutate</span>(<span class="at">pct_bus_f =</span> <span class="fu">cut_interval</span>(pct_business, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">dig.lab =</span> <span class="dv">1</span>), </span>
+<span id="cb3-3"><a href="#cb3-3"></a>       <span class="at">.before =</span> geometry) <span class="ot">-&gt;</span> nz_bus</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">levels</span>(nz_bus<span class="sc">$</span>pct_bus_f) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">".61% to 9.1%"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>                               <span class="st">"9.1% to 18%"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6"></a>                               <span class="st">"18% to 26%"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>                               <span class="st">"26% to 35%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="choropleth" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Choropleth</h1>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1"></a>values <span class="ot">=</span> colorspace<span class="sc">::</span><span class="fu">sequential_hcl</span>(<span class="dv">4</span>, <span class="at">palette =</span> <span class="st">"TealGrn"</span>, <span class="at">rev =</span> T)</span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3"></a><span class="fu">geom_sf</span>(<span class="at">data =</span> nz_bus, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> pct_bus_f), </span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4"></a>        <span class="at">lwd =</span> .<span class="dv">5</span>, <span class="at">col =</span> <span class="st">"gray70"</span>) <span class="sc">+</span></span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5"></a><span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">"Pct.Total</span><span class="sc">\n</span><span class="st">Businesses"</span>, <span class="at">values =</span> values) <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6"></a><span class="fu">geom_label_repel</span>(<span class="at">data =</span> nz_bus,</span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7"></a>                <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> lng, <span class="at">y =</span> lat, <span class="at">label =</span> region),</span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8"></a>                <span class="at">force =</span> <span class="dv">10</span>,</span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9"></a>                <span class="at">fill =</span> <span class="fu">alpha</span>(<span class="fu">c</span>(<span class="st">"white"</span>),<span class="fl">0.75</span>),</span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10"></a>                <span class="at">label.padding =</span> .<span class="dv">2</span>,</span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11"></a>                <span class="at">box.padding =</span> .<span class="dv">6</span>,</span>
+<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12"></a>                <span class="at">min.segment.length =</span> <span class="fl">1.2</span>,</span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13"></a>                <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.01</span>, <span class="st">"npc"</span>),</span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14"></a>                              <span class="at">type =</span> <span class="st">"open"</span>),</span>
+<span id="annotated-cell-4-15"><a href="#annotated-cell-4-15"></a>                <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="annotated-cell-4-16"><a href="#annotated-cell-4-16"></a><span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-17" class="code-annotation-target"><a href="#annotated-cell-4-17"></a><span class="fu">theme</span>(</span>
+<span id="annotated-cell-4-18"><a href="#annotated-cell-4-18"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="annotated-cell-4-19"><a href="#annotated-cell-4-19"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">4</span>, <span class="at">l =</span> <span class="dv">0</span>, <span class="at">unit =</span> <span class="st">"pt"</span>), <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="annotated-cell-4-20"><a href="#annotated-cell-4-20"></a>    <span class="at">legend.box.margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">5</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">5</span>, <span class="at">unit =</span> <span class="st">"pt"</span>),</span>
+<span id="annotated-cell-4-21"><a href="#annotated-cell-4-21"></a>    <span class="at">legend.key.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="at">units =</span> <span class="st">"pt"</span>),</span>
+<span id="annotated-cell-4-22"><a href="#annotated-cell-4-22"></a>    <span class="at">legend.key.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="at">units =</span> <span class="st">"pt"</span>),</span>
+<span id="annotated-cell-4-23"><a href="#annotated-cell-4-23"></a>    </span>
+<span id="annotated-cell-4-24"><a href="#annotated-cell-4-24"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(</span>
+<span id="annotated-cell-4-25"><a href="#annotated-cell-4-25"></a>        <span class="at">fill =</span> <span class="st">"white"</span>,</span>
+<span id="annotated-cell-4-26"><a href="#annotated-cell-4-26"></a>        <span class="at">colour =</span> <span class="st">"black"</span>,</span>
+<span id="annotated-cell-4-27"><a href="#annotated-cell-4-27"></a>        <span class="at">linewidth =</span> .<span class="dv">5</span></span>
+<span id="annotated-cell-4-28"><a href="#annotated-cell-4-28"></a>  )</span>
+<span id="annotated-cell-4-29"><a href="#annotated-cell-4-29"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Use <code>rev = T</code> to have dark color indicate high intensity.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="6,15" data-code-annotation="2">Requires a lot of time for attractive labels.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="17,28" data-code-annotation="3">Most changes dealt with legend appearance.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-plotting-ggplot-nz-bi" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="t" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plotting-ggplot-nz-bi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/fig-plotting-ggplot-nz-bi-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: May 2024 New Zealand Percentage of Businesses by District. Auckland, the home of the largest city, leads with 34.7% of the nation’s businesses. Source is the New Zealand National Statistics. (If you’re from New Zealand, this may not be all that enlightening!)"><img src="../figures/fig-plotting-ggplot-nz-bi-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-fig-pos="t" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotting-ggplot-nz-bi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: May 2024 New Zealand Percentage of Businesses by District. Auckland, the home of the largest city, leads with 34.7% of the nation’s businesses. Source is the New Zealand National Statistics. (If you’re from New Zealand, this may not be all that enlightening!)
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="summary" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Summary</h1>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 5%">
-<col style="width: 37%">
-<col style="width: 49%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>Package</strong></th>
-<th><strong>Type</strong></th>
-<th><strong>Summary</strong></th>
-<th><strong>Pros/Cons</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>base</strong></td>
-<td>static</td>
-<td>Base plotting package for R</td>
-<td>Small file sizes, included in installation of R, lacks customization</td>
-</tr>
-<tr class="even">
-<td><strong>ggplot2</strong></td>
-<td>static</td>
-<td>Preeminent plotting package; included with tidyverse</td>
-<td>Small file sizes, lots of customization, many SO questions, great support, large community, many add-ons</td>
-</tr>
-<tr class="odd">
-<td><strong>tmap</strong></td>
-<td>static</td>
-<td>Quick thematic plotting of both vector graphics and raster files</td>
-<td>Small file sizes, can be customized, syntax similar to ggplot2, small community</td>
-</tr>
-<tr class="even">
-<td><strong>leaflet</strong></td>
-<td>interactive</td>
-<td>Java based library for interactive maps</td>
-<td>Large file sizes, large community, supported by R-studio, poor for large datasets</td>
-</tr>
-<tr class="odd">
-<td><strong>mapdeck</strong></td>
-<td>interactive</td>
-<td>Combination of mapbox and deck.gl.</td>
-<td>Large file sizes, scales well for large datasets</td>
-</tr>
-<tr class="even">
-<td><strong>mapview</strong></td>
-<td>interactive</td>
-<td>Quick creation of interactive maps while in development, not presentation grade</td>
-<td>Large file sizes, scales well for large datasets,</td>
-</tr>
-<tr class="odd">
-<td><strong>flowmapblue</strong></td>
-<td>interactive</td>
-<td>Java based library for flowmaps, map box base tiles</td>
-<td>Large file sizes, new package, attractive plots, scales well</td>
-</tr>
-</tbody>
-</table>
+<section id="key-points" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Key Points</h1>
+<ul>
+<li><p>Geometries will often include unexpected territories and features that require design choices as to whether they should be included or omitted</p></li>
+<li><p>Factor variables may need to be relabeled for attractive legends</p></li>
+<li><p>The <code>colorspace</code> package includes a <code>rev =</code> argument that can be helpful in reversing the color palette</p></li>
+<li><p>Attractive annotations in the form of labels and text are time intensive</p></li>
+<li><p>Alter theme defaults only at the end of the project</p></li>
+</ul>
+<hr>
+<div id="refs-plotting-024-rspatial" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-statsnz_enterprises_2024" class="csl-entry" role="listitem">
+Stats New Zealand. (2024). <em>Enterprises <span>Count</span></em> (3ec6697f-2ec6-473b-ab41-a86e7de1fa9a). <a href="https://datainfoplus.stats.govt.nz/Item/nz.govt.stats/041540ba-fc68-4497-814a-74b2cc4beffd">https://datainfoplus.stats.govt.nz/Item/nz.govt.stats/041540ba-fc68-4497-814a-74b2cc4beffd</a>
+</div>
+</div>
 
 
 </section>
@@ -1079,7 +1183,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/033-plotting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

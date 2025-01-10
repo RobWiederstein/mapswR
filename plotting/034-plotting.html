@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Plotting Spatial Data – Maps with R</title>
+<title>United States – Maps with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -137,7 +191,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/index.html">General Concepts</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/020-plotting.html">Static Maps</a></li><li class="breadcrumb-item"><a href="../plotting/031-plotting.html">030: ggplot2</a></li><li class="breadcrumb-item"><a href="../plotting/034-plotting.html">034: United States</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -159,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../plotting/index.html" class="sidebar-item-text sidebar-link active">
+            <a href="../plotting/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">General Concepts</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -227,13 +281,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">030: ggplot2</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../plotting/031-plotting.html" class="sidebar-item-text sidebar-link">
@@ -254,7 +308,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../plotting/034-plotting.html" class="sidebar-item-text sidebar-link">
+  <a href="../plotting/034-plotting.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">034: United States</span></a>
   </div>
 </li>
@@ -359,17 +413,27 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#package-downloads" id="toc-package-downloads" class="nav-link active" data-scroll-target="#package-downloads"><span class="header-section-number">1</span> Package Downloads</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2</span> Summary</a></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">1</span> Objective</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">2</span> Introduction</a></li>
+  <li><a href="#packages-required" id="toc-packages-required" class="nav-link" data-scroll-target="#packages-required"><span class="header-section-number">3</span> Packages Required</a></li>
+  <li><a href="#create" id="toc-create" class="nav-link" data-scroll-target="#create"><span class="header-section-number">4</span> Create</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">4.1</span> Data</a></li>
+  <li><a href="#mainland" id="toc-mainland" class="nav-link" data-scroll-target="#mainland"><span class="header-section-number">4.2</span> Mainland</a></li>
+  <li><a href="#alaska" id="toc-alaska" class="nav-link" data-scroll-target="#alaska"><span class="header-section-number">4.3</span> Alaska</a></li>
+  <li><a href="#hawaii" id="toc-hawaii" class="nav-link" data-scroll-target="#hawaii"><span class="header-section-number">4.4</span> Hawaii</a></li>
+  </ul></li>
+  <li><a href="#choropleth" id="toc-choropleth" class="nav-link" data-scroll-target="#choropleth"><span class="header-section-number">5</span> Choropleth</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">6</span> Key Points</a></li>
   </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/034-plotting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../plotting/020-plotting.html">Static Maps</a></li><li class="breadcrumb-item"><a href="../plotting/031-plotting.html">030: ggplot2</a></li><li class="breadcrumb-item"><a href="../plotting/034-plotting.html">034: United States</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Plotting Spatial Data</h1>
+<h1 class="title">United States</h1>
 </div>
 
 
@@ -386,86 +450,231 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Plotting spatial data is divided into three categories: (1) general concepts, (2) static maps and (3) interactive maps. The first section “general concepts” covers some background about plotting and expands the ideas to maps. For example, maps are expected to contain certain elements like a compass rose, whereas that element would not be expected in a garden-variety scatterplot. The second and third sections deal with R packages for producing maps. To give context and a summary, a plot is included of package downloads and a table summarizing their uses.</p>
-<section id="package-downloads" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Package Downloads</h1>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="fig-package-downloads" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="t" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-package-downloads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../figures/fig-package-downloads-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Package downloads for static and interactive mapping packages."><img src="../figures/fig-package-downloads-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-fig-pos="t" width="672"></a>
+<section id="objective" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Objective</h1>
+<p>The objective for this section is to create a choropleth map of the 50 United States, including Hawaii and Alaska.</p>
+</section>
+<section id="introduction" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
+<p>This section describes how to build a choropleth map of the United States. The U.S. provides an excellent case study because two states – Alaska and Hawaii – are not connected to the mainland. Alaska and Hawaii are dissimilar in that Alaska is large and close to the North Pole, while Hawaii is small and near the Equator. Cartographers must resolve where to place the two states when making a map. Here, we’ll begin by creating the mainland, Alaska, and Hawaii. Then, the three objects will be placed on the same plot panel. This example relied upon the methodology in this R-spatial blog <a href="https://r-spatial.org/r/2018/10/25/ggplot2-sf-3.html">post</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-package-downloads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Package downloads for static and interactive mapping packages.
+<div class="callout-title-container flex-fill">
+<code>tigris</code> package
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>tigris::shift_geometry()</code> function “will shift and optionally rescale a US dataset for thematic mapping of Alaska, Hawaii, and Puerto Rico with respect to the continental United States.”<span class="citation" data-cites="tigris">(<a href="#ref-tigris" role="doc-biblioref">Walker, 2024</a>)</span> The <code>tigris</code> package can speed development for U.S. choropleth maps.</p>
+</div>
+</div>
+</section>
+<section id="packages-required" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Packages Required</h1>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(rmapshaper)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(rnaturalearthdata)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">library</span>(tigris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Create</h1>
+<p>Returning to the <code>rnaturalearth</code> package, we retain the United States of America and its subdivisions. The original dataset contains the District of Columbia which is dropped. A random variable is created and then broken into five separate groups as an ordered factor using the <code>ggplot2::cut_interval()</code> function.</p>
+<section id="data" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="data"><span class="header-section-number">4.1</span> Data</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1"></a><span class="fu">ne_states</span>(<span class="at">country =</span> <span class="st">'united states of america'</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2"></a><span class="fu">select</span>(name, postal, geometry) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3"></a><span class="fu">filter</span>(postal <span class="sc">!=</span> <span class="st">"DC"</span>) <span class="sc">%&gt;%</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4"></a><span class="fu">mutate</span>(<span class="at">cont_var =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">50</span>), <span class="at">.before =</span> geometry) <span class="sc">%&gt;%</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-5" class="code-annotation-target"><a href="#annotated-cell-2-5"></a><span class="fu">mutate</span>(</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6"></a>    <span class="at">fact_var =</span> <span class="fu">cut_interval</span>(</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7"></a>        cont_var, </span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8"></a>        <span class="at">n =</span> <span class="dv">5</span>, </span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9"></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"very low"</span>, <span class="st">"low"</span>, <span class="st">"average"</span>,</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10"></a>                   <span class="st">"high"</span>, <span class="st">"very high"</span> )</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11"></a>    ),</span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12"></a>    <span class="at">ordered_result =</span> T</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13"></a>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14"></a>rmapshaper<span class="sc">::</span><span class="fu">ms_simplify</span>(<span class="at">method =</span> <span class="st">"vis"</span>, <span class="at">weighting =</span> .<span class="dv">05</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15"></a><span class="fu">st_transform</span>(<span class="dv">2163</span>) <span class="ot">-&gt;</span> us</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3">3</button><span id="annotated-cell-2-16" class="code-annotation-target"><a href="#annotated-cell-2-16"></a>us <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fact_var =</span> <span class="fu">fct_rev</span>(fact_var)) <span class="ot">-&gt;</span> us</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17"></a><span class="co">#&gt; ── R CMD build ─────────────────────────────────────────────────────────────────</span></span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18"></a><span class="co">#&gt; * checking for file ‘/private/var/folders/hm/r4s1x8yd7t3drh0tjd1gkwl00000gn/T/RtmpXFszOR/remotesce67305d3fe3/ropensci-rnaturalearthhires-e02c28d/DESCRIPTION’ ... OK</span></span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19"></a><span class="co">#&gt; * preparing ‘rnaturalearthhires’:</span></span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20"></a><span class="co">#&gt; * checking DESCRIPTION meta-information ... OK</span></span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21"></a><span class="co">#&gt; * checking for LF line-endings in source and make files and shell scripts</span></span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22"></a><span class="co">#&gt; * checking for empty or unneeded directories</span></span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23"></a><span class="co">#&gt; * building ‘rnaturalearthhires_1.0.0.9000.tar.gz’</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="4" data-code-annotation="1">Create random, continuous variable.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="5,13" data-code-annotation="2">Group continuous variable into five groups.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="16" data-code-annotation="3">Reverse the factor order so legend entries are reversed.</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="mainland" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="mainland"><span class="header-section-number">4.2</span> Mainland</h2>
+<p>With the original dataset already created, the individual states must be extracted and plotted. The largest grouping of states is the 48 contiguous states which is named “main” in the code below.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2"></a><span class="fu">geom_sf</span>(us, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3"></a>                      <span class="at">fill =</span> fact_var),</span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4"></a>        <span class="at">linewidth =</span> .<span class="dv">4</span>,</span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5"></a>        <span class="at">color =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-6" class="code-annotation-target"><a href="#annotated-cell-3-6"></a><span class="fu">scale_fill_discrete_sequential</span>(<span class="at">palette =</span> <span class="st">"Emrld"</span>, <span class="at">rev =</span> F) <span class="sc">+</span></span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7"></a><span class="fu">geom_sf_text</span>(us, </span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8"></a>             <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">label =</span> postal), </span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9"></a>             <span class="at">size =</span> <span class="dv">3</span>, </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10"></a>             <span class="at">check_overlap =</span> T) <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4">4</button><span id="annotated-cell-3-11" class="code-annotation-target"><a href="#annotated-cell-3-11"></a><span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">2163</span>),</span>
+<span id="annotated-cell-3-12"><a href="#annotated-cell-3-12"></a>         <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2500000</span>, <span class="dv">2500000</span>),</span>
+<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13"></a>         <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2300000</span>, <span class="dv">730000</span>)) <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="5">5</button><span id="annotated-cell-3-14" class="code-annotation-target"><a href="#annotated-cell-3-14"></a><span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Factor"</span>) <span class="sc">+</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="6">6</button><span id="annotated-cell-3-15" class="code-annotation-target"><a href="#annotated-cell-3-15"></a><span class="fu">theme_nothing</span>() <span class="ot">-&gt;</span> main</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="1">Declare polygon fill variable.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="6" data-code-annotation="2">Function is from the <code>colorspace</code> package.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="10" data-code-annotation="3">Used the <code>check_overlap</code> argument to clean map text.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="11,13" data-code-annotation="4">Set window to continental U.S.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="14" data-code-annotation="5">Rename legend.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="15" data-code-annotation="6"><code>theme_nothing()</code> passes clean grob to code below.</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="alaska" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="alaska"><span class="header-section-number">4.3</span> Alaska</h2>
+<p>Alaska is projected using CRS 3467 which has the nice effect of rotating it as well for the final placement.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> fact_var), <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">coord_sf</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">3467</span>),</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2400000</span>, <span class="dv">1600000</span>),</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">200000</span>, <span class="dv">2500000</span>),</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="at">expand =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="at">datum =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">scale_fill_discrete_sequential</span>(<span class="at">palette =</span> <span class="st">"Emrld"</span>, <span class="at">rev =</span> F) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="fu">geom_sf_text</span>(<span class="at">data =</span> us, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">label =</span> postal), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="fu">theme_nothing</span>() <span class="ot">-&gt;</span> ak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hawaii" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="hawaii"><span class="header-section-number">4.4</span> Hawaii</h2>
+<p>The same basic approach for Alaska is applied here too, with the exception of the CRS being set to 4135.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> us) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> fact_var), <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4135</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>         <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">161</span>, <span class="sc">-</span><span class="dv">154</span>),</span>
+<span id="cb3-5"><a href="#cb3-5"></a>         <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">23</span>),</span>
+<span id="cb3-6"><a href="#cb3-6"></a>         <span class="at">expand =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>         <span class="at">datum =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="fu">scale_fill_discrete_sequential</span>(<span class="at">palette =</span> <span class="st">"Emrld"</span>, <span class="at">rev =</span> F) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">geom_sf_text</span>(<span class="at">data =</span> us, </span>
+<span id="cb3-10"><a href="#cb3-10"></a>             <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">label =</span> postal), </span>
+<span id="cb3-11"><a href="#cb3-11"></a>             <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb3-12"><a href="#cb3-12"></a>             <span class="at">check_overlap =</span> T) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="fu">theme_nothing</span>() <span class="ot">-&gt;</span> hi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="choropleth" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Choropleth</h1>
+<p>The Alaska and Hawaii grobs are placed on a panel just below and to the west of Texas. There was–and probably always is–a lot of trial and error in placing the objects on the new panel. The final tweaks were to the legend. Ultimately, the legend was left outside and to the right of the map. Note that the dark colors are for “very high” values and that the legend entries read from high to low in a downward orientation.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a> main <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">annotation_custom</span>(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="at">grob =</span> <span class="fu">ggplotGrob</span>(hi),</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">1250000</span>,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">1250000</span> <span class="sc">+</span> (<span class="sc">-</span><span class="dv">154</span> <span class="sc">-</span> (<span class="sc">-</span><span class="dv">161</span>)) <span class="sc">*</span> <span class="dv">120000</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">2450000</span>,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">ymax =</span> <span class="sc">-</span><span class="dv">2450000</span> <span class="sc">+</span> (<span class="dv">23</span> <span class="sc">-</span> <span class="dv">18</span>) <span class="sc">*</span> <span class="dv">120000</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">annotation_custom</span>(</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    <span class="at">grob =</span> <span class="fu">ggplotGrob</span>(ak),</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    <span class="at">xmin =</span> <span class="sc">-</span><span class="dv">2750000</span>,</span>
+<span id="cb4-12"><a href="#cb4-12"></a>    <span class="at">xmax =</span> <span class="sc">-</span><span class="dv">2750000</span> <span class="sc">+</span> (<span class="dv">1600000</span> <span class="sc">-</span> (<span class="sc">-</span><span class="dv">2400000</span>))<span class="sc">/</span><span class="fl">2.5</span>,</span>
+<span id="cb4-13"><a href="#cb4-13"></a>    <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">2450000</span>,</span>
+<span id="cb4-14"><a href="#cb4-14"></a>    <span class="at">ymax =</span> <span class="sc">-</span><span class="dv">2450000</span> <span class="sc">+</span> (<span class="dv">2500000</span> <span class="sc">-</span> <span class="dv">200000</span>)<span class="sc">/</span><span class="fl">2.5</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="fu">theme_nothing</span>() <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="fu">theme</span>(</span>
+<span id="cb4-18"><a href="#cb4-18"></a>      <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19"></a>      <span class="at">legend.key.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="at">units =</span> <span class="st">"points"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20"></a>      )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-plotting-ggplot2-uschoro-all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-fig-pos="t">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plotting-ggplot2-uschoro-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/fig-plotting-ggplot2-uschoro-all-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: 50 State Choropleth of U.S. Text for New Hamshire “NH” and Rhode Island “RI” were omitted because of overlap. Note the odd placement of the “MI” text."><img src="../figures/fig-plotting-ggplot2-uschoro-all-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-fig-pos="t" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotting-ggplot2-uschoro-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: 50 State Choropleth of U.S. Text for New Hamshire “NH” and Rhode Island “RI” were omitted because of overlap. Note the odd placement of the “MI” text.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="summary" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Summary</h1>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 5%">
-<col style="width: 37%">
-<col style="width: 49%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>Package</strong></th>
-<th><strong>Type</strong></th>
-<th><strong>Summary</strong></th>
-<th><strong>Pros/Cons</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>base</strong></td>
-<td>static</td>
-<td>Base plotting package for R</td>
-<td>Small file sizes, included in installation of R, lacks customization</td>
-</tr>
-<tr class="even">
-<td><strong>ggplot2</strong></td>
-<td>static</td>
-<td>Preeminent plotting package; included with tidyverse</td>
-<td>Small file sizes, lots of customization, many SO questions, great support, large community, many add-ons</td>
-</tr>
-<tr class="odd">
-<td><strong>tmap</strong></td>
-<td>static</td>
-<td>Quick thematic plotting of both vector graphics and raster files</td>
-<td>Small file sizes, can be customized, syntax similar to ggplot2, small community</td>
-</tr>
-<tr class="even">
-<td><strong>leaflet</strong></td>
-<td>interactive</td>
-<td>Java based library for interactive maps</td>
-<td>Large file sizes, large community, supported by R-studio, poor for large datasets</td>
-</tr>
-<tr class="odd">
-<td><strong>mapdeck</strong></td>
-<td>interactive</td>
-<td>Combination of mapbox and deck.gl.</td>
-<td>Large file sizes, scales well for large datasets</td>
-</tr>
-<tr class="even">
-<td><strong>mapview</strong></td>
-<td>interactive</td>
-<td>Quick creation of interactive maps while in development, not presentation grade</td>
-<td>Large file sizes, scales well for large datasets,</td>
-</tr>
-<tr class="odd">
-<td><strong>flowmapblue</strong></td>
-<td>interactive</td>
-<td>Java based library for flowmaps, map box base tiles</td>
-<td>Large file sizes, new package, attractive plots, scales well</td>
-</tr>
-</tbody>
-</table>
+<section id="key-points" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Key Points</h1>
+<ul>
+<li><p>Determine whether the areas of interest are contiguous or not</p></li>
+<li><p>Determine the best coordinate reference system for projection</p></li>
+<li><p>Create a separate graphical object for each non-contiguous geometry</p></li>
+<li><p>Consider adding an annotation that warns readers that states are not to scale</p></li>
+</ul>
+<hr>
+<div id="refs-plotting-025-rspatial" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+
+</div>
+<div id="refs-plotting-025-packages" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-tigris" class="csl-entry" role="listitem">
+Walker, K. (2024). <em>Tigris: Load census TIGER/line shapefiles</em>. <a href="https://CRAN.R-project.org/package=tigris">https://CRAN.R-project.org/package=tigris</a>
+</div>
+</div>
 
 
 </section>
@@ -1079,7 +1288,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/quarto-dev/quarto-demo/edit/main/plotting/034-plotting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/quarto-dev/quarto-demo/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
