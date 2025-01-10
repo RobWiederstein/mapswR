@@ -1,5 +1,125 @@
 [
   {
+    "objectID": "plotting/014-plotting.html",
+    "href": "plotting/014-plotting.html",
+    "title": "Colors",
+    "section": "",
+    "text": "The viewer will be able to choose sequential, diverging and qualitative color palettes for maps using the colorspace package.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#objective",
+    "href": "plotting/014-plotting.html#objective",
+    "title": "Colors",
+    "section": "",
+    "text": "The viewer will be able to choose sequential, diverging and qualitative color palettes for maps using the colorspace package.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#introduction",
+    "href": "plotting/014-plotting.html#introduction",
+    "title": "Colors",
+    "section": "2 Introduction",
+    "text": "2 Introduction\nYour efforts will garner more views if you make the content accessible. Colors can be an important part of the effort because colorblindness affects about 8% of males and .5% of females. Government sponsored content requires that accessibility standards be met. For example, accessibility is required by law for all (U.S.) federal information and communication technology products with a few minor exceptions.(GSA 18F, 2024). The European Union adopted web accessibility standards in 2016 which became effective in 2021.(European Union, 2016) The premier standard for accessibility is the Web Content and Accessibility Guidelines.(Web Content Accessibility Guidelines (WCAG) 2.0, 2008) The bottom line is that there are “colorblind friendly” palettes available and they should be used.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#packages",
+    "href": "plotting/014-plotting.html#packages",
+    "title": "Colors",
+    "section": "3 Packages",
+    "text": "3 Packages\nUsers should select a color palette from a proven package. The overwhelming consensus is that those lacking design experience should “instead draw from preconstructed ramps.” (Smart et al., 2020) The good news is that “automatically generated color ramps” can perform at least as well as designer ramps in many circumstances. (Smart et al., 2020) Several excellent packages are available: RColorBrewer, colorspace and rcartocolor to name a few. There are also a couple of packages that aggregate palettes: pal and paletteer.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#in-general",
+    "href": "plotting/014-plotting.html#in-general",
+    "title": "Colors",
+    "section": "4 In General",
+    "text": "4 In General\nIn addition to the previous discussion on map aesthetics, some basic color observations are in order. An appropriate color selection should accomplish three things. First, the colors should not be unappealing. (Zeileis et al., 2019) Large areas of highly saturated colors should be avoided as viewers quickly tire and it can cause after-image effects.(Zeileis et al., 2019) Second, the colors should “cooperate” with each other, meaning that any one color should both be appealing by itself and when viewed with the others. (Zeileis et al., 2019) Third, “the colors should work everywhere”. (Zeileis et al., 2019) The colors should be distinguishable regardless of how they are displayed. The plot should convey the same meaning if it’s shown on a projector, a computer screen or a facsimile.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#palette-types",
+    "href": "plotting/014-plotting.html#palette-types",
+    "title": "Colors",
+    "section": "5 Palette Types",
+    "text": "5 Palette Types\nColors are organized in three ways depending on the data type:\n\nQualitative palettes are used for categorical data “where no particular ordering of catgories is available and every color should receive the same perceptual weight.”\nSequential palettes are used for “coding ordered/numeric information where colors go from high to low or vice versa.”\nDiverging palettes are “designed for coding numeric information around a central neutral value.” Their use shows contrasts between two extremes.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#colorspace",
+    "href": "plotting/014-plotting.html#colorspace",
+    "title": "Colors",
+    "section": "6 Colorspace",
+    "text": "6 Colorspace\nHere, we will limit the number of palettes. The color palettes within the colorspace package will be the default and we will try to limit colors to only 5 or so on the maps. If you’d like to view all of the palettes, you can run hcl_palettes(plot = T).",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#palettes",
+    "href": "plotting/014-plotting.html#palettes",
+    "title": "Colors",
+    "section": "7 Palettes",
+    "text": "7 Palettes\n\n\n\n\n\n\n\n\nFigure 1: Qualitative color palettes from within the colorspace package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Sequential (single-hue) color palettes from within the colorspace package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Sequential (multi-hue) color palettes from within the colorspace package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Divering color palettes from within the colorspace package.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#ggplot2",
+    "href": "plotting/014-plotting.html#ggplot2",
+    "title": "Colors",
+    "section": "8 ggplot2",
+    "text": "8 ggplot2\nWithin the ggplot2 framework, the colorspace syntax follows the form: “&lt;scale_&lt;aesthetic&gt;_&lt;datatype&gt;_&lt;colorscale&gt;(), where &lt;aesthetic&gt; is the name of the aesthetic (fill, color, colour), &lt;datatype&gt; is the type of the variable plotted (discrete or continuous) and &lt;colorscale&gt; sets the type of the color scale used (qualitative, sequential, diverging, divergingx).”\n\nscale_fill_discrete_qualitative(palette = \"Pastel1\")\nscale_fill_continuous_sequential(palette= \"Greens 2\")\nscale_fill_continuous_sequential(palette= \"Sunset\", rev = T)\nscale_fill_continuous_diverging(palette = \"Tropic\")\n\n\n\n\n\n\n\n\n\n\nFour examples of colorspace palette applied to the sf nc dataset. ‘A’ is a ‘Pastel 1’ palette applied to a qualitative variable; ‘B’ is a ‘Greens 2’ palette applied to a continuous variable; ‘C’ is the ‘Sunset’ multi-hue palette applied to a continuous variable; and ‘D’ is a the diverging palette ‘Tropic’ applied to a continuous variable.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
+    "objectID": "plotting/014-plotting.html#key-points",
+    "href": "plotting/014-plotting.html#key-points",
+    "title": "Colors",
+    "section": "9 Key Points",
+    "text": "9 Key Points\n\nChoose color ramps from proven packages\ncolorspace is the preferred package for all color requirements\nQualitative palettes are used for categorical data\nSequential palettes are used for ordered/numeric information\nDiverging palettes show contrasts between two extremes\nIn ggplot2, the syntax is &lt;scale_&lt;aesthetic&gt;_&lt;datatype&gt;_&lt;colorscale&gt;()\n\n\n\n\nEuropean Union. (2016). Directive (EU) 2016/2102 of the European Parliament and of the Council of 26 October 2016 on the accessibility of the websites and mobile applications of public sector bodies (Text with EEA relevance ). In EUR-Lex: Access to European Union Law. https://eur-lex.europa.eu/eli/dir/2016/2102/oj\n\n\nGSA 18F. (2024). US Web Accessibility Guidelines. https://guides.18f.gov/accessibility/\n\n\nSmart, S., Wu, K., & Szafir, D. A. (2020). Color Crafting: Automating the Construction of Designer Quality Color Ramps. IEEE Transactions on Visualization and Computer Graphics, 26(1), 1215–1225. https://doi.org/10.1109/TVCG.2019.2934284\n\n\nWeb Content Accessibility Guidelines (WCAG) 2.0. (2008). https://www.w3.org/TR/WCAG20/#visual-audio-contrast\n\n\nZeileis, A., Fisher, J. C., Hornik, K., Ihaka, R., McWhite, C. D., Murrell, P., Stauffer, R., & Wilke, C. O. (2019). Colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes (arXiv:1903.06490). arXiv. https://doi.org/10.48550/arXiv.1903.06490",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "014: Color"
+    ]
+  },
+  {
     "objectID": "plotting/012-plotting.html",
     "href": "plotting/012-plotting.html",
     "title": "Aesthetics",
@@ -574,6 +694,90 @@
       "Plotting",
       "General Concepts",
       "011: Elements"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html",
+    "href": "plotting/013-plotting.html",
+    "title": "Data Structures",
+    "section": "",
+    "text": "The viewer will be able to identify the data structure type (polygon versus multipolygon) and to plot a subset of the data with one of three strategies: (1) filtering, (2) casting, or (3) setting the plot window.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#filter",
+    "href": "plotting/013-plotting.html#filter",
+    "title": "Data Structures",
+    "section": "5.1 Filter",
+    "text": "5.1 Filter\nIf the data structure is a data frame of two simple features and those features are polygons, then the data structure may be filtered to the chosen polygon using the familiar dplyr pipe. Below polygon “A” was chosen but polygon “B” could have been chosen as well.\n\nsq_poly %&gt;% \n    dplyr::filter(name == c(\"A\")) %&gt;%\n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    coord_sf() +\n    theme_bw() +\n    labs(title = \"polygon filtered\")\n\n\n\n\n\n\n\nFigure 2: Plot of polygon feature after filtering.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#cast",
+    "href": "plotting/013-plotting.html#cast",
+    "title": "Data Structures",
+    "section": "5.2 Cast",
+    "text": "5.2 Cast\nIf you wish to subset a multipolygon object, it may be necessary to separate out the individual polygons. The function to inspect each polygon is st_cast().\n\nst_cast(sq_mpoly, to = \"POLYGON\")\n#&gt; Simple feature collection with 2 features and 1 field\n#&gt; Geometry type: POLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: 0 ymin: 0 xmax: 10 ymax: 10\n#&gt; Geodetic CRS:  WGS 84\n#&gt; # A tibble: 2 × 2\n#&gt;   name                         geometry\n#&gt;   &lt;chr&gt;                   &lt;POLYGON [°]&gt;\n#&gt; 1 A         ((0 0, 0 1, 1 1, 1 0, 0 0))\n#&gt; 2 A     ((5 5, 5 10, 10 10, 10 5, 5 5))\n\n\nst_cast(sq_mpoly, to = \"POLYGON\") %&gt;%\n    extract(1) %&gt;%\n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) +\n    theme_bw() +\n    labs(title = \"polygon cast\")\n\n\n\n\n\n\n\nFigure 3: Single polygon extracted from multipolygon object.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#set-window",
+    "href": "plotting/013-plotting.html#set-window",
+    "title": "Data Structures",
+    "section": "5.3 Set Window",
+    "text": "5.3 Set Window\n\np1 &lt;-\n    sq_mpoly %&gt;%\n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n1    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) +\n    theme_bw() +\n    labs(title = \"st_multipolygon()\")\np2 &lt;-\n    sq_poly %&gt;%\n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n2    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) +\n    theme_bw() +\n    labs(title= \"st_polygon()\")\np1 + p2\n\n\n1\n\nOperative code for setting the range.\n\n2\n\nOperative code for seeting the range.\n\n\n\n\n\n\n\n\n\n\nFigure 4: Polygon and multipolygon objects with x and y limits set.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#filter-1",
+    "href": "plotting/013-plotting.html#filter-1",
+    "title": "Data Structures",
+    "section": "6.1 Filter",
+    "text": "6.1 Filter\nUsing the method described above, the sf class data frame is filtered to Hawaii and plotted.\n\nus %&gt;% \n    dplyr::filter(postal == \"HI\") %&gt;% \n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    coord_sf() +\n    theme_bw()\n\n\n\n\n\n\n\nFigure 5: Plot of Hawaii after filtering/subsetting from all U.S. states. Note that the bounding box seems to be too large and is perhaps an error.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#cast-1",
+    "href": "plotting/013-plotting.html#cast-1",
+    "title": "Data Structures",
+    "section": "6.2 Cast",
+    "text": "6.2 Cast\nAfter some investigation, Hawaii is actually comprised of 14 separate islands. In order to see the individual polygons, they will have to be extracted from the “MULTIPOLYGON” geometry and inspected. This is the role of the st_cast() function.\n\nhi &lt;- us %&gt;% dplyr::filter(postal == \"HI\")\n(hi_cast &lt;- sf::st_cast(hi, to = \"POLYGON\"))\n#&gt; Simple feature collection with 14 features and 1 field\n#&gt; Geometry type: POLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -178 ymin: 18.9 xmax: -155 ymax: 28.4\n#&gt; Geodetic CRS:  WGS 84\n#&gt; First 10 features:\n#&gt;     postal                       geometry\n#&gt; 1       HI POLYGON ((-155 19.6, -155 1...\n#&gt; 1.1     HI POLYGON ((-157 20.6, -157 2...\n#&gt; 1.2     HI POLYGON ((-157 20.9, -157 2...\n#&gt; 1.3     HI POLYGON ((-156 20.8, -156 2...\n#&gt; 1.4     HI POLYGON ((-157 21.2, -157 2...\n#&gt; 1.5     HI POLYGON ((-158 21.4, -158 2...\n#&gt; 1.6     HI POLYGON ((-160 22, -160 22,...\n#&gt; 1.7     HI POLYGON ((-159 22.2, -159 2...\n#&gt; 1.8     HI POLYGON ((-162 23, -162 23,...\n#&gt; 1.9     HI POLYGON ((-165 23.6, -165 2...\n\nNow that the individual polygons can be inspected, we’re going to create a column for the area of each island. The working hypothesis is that around 6 of the islands are so small that they are invisible on the plotting panel. Because of that, we’ll also create a label/text column. The islands could have been labeled based on size, but I decided to label them from left to right using longitude. The code to create the new columns is below.\n\nhi_cast %&gt;% \n    mutate(area = sf::st_area(.)) %&gt;% \n    mutate(center = st_centroid(geometry)) %&gt;% \n    mutate(lon = st_coordinates(center)[, 1]) %&gt;% \n    mutate(lat = st_coordinates(center)[, 2]) %&gt;% \n    arrange(lon) %&gt;% \n    mutate(island = 1:14) -&gt; hi_all\n\n\nhi_all %&gt;% \n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    geom_text_repel(\n        data = hi_all, \n        mapping = aes(x = lon, y = lat, label = island)) +\n    coord_sf() +\n    theme_bw()\n\n\n\n\n\n\n\nFigure 6: Fourteen Islands of Hawaii Plotted. Spatial area of many islands is insignificant such that only the label is visible.\n\n\n\n\n\nWith the labels visible, it is clear that the original plot was correct and the bounding box was sized appropriately. With visual confirmation, the islands will be subset to the largest islands using longitude or label.\n\nhi_all %&gt;% \n    filter(lon &gt; -161 | island %in% c(7:14)) %&gt;% \n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    coord_sf() +\n    theme_bw()\n\n\n\n\n\n\n\nFigure 7: Eight largest islands of Hawaii plotted. Bounding box collapses to frame islands attractively.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
+    ]
+  },
+  {
+    "objectID": "plotting/013-plotting.html#set-window-1",
+    "href": "plotting/013-plotting.html#set-window-1",
+    "title": "Data Structures",
+    "section": "6.3 Set Window",
+    "text": "6.3 Set Window\nThe final strategy to plotting Hawaii is to simply adjust the plotting area range.\n\nhi %&gt;% \n    ggplot() +\n    geom_sf(fill = \"steelblue\") +\n    coord_sf(xlim = c(-161, -154.5), ylim = c(18.5, 22.5)) +\n    theme_bw()\n\n\n\n\n\n\n\nFigure 8: Eight largest islands of Hawaii plotted. Plotting area defined manually.",
+    "crumbs": [
+      "Plotting",
+      "General Concepts",
+      "013: Data Structures"
     ]
   }
 ]
