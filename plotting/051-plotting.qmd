@@ -1,0 +1,318 @@
+---
+title: "Basics"
+fig-height: 3.5
+---
+```{r}
+#| label: plotting-leaflet-intro-libs-load
+#| include: false
+library(dplyr)
+library(magrittr)
+library(sf)
+library(leaflet)
+library(leaflet.providers)
+```
+
+# Objectives
+
+The objective for this section is to introduce `leaflet` functions to create an interactive map.
+
+# Introduction
+
+Leaflet is an open-source JavaScript library for interactive maps. It is the behind-the-scenes language for the interactive view mode in `tmap` or it can be accessed directly within `R` using the `leaflet` package. `leaflet` was created by the RStudio team and is available from CRAN. The package documentation is available at [https://rstudio.github.io/leaflet/](https://rstudio.github.io/leaflet/). Here, we will explore the basics of `leaflet` and how to create interactive maps in R. Some of the syntax may be familiar for those familiar with `tmap`. "If you are interested in making maps or in data visualization, Leaflet.js is the library to learn" [@crickard_leaflet_2014].
+
+# Packages Required
+
+```{r}
+#| label: plotting-leaflet-intro-libs-show
+#| eval: FALSE
+library(dplyr)
+library(magrittr)
+library(sf)
+library(leaflet)
+library(leaflet.providers)
+```
+
+# Call map 
+
+```{r}
+#| label: fig-plotting-leaflet-call-map
+#| fig-cap: "Leaflet map with default tiles."
+leaflet() %>% 
+    addTiles()
+```
+
+
+##  Set View
+
+```{r}
+#| label: fig-plotting-leaflet-set-view
+#| fig-cap: "Leaflet map with Boston, Massachusettes, as center."
+leaflet() %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16)
+
+```
+
+## Add Marker
+
+```{r}
+#| label: fig-plotting-leaflet-add-marker
+#| fig-cap: "Leaflet map with marker at center"
+leaflet() %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054)
+```
+
+## Add Popup
+
+```{r}
+#| label: fig-plotting-leaflet-add-popup
+#| fig-cap: "Leaflet map with marker at center and popup."
+leaflet() %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!")
+```
+
+
+## Add Popup Text
+
+```{r}
+#| label: fig-plotting-leaflet-add-popup-text
+#| fig-cap: "Leaflet map with marker at center and popup text. Note the use of HTML tags."
+leaflet() %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054, 
+               popup = paste(
+                   "<strong> Value # 1: </strong>", "7", "<br>",
+                   "<strong> Value # 2: </strong>", "3", "<br>",
+                   "Center of map!"))
+```
+
+# Options 
+
+## Remove Zoom Controls
+
+```{r}
+#| label: fig-plotting-leaflet-remove-zoom-controls
+#| fig-cap: "Leaflet map with zoom controls removed. Note the +/- box is no longer in the left, upper corner of the map."
+leaflet(options = leafletOptions(zoomControl = FALSE)) %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!")
+```
+
+
+## Freeze Zoom
+
+```{r}
+#| label: fig-plotting-leaflet-freeze-zoom
+#| fig-cap: "Leaflet map with zoom frozen at 16. Note that both the `minZoom` and `maxZoom` are set to 16."
+leaflet(options = leafletOptions(zoomControl = FALSE,
+                                 minZoom = 16, 
+                                 maxZoom = 16)) %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!")
+```
+
+## Dragging
+
+```{r}
+#| label: fig-plotting-leaflet-dragging
+#| fig-cap: "Leaflet map with dragging disabled. Interactivity is wholly disabled with the exception of the popup."
+leaflet(options = leafletOptions(zoomControl = FALSE,
+                                 minZoom = 16, 
+                                 maxZoom = 16,
+                                 dragging = FALSE)) %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 16) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!")
+```
+
+## Set Max Bounds
+
+```{r}
+#| label: fig-plotting-leaflet-set-max-bounds
+#| fig-cap: "Leaflet map with max bounds set. The map will not move outside of the bounds set. The user can zoom in, but is confined to the boundaries set."
+leaflet(options = leafletOptions(zoomControl = FALSE,
+                                 minZoom = 14, 
+                                 maxZoom = 16,
+                                 dragging = TRUE)) %>% 
+    addTiles() %>% 
+    setView(-71.0382679, 42.3489054, zoom = 14) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!") %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)
+```
+
+# Tiles
+
+Tiled maps are also known as "slippy" maps because they allow for zooming and panning. The map is divided into a grid of tiles and the tiles are loaded as the user zooms in or out. The default tiles in the `leaflet` package are from [OpenStreetMap](https://www.openstreetmap.org/). However, there are many other tile providers available. On the Leaflet website, there is a list of providers on the "Plugins"  [page](https://leafletjs.com/plugins.html#basemap-providers). The `addProviderTiles()` function is used to add tiles to a map. The function requires the name of the provider. The `leaflet.providers` package has a list of providers available and the different tiles can be previewed at [https://leaflet-extras.github.io/leaflet-providers/preview/](https://leaflet-extras.github.io/leaflet-providers/preview/).
+
+## Light
+
+```{r}
+#| label: fig-plotting-leaflet-tiles-light
+#| fig-cap: "Leaflet map with light tiles."
+leaflet(options = leafletOptions(zoomControl = FALSE,
+                                 minZoom = 14, 
+                                 maxZoom = 16,
+                                 dragging = TRUE)) %>% 
+    addProviderTiles("Esri.WorldGrayCanvas") %>% 
+    setView(-71.0382679, 42.3489054, zoom = 14) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!") %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)
+
+```
+
+## Dark
+
+```{r}
+#| label: fig-plotting-leaflet-tiles-dark
+#| fig-cap: "Leaflet map with dark tiles."
+leaflet(options = leafletOptions(zoomControl = FALSE,
+                                 minZoom = 14, 
+                                 maxZoom = 16,
+                                 dragging = TRUE)) %>% 
+    addProviderTiles("Stadia.AlidadeSmoothDark") %>% 
+    setView(-71.0382679, 42.3489054, zoom = 14) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!") %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)
+
+```
+
+
+## WMS
+
+Another type of tile layer that can be added to a map is called Web Mapping Service (WMS) tile layer. WMS tiles are requested and transferred images over the web using HTTP [@crickard_leaflet_2014]. The function in `R` is `addWMSTiles()` and it requires the URL of the WMS server and the layer name. The `leaflet` documentation states that, with regard to the layers name, they are defined in the "GetCapabilities" XML document; however, it can be difficult to understand.  `leaflet` recommends using software like QGIS to see what layers are available.
+
+```{r}
+#| label: fig-plotting-leaflet-tiles-wms
+#| fig-cap: "Leaflet map with WMS tiles. These tiles are from the United States Geographic Service."
+leaflet() %>% 
+     setView(-71.0382679, 42.3489054, zoom = 14) %>% 
+    addWMSTiles(
+        "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WmsServer",
+        layers = "0",
+        options = WMSTileOptions(format = "image/png", transparent = TRUE),
+        attribution = "USGS"
+    ) 
+```
+
+
+## Options
+
+```{r}
+#| label: fig-plotting-leaflet-tiles-options
+#| fig-cap: "Leaflet map with tile options set."
+leaflet() %>% 
+    addProviderTiles("Esri.WorldGrayCanvas",
+                     options = providerTileOptions(minZoom = 14, maxZoom = 16, attribution = "source")
+    ) %>%
+    setView(-71.0382679, 42.3489054, zoom = 14) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!") %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44)
+```
+
+# Example
+
+## Create
+
+```{r}
+#| label: fig-plotting-leaflet-example-create
+sf::st_polygon(list(rbind(c(-71.13, 42.24), c(-71.13, 42.44), c(-70.93, 42.44), c(-70.93, 42.24), c(-71.13, 42.24)))) %>% 
+sf::st_sfc() %>% 
+sf::st_sf(name = "district") -> poly
+
+lng <- seq(from = -71.13, to = -70.93, by = .01)
+lat <- seq(from = 42.24, to = 42.44, by = .01)
+points <- data.frame(lng = sample(lng, size = 10),
+                     lat = sample(lat, size = 10),
+                     name = letters[1:10])
+```
+
+## Plot
+
+```{r}
+#| label: fig-plotting-leaflet-example-plot
+#| fig-cap: "Leaflet map with polygons, markers, and circles."
+leaflet() %>% 
+    addProviderTiles("Esri.WorldGrayCanvas",
+                     options = providerTileOptions(
+                         minZoom = 10, 
+                         maxZoom = 16, 
+                         attribution = "source")
+                     ) %>%
+    setView(-71.0382679, 42.3489054, zoom = 10) %>% 
+    addMarkers(-71.0382679, 42.3489054, popup = "Center of map!") %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44) %>%
+    addPolygons(data = poly, popup = ~name, color = "red", weight = 2, opacity = 1, fill = TRUE, fillColor = "blue", fillOpacity = 0.2) %>%
+    addCircleMarkers(data = points, lng = ~lng, lat = ~lat, popup = ~name, radius = 10, color = "green", fillColor = "yellow", fillOpacity = 0.5)
+
+```
+
+# Layer Groups
+
+```{r}
+#| label: fig-plotting-leaflet-example-layer-groups
+#| fig-cap: "Leaflet map with layer control."
+leaflet() %>% 
+    # base groups
+    addTiles(group = "Default") %>%
+    addProviderTiles("Esri.WorldGrayCanvas", group = "Light") %>% 
+    addProviderTiles("Stadia.AlidadeSmoothDark", group = "Dark") %>%
+    addWMSTiles(
+        "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WmsServer",
+        layers = "0",
+        options = WMSTileOptions(format = "image/png", transparent = TRUE),
+        attribution = "USGS",
+        group = "WMS"
+    ) %>% 
+    # view/bounds
+    setView(-71.0382679, 42.3489054, zoom = 10) %>%
+    setMaxBounds(lng1 = -71.13, lat1 = 42.24, lng2 = -70.93, lat2 = 42.44) %>%
+    # add features
+    addMarkers(-71.0382679, 42.3489054, 
+               popup = "Center of map!",
+               group = "Marker") %>%
+    addPolygons(data = poly, popup = ~name, color = "red", weight = 2, 
+                opacity = 1, fill = TRUE, fillColor = "blue", 
+                fillOpacity = 0.2,
+                group = "Polygon") %>%
+    addCircleMarkers(data = points, lng = ~lng, lat = ~lat, 
+                     radius = 10, color = "green", 
+                     fillColor = "yellow", fillOpacity = 0.5,
+                     popup = ~paste0(
+                         "<b> Letter: </b>", name, "<br>"
+                     ),
+                     group = "Circles") %>% 
+    # layer control
+    addLayersControl(baseGroups = c("Default", "Light", "Dark", "WMS"),
+                     overlayGroups = c("Marker", "Polygon", "Circles"),
+                     options = layersControlOptions(collapsed = FALSE))
+```
+
+# Key Points
+
+- `leaflet` is an open-source JavaScript library for interactive maps.
+
+- The `setView()` function is used to set the center of the map and the zoom level.
+
+- The zoom and pan features can be turned off with the `leafletOptions()` function.
+
+- While the Open Street Map tiles are the default, there are many tiles available to customize a map.
+
+- Another way to introduce interactivity is through layer groups.  It can allow the user to decide what they want to see on the map.
+
+<hr>
+:::{#refs-plotting-051-rspatial}
+:::
+:::{#refs-plotting-051-packages}
+:::
+
+
+
+
+

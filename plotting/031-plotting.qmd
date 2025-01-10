@@ -1,0 +1,347 @@
+---
+title: "Square Land"
+---
+
+```{r}
+#| label: plotting-ggplot2-intro-libs-load
+#| include: false
+library(colorspace)
+library(cowplot)
+library(ggplot2)
+library(ggspatial)
+library(magrittr)
+library(patchwork)
+library(sf)
+library(withr)
+here::i_am("plotting/031-plotting.qmd")
+```
+
+
+# Objectives
+
+The objective for this section is to introduce the `ggplot2` functions for plotting spatial data.
+
+
+# Introduction
+
+The `ggplot2` package is the default plotting package for most R users. The key functions are `geom_sf` and `coord_sf`.  A close reading of the help menu can speed the generation of plots. For those in a hurry, I'd recommend Chapter 6 "Maps" in "ggplot2: Elegant Graphics for Data Analysis (3e)" by Hadley Wickham [@wickham_getting_2016]. We'll begin with a simple square and then move to an example of multiple squares.
+
+# Packages Required
+
+```{r}
+#| label: plotting-ggplot2-intro-libs-show
+#| include: true
+#| eval: false
+library(cowplot)
+library(ggplot2)
+library(ggspatial)
+library(magrittr)
+library(patchwork)
+library(sf)
+```
+
+# First Plot - Square
+
+Let's create as simple an object as possible so that we can focus on the syntax; repeat some of the `sf` functions and the `sfg >> sfc >> sf` pipeline; and show the multiple ways that `ggplot2` syntax can result in a plot.
+
+## Create Object
+
+To get started, a square polygon will be created at the (0, 0), the intersection of the Prime Meridian and the Equator.  Each side will be one unit in length and because the CRS "WGS 84 / 4326" will be assigned, that unit is a degree.
+
+```{r}
+#| label: plotting-ggplot2-p1-sq-create
+sf::st_polygon(list(rbind(c(0,0), c(0,1), c(1,1), 
+                          c(1,0), c(0,0)))) %>%
+st_sfc(., crs = 4326) %>%
+st_sf(name = "square", .) -> square
+```
+
+## Syntax
+
+The three plots are put side-by-side to show that while the syntax changes, the output does not.  You can expect the syntax to change throughout the discussion.
+
+```{r}
+#| label: fig-plotting-ggplot2-p1-sq-syntax
+#| fig-height: 3
+#| fig-cap: "Simple Square Polygon. Parts (1) - (3) show that the same syntax results in the identical plot."
+square |>  #<1>
+ggplot() +  #<1>
+geom_sf() -> p1  #<1>
+
+ggplot(square) +   #<2>
+geom_sf() -> p2  #<2>
+
+ggplot() +  #<3>
+geom_sf(data = square)  -> p3  #<3>
+
+p1 + p2 + p3 + plot_annotation(tag_levels = "A") #<4>
+```
+1. A plot where the dataset is "piped" into the `gglot()` function.
+2. A plot where the dataset is within the `ggplot()` call.
+3. A plot where the datset is included within the `geom_sf()`.
+4. The three plots were saved and then placed on a grid using the `patchwork` package.
+
+Terrific!  With a minimal effort, a plot was generated using `ggplot2`.  I know it doesn't look like much, but don't worry, we'll continue to improve upon it.
+
+## Layering
+
+Plots and maps are created by layer.  It is useful to think about the order in which they will be drawn.  There are as many layers as there are potential datasets.  At some point, the map becomes so jumbled that adding an additional layer is not possible and certainly not attractive. Here, is a basic illustration.
+
+
+```{r}
+#| label: fig-plotting-ggplot2-p1-layers
+#| fig-cap: "Map creation through layering. In order, the parts are (1) base plot initiated, (2) polygon filled, (3) border added, (4) cities added (5) cities labelled, (6) country labeled, and (7) background colored light blue to resemble water."
+#| height: 12
+library(ggplot2)
+sf::st_polygon(list(rbind(c(0,0), c(0,1), c(1,1), #<1>
+                          c(1,0),  c(0,0)))) %>%
+st_sfc(., crs = 4326) %>%
+st_sf(name = "Square", geometry = .) -> country #<1>
+
+country %>% st_boundary(.) -> boundary #<2>
+
+st_sfc(st_point(c(.5, .1)), #<3>
+       st_point(c(.8, .9)), 
+       st_point(c(.2, .4)), 
+       crs = 4326) %>% 
+st_sf(name = letters[1:3], .) -> cities #<3>
+
+country %>% st_centroid(.) -> center #<4>
+
+ggplot() + #<5>
+geom_sf(data = country) +
+coord_sf(label_axes = "----") -> layer_1
+layer_1 + geom_sf(data = country, fill = "antiquewhite") +
+coord_sf(label_axes = "----") -> layer_2
+layer_2 + geom_sf(data = boundary, lwd = 1) +
+coord_sf(label_axes = "----") -> layer_3
+layer_3 + geom_sf(data = cities, size = 2) +
+coord_sf(label_axes = "----") -> layer_4
+layer_4 + geom_sf_text(data = cities, 
+                 mapping = aes(label = name), 
+                 nudge_x = -.07, 
+                 size = 3) +
+coord_sf(label_axes = "----") +
+labs(x = "", y = "") -> layer_5
+layer_5 + geom_sf_label(data = center, 
+                  mapping = aes(label = name), 
+                  size = 4,
+                  label.size = 1) +
+    coord_sf(label_axes = "----") -> layer_6
+layer_6 + 
+    coord_sf(label_axes = "----") +
+    theme(panel.background = element_rect(fill = "lightblue")) -> layer_7 #<5>
+
+cowplot::plot_grid(
+    layer_1, layer_2, layer_3, layer_4, layer_5,
+    layer_6, layer_7,
+    nrow = 3,
+    ncol = 3,
+    labels = 1:7
+    )
+# (layer_1 + layer_2 + layer_3) /
+# (layer_4 + layer_5 + layer_6) /
+# (layer_7 + plot_spacer() + plot_spacer())
+```
+1. A square polygon created and assigned to variable country.
+2. The boundary is created from the country.
+3. Three random points are created and assigned to variable cities.
+4. Center of country is calculated for label placement.
+5. Seven layers are created.
+6. Layers are placed on a grid for plotting.
+
+
+## Themes
+
+Themes are a great way to quickly spruce up a plot and `ggplot2` offers quite a few of them. You can learn more by checking help `?ggplot2::themes`.  I prefer to use minimal ornamentation and you'll find the `theme_void()` can be helpful when assembling plots in a grid.
+
+```{r}
+#| label: fig-plotting-ggplot2-p1-sq-themes
+#| fig-cap: "A polygon in four themes:  (1) `theme void()`, (2) `theme minimal()`, (3) `theme_bw()`, and (4) `theme_light()`."
+square %>%
+ggplot() +
+geom_sf(fill = "antiquewhite") +
+coord_sf(label_axes = "----") +
+scale_x_continuous(limits = c(-.5, 1.5)) +
+scale_y_continuous(limits = c(-.5, 1.5)) -> square_map
+
+square_map + theme_void()    -> theme_1
+square_map + theme_minimal() -> theme_2
+square_map + theme_bw()      -> theme_3
+square_map + theme_light()   -> theme_4
+
+plot_grid(theme_1, theme_2, theme_3, theme_4,
+          nrow = 2, labels = 1:4)
+```
+
+
+# Second Plot - Square Land
+
+We'll create Square Land features and then plot them.
+
+## Create
+
+This second example will begin to resemble an actual map. First, Africa will be added as a base layer via the `rnaturalearth` package. Then, two `sf` class squares will be created. These will be squares again around the intersection of the Equator and the Prime Meridian. Then, a mountain, a lake, the Equator and Prime Meridian will be added along with the accompanying text and labels. Finally, the background will be colored blue to resemble water.
+
+```{r}
+#| label: fig-plotting-ggplot2-p2-sq-land-create
+afrc <- rnaturalearth::ne_countries(continent = "Africa") # <1> 
+
+land_1 <- st_polygon(list(rbind( # <2>
+    c(-10, -10), c(-10, -15), c(-15, -15), 
+    c(-15, -10), c(-10, -10)))) 
+land_2 <- land_1 * .75 + 7
+lake <- land_1 * .25
+mountain <- st_centroid(land_1 - 1)
+pm <- st_linestring(matrix(c(0, -20, 0, 20), ncol = 2, byrow = T))
+eq <- st_linestring(matrix(c(-20, 0, 20, 0), ncol = 2, byrow = T)) # <2>
+
+
+land_sfc = st_sfc(list(land_1, land_2))# <3>
+lake_sfc = st_sfc(lake)
+mountain_sfc <- st_sfc(mountain)
+pm_sfc <- st_sfc(pm)
+eq_sfc <- st_sfc(eq)# <3>
+
+
+
+land_sfc_wgs = st_sfc(land_sfc, crs = "OGC:CRS84") # <4>
+lake_sfc_wgs = st_sfc(lake_sfc, crs = "OGC:CRS84")
+mountain_sfc_wgs <- st_sfc(mountain_sfc, crs = "OGC:CRS84")
+pm_sfc_wgs <- st_sfc(pm_sfc, crs = "OGC:CRS84")
+eq_sfc_wgs <- st_sfc(eq_sfc, crs = "OGC:CRS84") # <4>
+
+
+country <- c("A", "B") # <5> 
+land_sfc_wgs_df = st_sf(country = country, land_sfc_wgs)
+name <- "Mt. High"
+mountain_sfc_wgs_df = st_sf(name = name, mountain_sfc_wgs)
+name <- "Lake Clear"
+lake_sfc_wgs_df <- st_sf(name = name, lake_sfc_wgs)
+name <- "Equator"
+eq_sfc_wgs_df <- st_sf(name = name, eq_sfc_wgs)
+name <- "Prime Meridian"
+pm_sfc_wgs_df <- st_sf(name = name, pm_sfc_wgs)# <5> 
+```
+1. Add the base layer Africa.
+2. Create simple features of `sfg` class
+3. Combine some shapes and convert all to `sfc` class.
+4. Assign CRS.
+5. Add attributes/labels and convert to `sf`.
+
+
+## Plot
+
+From the sheer length of the code below, you can see that creating and plotting maps can be a lengthy and tedious process.  Label/text placement can take a  lot of time.  While there are some improvements to be made, I think the plot encapsulates the process and gives you a strategy to plot your own.
+
+```{r}
+#| label: fig-plotting-ggplot2-p2-sq-land-plot
+#| fig-cap: "Square Land. Combining and layering of a number of simple features to create a map. Title, Subtitle, and data source included to show presentation outside of a standing narrative text."
+
+ggplot() + # <1>
+geom_sf(data = afrc, fill = "antiquewhite") + # <2>
+geom_sf(data = land_sfc_wgs_df, fill = "antiquewhite") +
+geom_sf(data = lake_sfc_wgs_df, fill = "lightblue") +
+geom_sf(data = mountain_sfc_wgs_df, 
+        color = "red", shape = 17, size = 3) +
+geom_sf(data = pm_sfc_wgs_df, linetype = "dashed") +
+geom_sf(data = eq_sfc_wgs_df, linetype = "dashed") + # <2>
+geom_sf_text(data = land_sfc_wgs_df, # <3>
+             aes(label = country),
+             nudge_y = 1) + 
+geom_sf_text(data = mountain_sfc_wgs_df,
+             aes(label = name),
+             nudge_y = -.75,
+             nudge_x = .75) +
+geom_sf_text(data = lake_sfc_wgs_df,
+             aes(label = name),
+             nudge_y = -1) +
+geom_sf_text(data = eq_sfc_wgs_df,
+             aes(label = name),
+             nudge_y = .75,
+             nudge_x = 2.5,
+             color = "gray50",
+             fontface = "italic") +
+annotate(geom = "text", x = -.75, y = -15, label = "Prime Meridian",
+         fontface = "italic", color = "grey50", angle = 90) + # <3>
+coord_sf(xlim = c(-20, 15), # <4>
+         ylim = c(-20, 10),
+         expand = F) +# <4>
+annotation_north_arrow( # <5>
+    which_north = "grid",
+    height = unit(.75, "cm"),
+    width = unit(.75, "cm"),
+    location = "br",
+    pad_x = unit(3.2, "cm"),
+    pad_y = unit(1, "cm")
+    ) + # <5>
+    annotation_scale(pad_x = unit(2.75, "in")) + # <6>
+labs(title = "Square Land", # <7>
+     subtitle = "ggplot2",
+     x = "longitude",
+     y = "latitude",
+     caption = "Source: My Data Source") + # <7>
+theme_bw() + # <8>
+theme(panel.grid.major = element_line( # <9> 
+    color = gray(.5),
+    linetype = "dotted",
+    linewidth = 0.25),
+    panel.background = element_rect(
+        fill = "lightblue") 
+)# <9> 
+```
+
+1. Call `ggplot`.
+2. Add `geom_sf` layers.
+3. Add text/label annotations.
+4. Limit window to area of interest.
+5. Add directional indicator.
+6. Add scale.
+7. Add axis and title labels.
+8. Set theme.
+9. Modify theme.
+
+<!--
+# Theming
+
+Theme from Kieren Healy's book Appendix 4. Yes.
+
+```{r}
+theme_map <- function(base_size=9, base_family="") {
+    require(grid)
+    theme_bw(base_size=base_size, base_family=base_family) %+replace%
+        theme(axis.line=element_blank(),
+              axis.text=element_blank(),
+              axis.ticks=element_blank(),
+              axis.title=element_blank(),
+              panel.background=element_blank(),
+              panel.border=element_blank(),
+              panel.grid=element_blank(),
+              panel.spacing=unit(0, "lines"),
+              plot.background=element_blank(),
+              legend.justification = c(0,0),
+              legend.position = c(0,0)
+              )
+}
+
+```
+-->
+
+# Key Points
+
+- maps are created by layering
+
+- `ggplot2` key functions for maps are `geom_sf` and `coord_sf`
+
+- `geom_sf` will use the coordinate reference system from the first layer to be plotted so long as it's not been set with the `crs` argument
+
+- `ggspatial` package can add a directional indicator and a scale bar
+
+- `geom_sf_text` will add text to the plot for labeling features
+
+- themes can quickly polish a plot and give it a finished look
+
+<hr>
+:::{#refs-plotting-021-rspatial}
+:::
+

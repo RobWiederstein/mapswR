@@ -1,0 +1,290 @@
+---
+title: "Data Structures"
+---
+
+```{r}
+#| label: plotting-structure-intro-libs-load
+#| include: false
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(magrittr)
+library(patchwork)
+library(sf)
+library(tibble)
+library(here)
+here::i_am("plotting/013-plotting.qmd")
+```
+
+
+# Objective
+
+The viewer will be able to identify the data structure type (polygon versus multipolygon) and to plot a subset of the data with one of three strategies: (1) filtering, (2) casting, or (3) setting the plot window.
+
+# Introduction
+
+Many `sf` datasets will be grouped at the country level.  Countries can be a single polygon.  However, they are usually comprised of multiple polygons. An example might be the United States, where Hawaii can be found in the middle of the Pacific Ocean. The distance between Hawaii and the mainland U.S. can be problematic because of the amount of space devoted to the surrounding ocean. This scenario occurs frequently. The remainder of the discussion will be devoted to addressing this challenge.
+
+# Packages Required
+
+Make sure to load the following packages.
+
+```{r}
+#| label: plotting-structure-intro-libs-show
+#| eval: false
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(magrittr)
+library(patchwork)
+library(sf)
+library(tibble)
+```
+
+# Distinguish
+
+To mimic the Hawaii-US scenario, two squares will be created, one smaller and one larger. The two squares will go through the familiar `sfg-->sfc-->sf` pipeline. The polygons will then be placed into two different data structures. Note that if the data are imported via `st_read()`, the function contains many arguments and all geometries are converted to the "Multi" variety. For example, polygons become multipolygons.  In order to keep the original geometries, then the argument `promote_to_multi` must be set to `FALSE`.
+
+
+```{r}
+#| label: plotting-structure-create-poly
+sq_1 <- #<1>
+    st_polygon(list(rbind(
+        c(0,0), c(0, 1), c(1, 1), c(1, 0), c(0, 0)
+            )
+        )
+    ) #<1>
+sq_2 <- (sq_1 * 5) + 5 #<2>
+(st_sfc(list(sq_1, sq_2), crs= "WGS84") %>% #<3>
+st_sf(tibble("name"= c("A", "B")), geometry = .) -> sq_poly)#<3>
+```
+1. The operative function is the call to `st_polygon()`.
+2. The next square is a derivative of the first one.
+3. Finally, the squares are placed into a data frame of class `sf`.
+
+::: {.callout-note}
+Note that the geometry type is "POLYGON" and the data frame holds two features.
+:::
+
+The two squares created above are recycled in the code below, except that they are placed as a single multipolygon.
+
+```{r}
+#| label: plotting-structure-create-multi
+(st_multipolygon(list(sq_1, sq_2)) %>% #<1>
+st_sfc(., crs = "WGS84") %>%
+st_sf(tibble("name" = c("A")), geometry = .) -> sq_mpoly) #<2>
+```
+1. The operative function is `st_multipolygon()`.
+2. Since the creation only results in one line, only a single name "A" is assigned.
+
+::: {.callout-note}
+Note that the geometry type produced is "MULTIPOLYGON" and the data frame holds one feature.
+:::
+
+```{r}
+#| label: fig-plotting-structure-multi-poly-plot
+#| fig-cap: "Plots of Polygon and Multipolygon. The plots are identical but the underlying data structures are different."
+#| fig-height: 4
+p1 <-
+    sq_poly %>% 
+    ggplot() + 
+    geom_sf(fill = "steelblue") + 
+    coord_sf() + 
+    theme_bw() +
+    labs(title = "st_polygon()")
+p2 <-
+    sq_mpoly %>% 
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf() +
+    theme_bw() +
+    labs(title = "st_multipolygon()")
+p1 + p2
+```
+
+It is crucial in developing a plotting strategy to understand the underlying data structure. If you want to plot a portion of the data, there are several strategies available, but the first step will always be in understanding how the features are stored.
+
+# Three Ways to Plot
+
+There are at least three ways to plot the data such that only one polygon is in the plot.
+
+## Filter
+
+If the data structure is a data frame of two simple features and those features are polygons, then the data structure may be filtered to the chosen polygon using the familiar `dplyr` pipe. Below polygon "A" was chosen but polygon "B" could have been chosen as well.
+
+```{r}
+#| label: fig-plotting-structure-filter-poly
+#| fig-cap: "Plot of polygon feature after filtering."
+#| fig-height: 4
+sq_poly %>% 
+    dplyr::filter(name == c("A")) %>%
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf() +
+    theme_bw() +
+    labs(title = "polygon filtered")
+```
+
+
+## Cast
+
+If you wish to subset a multipolygon object, it may be necessary to separate out the individual polygons.  The function to inspect each polygon is `st_cast()`.  
+
+```{r}
+#| label: plotting-structure-cast
+st_cast(sq_mpoly, to = "POLYGON")
+```
+
+
+```{r}
+#| label: fig-plotting-structure-cast
+#| fig-cap: "Single polygon extracted from multipolygon object."
+#| fig-height: 4
+st_cast(sq_mpoly, to = "POLYGON") %>%
+    extract(1) %>%
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) +
+    theme_bw() +
+    labs(title = "polygon cast")
+```
+
+## Set Window
+
+```{r}
+#| label: fig-plotting-structure-set-window
+#| fig-cap: "Polygon and multipolygon objects with x and y limits set."
+#| fig-height: 4
+p1 <-
+    sq_mpoly %>%
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) + #<1>
+    theme_bw() +
+    labs(title = "st_multipolygon()")
+p2 <-
+    sq_poly %>%
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf(xlim = c(0, 1.01), ylim = c(0, 1.01)) + #<2>
+    theme_bw() +
+    labs(title= "st_polygon()")
+p1 + p2
+```
+1. Operative code for setting the range.
+2. Operative code for seeting the range.
+
+# Hawaii Example
+
+After importing a dataset and performing an initial plot, there is often some unexpected geometries.  Here, the U.S. states will be imported from the `rnaturalearth` package.  And like usual, when the target (here Hawaii) is inspected, there's some surprising results.
+
+According to the Department of State, the Hawaiian Islands were first discovered by the West in 1778 by Captain James Cook. Cook named the islands the "Sandwich Islands"  after the British Earl of Sandwich. Having become a territory in 1898, Hawaii became a state in 1959. [@us_state_dept_hawaii_2024] According to [Wikipedia](https://en.wikipedia.org/wiki/Hawaii), "the Hawaiian Island archipelago extends some 1,500 miles (2,400 km) from the southernmost island of Hawaiʻi to the northernmost Kure Atoll."
+
+```{r}
+#| label: plotting-structure-hi-read
+(us <- rnaturalearth::ne_states(country = "United States of America") %>% 
+    dplyr::select(postal, geometry))
+```
+
+Results in a `sf` class data frame with 51 features and a geometry type of "MULTIPOLYGON".
+
+## Filter
+
+Using the method described above, the `sf` class data frame is filtered to Hawaii and plotted.
+
+```{r}
+#| label: fig-plotting-structure-hi-first-look
+#| fig-cap: Plot of Hawaii after filtering/subsetting from all U.S. states. Note that the bounding box seems to be too large and is perhaps an error.
+#| fig-height: 4
+us %>% 
+    dplyr::filter(postal == "HI") %>% 
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf() +
+    theme_bw()
+```
+
+## Cast
+
+After some investigation, Hawaii is actually comprised of 14 separate islands.  In order to see the individual polygons, they will have to be extracted from the "MULTIPOLYGON" geometry and inspected.  This is the role of the `st_cast()` function.
+
+```{r}
+#| label: plotting-structure-hi-cast
+hi <- us %>% dplyr::filter(postal == "HI")
+(hi_cast <- sf::st_cast(hi, to = "POLYGON"))
+```
+
+Now that the individual polygons can be inspected, we're going to create a column for the area of each island. The working hypothesis is that around 6 of the islands are so small that they are invisible on the plotting panel. Because of that, we'll also create a label/text column.  The islands could have been labeled based on size, but I decided to label them from left to right using longitude. The code to create the new columns is below.
+
+```{r}
+#| label: plotting-structure-hi-labeled
+hi_cast %>% 
+    mutate(area = sf::st_area(.)) %>% 
+    mutate(center = st_centroid(geometry)) %>% 
+    mutate(lon = st_coordinates(center)[, 1]) %>% 
+    mutate(lat = st_coordinates(center)[, 2]) %>% 
+    arrange(lon) %>% 
+    mutate(island = 1:14) -> hi_all
+```
+
+```{r}
+#| label: fig-plotting-structure-hi-labeled
+#| fig-cap: "Fourteen Islands of Hawaii Plotted.  Spatial area of many islands is insignificant such that only the label is visible."
+#| fig-height: 4
+
+hi_all %>% 
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    geom_text_repel(
+        data = hi_all, 
+        mapping = aes(x = lon, y = lat, label = island)) +
+    coord_sf() +
+    theme_bw()
+
+```
+
+With the labels visible, it is clear that the original plot was correct and the bounding box was sized appropriately. With visual confirmation, the islands will be subset to the largest islands using longitude or label.
+
+```{r}
+#| label: fig-plotting-structure-hi-subset-large
+#| fig-cap: "Eight largest islands of Hawaii plotted.  Bounding box collapses to frame islands attractively."
+#| fig-height: 4
+hi_all %>% 
+    filter(lon > -161 | island %in% c(7:14)) %>% 
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf() +
+    theme_bw()
+```
+
+## Set Window
+
+The final strategy to plotting Hawaii is to simply adjust the plotting area range. 
+
+```{r}
+#| label: fig-plotting-structure-hi-set-window
+#| fig-cap: "Eight largest islands of Hawaii plotted. Plotting area defined manually."
+#| fig-height: 4
+hi %>% 
+    ggplot() +
+    geom_sf(fill = "steelblue") +
+    coord_sf(xlim = c(-161, -154.5), ylim = c(18.5, 22.5)) +
+    theme_bw()
+```
+
+
+# Key Points
+
+1. Plotting effectively requires an understanding of the underlying data structure.
+
+2. Upon import, `sf` class data frames will default to "MULTIPOLYGON".
+
+3. "MULTIPOLYGON" may mean there is only one contiguous polygon, although most countries and states will be comprised of more than one.
+
+4. Plotting an area of interest and relevance may require subsetting polygons.
+
+5. There are at least three strategies for subsetting a `sf` class data frame for plotting: (1) filtering the dataset, (2) casting the dataset, or (3) adjusting the plotting window.
+
+<hr>
+:::{#refs-plotting-013-rspatial}
+:::

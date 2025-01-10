@@ -1,0 +1,8 @@
+---
+title: "Shiny/Quarto"
+---
+
+Below is a series of interactive dashboard produced with Quarto.  Rather than a "how-to" guide, the dashboards are assembled as a gallery.  They are intended to demonstrate interactivity but also serve as a reminder of previous lessons.
+
+- [World Map Resolution and Cropping](https://rob-wiederstein.shinyapps.io/worldproj/)
+- [U.S. Life Expectancy Binning Methods and Color Palettes](https://rob-wiederstein.shinyapps.io/Binning/)

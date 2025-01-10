@@ -1,0 +1,57 @@
+---
+title: "Choropleths"
+---
+
+# Objective
+
+The objective for this section is for the viewer to use choropleth maps responsibly and to understand common problems in their creation.
+
+# Introduction
+
+In Latin,  _choro_ means "place" and _pleth_ means "value." Originating in 1824, choropleths contain different geometries that are shaded based on some variable.  (They were at one time referred to as "ratio maps"). Choropleths lack insight when the plot is actually a proxy for population density [@munroe_heatmap_2010;@healy_data_2018]. Healy counsels that "much county-state and national data is not properly spatial, insofar as it is really about individuals (or some other unit of interest) rather than the geographical distribution of those units _per se_" [@healy_data_2018].
+
+# Caveats
+
+Splashed across the web, print and social media, choropleth maps can be seen everywhere.  Their inclusion may give the statistics they represent an added force since shaded maps are usually the province of sophisticated analysts/programmers. The "halo effect" of wrapping data in a map was described by the author of _How to Lie with Maps_ Mark Monmonier.  "When combined with the public’s naive acceptance of maps as objective representations, cartographic generalization becomes an open invitation to both deliberate and unintentional prevarication" [@monmonier_lying_2005]. Choropleths can be both insightful and highly misleading [@tufte_visual_2001;@healy_data_2018;@wilke_fundamentals_2019] "By manipulating breaks between categories of data to be shaded on a choropleth map, for instance, a map maker can often create two distinctly different spatial patterns" [@monmonier_lying_2005].
+
+
+# Ratios
+
+Choropleth maps should be created and interpreted with caution.  "In particular, choropleth maps are best suited for visualizing rates, percentages, or statistical values that are normalized for the population of areal units. They are not ideal when the analyst wants to compare counts (or estimated counts) themselves, however" [@walker_analyzing_2023].  Professor Manny Gimond illustrated the concept in class notes, showing how "non-uniform aerial units" can be a result of the aggregation method instead of a spatial pattern. The solution is "to represent counts as ratios such as number of deaths per number of people or number of people per square kilometer" [@gimond_intro_2023]. Several statistical transformations are available for producing accurate choropleth maps. [@dykes_maps_1998]
+
+# Coloring & Binning
+
+Two points are in order.  First, darker colors indicate higher values and lighter colors lower values.  "We tend to associate darker colors with higher intensities when the background color of the figure is light. However, we can also pick a color scale where high values light up on a dark background." [@wilke_fundamentals_2019] Second, binned or discrete scales are preferred so that readers match the geometry color to the legend. Wilke noted that "[w]e are not very good at recognizing a specific color value and matching it against a continuous scale" and suggested it was "appropriate to bin the data values into discrete groups that are represented with distinct colors. On the order of four to six bins is a good choice" [@wilke_fundamentals_2019].
+
+# Legends
+
+There are a number of design choices that must be made to style a choropleth legend.  Professor Cynthia Brewer lists several in her book _Designing Better Maps_:
+
+- rounding the numbers in the legend
+- incrementing the numbers, for example, 0-10 and 10-20, or 0-9 and 10-19
+- using the word "to" or a dash "-" between the numbers
+- ordering the legend with the highest numbers at the top or bottom
+- using the actual minimum and maximum of the dataset or collapse to a category like "less than 10" or "more than 90"
+- adding annotations for futher explanation. [@brewer_designing_2024]
+
+# Key Points
+
+- Determine whether the data have a spatial component
+
+- For a light background, use a dark color to indicate high intensity
+
+- For a dark background, a light color can be used to indicate high intensity
+
+- Use ratios
+
+- Bin the data between four and six bins
+
+- Style legend breaks
+
+- Consider whether a cartogram is more appropriate
+
+<hr>
+:::{#refs-plotting-015-rspatial}
+:::
+:::{#refs-plotting-015-packages}
+:::
