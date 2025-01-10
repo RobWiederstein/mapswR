@@ -1,0 +1,457 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "\n            Welcome to Maps with R!\n        ",
+    "section": "",
+    "text": "• Work with two-dimensional, geospatial data within R\n            • Learn about projections and coordinate reference systems\n            • Learn about map elements and visual aethetics\n            • Create maps with popular tools like ggplot2, tmap, and leaflet\n            \n        \n        \n            Overview\n            Introduction\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nPlotting\n\n\n\n\n  \n  \n    ggplot2\n    R's most popular plotting package can handle geospatial data with \"geom_sf()\" and the optional addition of \"coord_sf()\".\n    Start\n  \n\n\n\n\n  \n  \n    tmap\n    Flexible and layer-based, tmap can quickly generate thematic maps, such as chorpleths and bubble maps.\n    Start\n  \n\n\n\n\n  \n  \n    leaflet\n    Create and customize interactive maps using the popular 'Leaflet' JavaScript library. These maps can be used in web applications.\n    Start\n  \n\n\n\n\n  \n  \n    mapview\n    Render quick plots during the development phase with large datasets to view geometries and their attributes.\n    Start\n  \n\n\n\n\n  \n  \n    mapdeck\n    mapdeck is an R library which lets you plot really, really large data sets on interactive maps using Mapbox GL and Deck.gl\n    Start\n  \n\n\n\n\n  \n  \n    flowmapblue\n    Create interactive flow maps  to visualize commuting patterns, bicycle patterns, migration, paths and many other topics.\n    Start"
+  },
+  {
+    "objectID": "basics/overview.html",
+    "href": "basics/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#welcome",
+    "href": "basics/overview.html#welcome",
+    "title": "Overview",
+    "section": "",
+    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#who-this-website-is-for",
+    "href": "basics/overview.html#who-this-website-is-for",
+    "title": "Overview",
+    "section": "2 Who this website is for",
+    "text": "2 Who this website is for\nThis website is for people who are comfortable working in R within the Rstudio environment. It assumes the reader has a working knowledge of the tidyverse, can install and load R packages and can plot data with ggplot2. While some code is in base, most of the code is in dplyr, sf and ggplot2. Programmers looking for how to plot spatial vector data and needing to perform some transformations on existing data sets will find this website helpful. Programmers looking to improve their proficiency with R should start with “R for Data Science (2e)” and a review of “ggplot2: Elegant Graphics for Data Analysis (3e)” is recommended too as much of the lexicon is repeated here.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#what-you-wont-learn",
+    "href": "basics/overview.html#what-you-wont-learn",
+    "title": "Overview",
+    "section": "3 What you won’t learn",
+    "text": "3 What you won’t learn\nModelling.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#prerequisites",
+    "href": "basics/overview.html#prerequisites",
+    "title": "Overview",
+    "section": "4 Prerequisites",
+    "text": "4 Prerequisites\nOne of the more intimidating aspects of geospatial data is the sheer number of packages that are loaded prior to writing a line of code. And working with spatial data in R requires lots of packages. The packages are in three categories: (1) manipulating geospatial data in R, (2) plotting interactive and static maps in R, and (3) data packages. If you’re looking for a specific package and its not included here, there is a github repo styled awesome-maps-r on GitHub.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#conventions",
+    "href": "basics/overview.html#conventions",
+    "title": "Overview",
+    "section": "5 Conventions",
+    "text": "5 Conventions\n\nBooks and journals retain the title of a plot in the caption below the figure. This is a website that is similar to the book format. In the materials that follow, titles were sometimes placed in the plot and sometimes inserted in the caption.\nWhen packages or functions are referenced, they are enclosed with backticks and the font color is purple like in ggplot2 or cut_interval(). Some abiguity is created where the usage is both an R package and a javascript library. leaflet is a package in the R universe and “leaflet” is a javascript library.\nThe American Psychological Association, 7th Edition, Guidelines were followed, but only roughly. Citations were included to find the reference in the future and give credit to the original authors. However, page numbers to specific quotes were omitted.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#terms",
+    "href": "basics/overview.html#terms",
+    "title": "Overview",
+    "section": "6 Terms",
+    "text": "6 Terms\nCoordinate Reference System (CRS) - defines how the spatial elements of the data relate to the surface of the Earth.\nDatum - a broader, more detailed description of a CRS that includes what ellipsoid to use. Datum can be geocentric like WGS84 or local like NAD83.\nEPSG - According to wikipedia, “EPSG Geodetic Parameter Dataset (also EPSG registry) is a public registry of geodetic datums, spatial reference systems, Earth ellipsoids, coordinate transformations and related units of measurement, originated by a member of the European Petroleum Survey Group (EPSG) in 1985.”\nGeocentric Datum - the center is located in the Earth’s center of gravity and is not optimized for a specific location.\nLocal Datum - the ellipsoidal surface is shifted to align with the surface at a particular location. A local datum allows local variations in the Earth’s surface like large mountain ranges.\nGeographic CRS - identify any location on the Earth’s surface using longitude and latitude. Distances are not measured in meters.\nPlate Carrée - The plate carrée map projection is an equidistant cylindrical projection with the standard parallel located at the equator. A grid of parallels and meridians forms perfect squares from east to west and from pole to pole.\nProjected CRS - All projected CRSs are based on a geographic CRS and must convert the three-dimensional surface of the Earth into X and Y values. Basically, you’re converting a globe to a map and it will result in deformations.\nWKT - well-known text string. The Open Geospatial Consortium, which also developed the simple features specification, developed the open standard format for describing CRSs.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#acknowledgements",
+    "href": "basics/overview.html#acknowledgements",
+    "title": "Overview",
+    "section": "7 Acknowledgements",
+    "text": "7 Acknowledgements\nThere are many selfless individuals who contribute to improving the study of maps while remaining within the R environment. Thank you. Aside from compilation, organization and format, there is very little original material here. Rather, the inspirational and creative components were found in the many authors’ materials listed in the references. I’m indebted to them and the organizations that support them. If in review of the material, you find content that was taken beyond the scope of the original license or insufficient attribution, please open an issue on GitHub and it will be remedied promptly.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html",
+    "href": "basics/01-basics.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "There are multiple formats. This example uses a “shapefile”. It would be more accurate to refer to them as “shapefiles” because it is comprised of a directory of files. This shapefile was downloaded from the U.S. Census Cartographic Boundary Files. This is the “state” file and its scale is 1:20m.\n\nlayer &lt;- \"cb_2023_us_state_20m\"\ndsn &lt;- here::here(\"data/cb_2023_us_state_20m\")\nus &lt;- sf::st_read(dsn = dsn, layer = layer)\n#&gt; Reading layer `cb_2023_us_state_20m' from data source \n#&gt;   `/Users/rkw/Dropbox/coding/rproj/mapswR/data/cb_2023_us_state_20m' \n#&gt;   using driver `ESRI Shapefile'\n#&gt; Simple feature collection with 52 features and 9 fields\n#&gt; Geometry type: MULTIPOLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -179 ymin: 17.9 xmax: 180 ymax: 71.4\n#&gt; Geodetic CRS:  NAD83\nresults &lt;- capture.output(sf::st_read(dsn = dsn, layer = layer))\n\nCareful reading of the above output tells you important information about the file. For the sake of speed, it may be tempting to skip this crucial information. The better advice is to review it carefully.\n\n\n\n\n\n\nNote\n\n\n\nA thorough understanding of import options can save a programmer a lot of time later in an analysis. The st_read() function contains many arguments allowing for flexibility on import. Note that all geometries are converted to the “Multi” variety. For example, polygons become multipolygons. If this is undesired behavior, then set promote_to_multi = F.\n\n\n\n\n\n\nif(!dir.exists(\"./data/us\")) dir.create(path = \"./data/us\", recursive = TRUE)\ndsn &lt;- here::here(\"data/us/us.shp\")\nsf::st_write(us, dsn = dsn, append=FALSE)\n#&gt; Deleting layer `us' using driver `ESRI Shapefile'\n#&gt; Writing layer `us' to data source \n#&gt;   `/Users/rkw/Dropbox/coding/rproj/mapswR/data/us/us.shp' using driver `ESRI Shapefile'\n#&gt; Writing 52 features with 9 fields and geometry type Multi Polygon.\n\n\n\n\nWithin the Rstudio viewer, the file behaves much like any dataframe or tibble. That feeling is intentional. The author’s of the sf package have worked hard to preserve a dplyr like workflow so that programmers don’t have to learn new skills. However, this is not your typical dataframe!\n\n\nThe object is both a dataframe and of the “sf” class.\n\nclass(us)\n#&gt; [1] \"sf\"         \"data.frame\"\n\n\n\n\n\nattributes(us)\n#&gt; $names\n#&gt;  [1] \"STATEFP\"  \"STATENS\"  \"GEOIDFQ\"  \"GEOID\"    \"STUSPS\"   \"NAME\"    \n#&gt;  [7] \"LSAD\"     \"ALAND\"    \"AWATER\"   \"geometry\"\n#&gt; \n#&gt; $row.names\n#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25\n#&gt; [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50\n#&gt; [51] 51 52\n#&gt; \n#&gt; $class\n#&gt; [1] \"sf\"         \"data.frame\"\n#&gt; \n#&gt; $sf_column\n#&gt; [1] \"geometry\"\n#&gt; \n#&gt; $agr\n#&gt; STATEFP STATENS GEOIDFQ   GEOID  STUSPS    NAME    LSAD   ALAND  AWATER \n#&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt; \n#&gt; Levels: constant aggregate identity\n\n\n\n\nSoftware dependencies can cause lots of headaches when incompatiable or out dated. You can see the complementary software along with the versions by running the command below.\n\nsf::sf_extSoftVersion()\n#&gt;           GEOS           GDAL         proj.4 GDAL_with_GEOS     USE_PROJ_H \n#&gt;       \"3.11.0\"        \"3.5.3\"        \"9.1.0\"         \"true\"         \"true\" \n#&gt;           PROJ \n#&gt;        \"9.1.0\"\n\n\n\n\nA Coordinate Reference System (CRS) tells the computer how the coordinates were calculated. This is a topic of importance, but generally it should just work. Don’t change it unless you’re confident in what you’re doing.\n\nsf::st_crs(us)[[1]]\n#&gt; [1] \"NAD83\"\n\n“NAD83” is an abbreviation for the “North American Datum of 1983”.\n\n#|label: basic-crs-2\ncat(sf::st_crs(us)[[2]], sep = \"\\n\")\n#&gt; GEOGCRS[\"NAD83\",\n#&gt;     DATUM[\"North American Datum 1983\",\n#&gt;         ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n#&gt;             LENGTHUNIT[\"metre\",1]]],\n#&gt;     PRIMEM[\"Greenwich\",0,\n#&gt;         ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     CS[ellipsoidal,2],\n#&gt;         AXIS[\"latitude\",north,\n#&gt;             ORDER[1],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;         AXIS[\"longitude\",east,\n#&gt;             ORDER[2],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     ID[\"EPSG\",4269]]\n\n\n\n\nA “bounding box” gives the range (minimum and maximum) along the two axes. The coordinates were printed to the console when the object was imported initially, but can be accessed via st_bbox.\n\nsf::st_bbox(us)\n#&gt;   xmin   ymin   xmax   ymax \n#&gt; -179.2   17.9  179.8   71.4\n\n\n\n\nThe spatial portion of the dataframe is stored in a column within the dataframe. Usually, this column is named “geometry” and can be accessed via object$geometry. However, a more conventional way is the following:\n\nsf::st_geometry(us)\n#&gt; Geometry set for 52 features \n#&gt; Geometry type: MULTIPOLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -179 ymin: 17.9 xmax: 180 ymax: 71.4\n#&gt; Geodetic CRS:  NAD83\n#&gt; First 5 geometries:\n\n\n\n\nA simple way to check if the geometries were imported correctly is to run the following command:\n\nall(sf::st_is_valid(us))\n#&gt; [1] TRUE\n\nNote that 52 rows of the dataframe generated a “TRUE” response, meaning that they are all valid. In the event of a “FALSE”, the function sf::st_make_valid might fix the problem.\n\n\n\nMany authorities recommend doing a quick plot. A quick plot will help discover if the correct file was downloaded or if there are any additional problems with the data.\nFor a quick plot, my default command is:\n\nplot(us[\"NAME\"], axes = T)\n\nThe map looks to be the correct map and there were no errors when plotting. Looking at the 52 names in the NAME field reveal Washington D.C and Puerto Rico are included. There are no additional states at the 150E 55N location. This suggests that some of the Aleutian Islands in Alaska have breached a division within the map. Here’s a re-plot where the longitudinal center of the map is shifted -90 degrees. The sf package also includes the st_shift_longitude function for a similar result.\n\nus[\"NAME\"] |&gt; st_break_antimeridian(lon_0 = -90) |&gt; \n     st_transform('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +lon_0=-90') |&gt; \n    plot(axes = T)\n\n\n\n\n\n\n\nFigure 1: Map of United States with longitude rotated -90 degrees.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#import-gis",
+    "href": "basics/01-basics.html#import-gis",
+    "title": "Introduction",
+    "section": "",
+    "text": "There are multiple formats. This example uses a “shapefile”. It would be more accurate to refer to them as “shapefiles” because it is comprised of a directory of files. This shapefile was downloaded from the U.S. Census Cartographic Boundary Files. This is the “state” file and its scale is 1:20m.\n\nlayer &lt;- \"cb_2023_us_state_20m\"\ndsn &lt;- here::here(\"data/cb_2023_us_state_20m\")\nus &lt;- sf::st_read(dsn = dsn, layer = layer)\n#&gt; Reading layer `cb_2023_us_state_20m' from data source \n#&gt;   `/Users/rkw/Dropbox/coding/rproj/mapswR/data/cb_2023_us_state_20m' \n#&gt;   using driver `ESRI Shapefile'\n#&gt; Simple feature collection with 52 features and 9 fields\n#&gt; Geometry type: MULTIPOLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -179 ymin: 17.9 xmax: 180 ymax: 71.4\n#&gt; Geodetic CRS:  NAD83\nresults &lt;- capture.output(sf::st_read(dsn = dsn, layer = layer))\n\nCareful reading of the above output tells you important information about the file. For the sake of speed, it may be tempting to skip this crucial information. The better advice is to review it carefully.\n\n\n\n\n\n\nNote\n\n\n\nA thorough understanding of import options can save a programmer a lot of time later in an analysis. The st_read() function contains many arguments allowing for flexibility on import. Note that all geometries are converted to the “Multi” variety. For example, polygons become multipolygons. If this is undesired behavior, then set promote_to_multi = F.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#export-gis",
+    "href": "basics/01-basics.html#export-gis",
+    "title": "Introduction",
+    "section": "",
+    "text": "if(!dir.exists(\"./data/us\")) dir.create(path = \"./data/us\", recursive = TRUE)\ndsn &lt;- here::here(\"data/us/us.shp\")\nsf::st_write(us, dsn = dsn, append=FALSE)\n#&gt; Deleting layer `us' using driver `ESRI Shapefile'\n#&gt; Writing layer `us' to data source \n#&gt;   `/Users/rkw/Dropbox/coding/rproj/mapswR/data/us/us.shp' using driver `ESRI Shapefile'\n#&gt; Writing 52 features with 9 fields and geometry type Multi Polygon.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#get-info",
+    "href": "basics/01-basics.html#get-info",
+    "title": "Introduction",
+    "section": "",
+    "text": "Within the Rstudio viewer, the file behaves much like any dataframe or tibble. That feeling is intentional. The author’s of the sf package have worked hard to preserve a dplyr like workflow so that programmers don’t have to learn new skills. However, this is not your typical dataframe!\n\n\nThe object is both a dataframe and of the “sf” class.\n\nclass(us)\n#&gt; [1] \"sf\"         \"data.frame\"\n\n\n\n\n\nattributes(us)\n#&gt; $names\n#&gt;  [1] \"STATEFP\"  \"STATENS\"  \"GEOIDFQ\"  \"GEOID\"    \"STUSPS\"   \"NAME\"    \n#&gt;  [7] \"LSAD\"     \"ALAND\"    \"AWATER\"   \"geometry\"\n#&gt; \n#&gt; $row.names\n#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25\n#&gt; [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50\n#&gt; [51] 51 52\n#&gt; \n#&gt; $class\n#&gt; [1] \"sf\"         \"data.frame\"\n#&gt; \n#&gt; $sf_column\n#&gt; [1] \"geometry\"\n#&gt; \n#&gt; $agr\n#&gt; STATEFP STATENS GEOIDFQ   GEOID  STUSPS    NAME    LSAD   ALAND  AWATER \n#&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt; \n#&gt; Levels: constant aggregate identity\n\n\n\n\nSoftware dependencies can cause lots of headaches when incompatiable or out dated. You can see the complementary software along with the versions by running the command below.\n\nsf::sf_extSoftVersion()\n#&gt;           GEOS           GDAL         proj.4 GDAL_with_GEOS     USE_PROJ_H \n#&gt;       \"3.11.0\"        \"3.5.3\"        \"9.1.0\"         \"true\"         \"true\" \n#&gt;           PROJ \n#&gt;        \"9.1.0\"\n\n\n\n\nA Coordinate Reference System (CRS) tells the computer how the coordinates were calculated. This is a topic of importance, but generally it should just work. Don’t change it unless you’re confident in what you’re doing.\n\nsf::st_crs(us)[[1]]\n#&gt; [1] \"NAD83\"\n\n“NAD83” is an abbreviation for the “North American Datum of 1983”.\n\n#|label: basic-crs-2\ncat(sf::st_crs(us)[[2]], sep = \"\\n\")\n#&gt; GEOGCRS[\"NAD83\",\n#&gt;     DATUM[\"North American Datum 1983\",\n#&gt;         ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n#&gt;             LENGTHUNIT[\"metre\",1]]],\n#&gt;     PRIMEM[\"Greenwich\",0,\n#&gt;         ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     CS[ellipsoidal,2],\n#&gt;         AXIS[\"latitude\",north,\n#&gt;             ORDER[1],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;         AXIS[\"longitude\",east,\n#&gt;             ORDER[2],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     ID[\"EPSG\",4269]]\n\n\n\n\nA “bounding box” gives the range (minimum and maximum) along the two axes. The coordinates were printed to the console when the object was imported initially, but can be accessed via st_bbox.\n\nsf::st_bbox(us)\n#&gt;   xmin   ymin   xmax   ymax \n#&gt; -179.2   17.9  179.8   71.4\n\n\n\n\nThe spatial portion of the dataframe is stored in a column within the dataframe. Usually, this column is named “geometry” and can be accessed via object$geometry. However, a more conventional way is the following:\n\nsf::st_geometry(us)\n#&gt; Geometry set for 52 features \n#&gt; Geometry type: MULTIPOLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -179 ymin: 17.9 xmax: 180 ymax: 71.4\n#&gt; Geodetic CRS:  NAD83\n#&gt; First 5 geometries:\n\n\n\n\nA simple way to check if the geometries were imported correctly is to run the following command:\n\nall(sf::st_is_valid(us))\n#&gt; [1] TRUE\n\nNote that 52 rows of the dataframe generated a “TRUE” response, meaning that they are all valid. In the event of a “FALSE”, the function sf::st_make_valid might fix the problem.\n\n\n\nMany authorities recommend doing a quick plot. A quick plot will help discover if the correct file was downloaded or if there are any additional problems with the data.\nFor a quick plot, my default command is:\n\nplot(us[\"NAME\"], axes = T)\n\nThe map looks to be the correct map and there were no errors when plotting. Looking at the 52 names in the NAME field reveal Washington D.C and Puerto Rico are included. There are no additional states at the 150E 55N location. This suggests that some of the Aleutian Islands in Alaska have breached a division within the map. Here’s a re-plot where the longitudinal center of the map is shifted -90 degrees. The sf package also includes the st_shift_longitude function for a similar result.\n\nus[\"NAME\"] |&gt; st_break_antimeridian(lon_0 = -90) |&gt; \n     st_transform('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +lon_0=-90') |&gt; \n    plot(axes = T)\n\n\n\n\n\n\n\nFigure 1: Map of United States with longitude rotated -90 degrees.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#sfg",
+    "href": "basics/01-basics.html#sfg",
+    "title": "Introduction",
+    "section": "2.1 SFG",
+    "text": "2.1 SFG\nThe sfg class represents simple feature geometries. There are 17 possible geometry types. We will discuss LINE, POINT, POLYGON/MULTIPOLYGON and only in 2-dimensional space. All features are built upon points.\n\n2.1.1 Point\n\n(pt &lt;- sf::st_point(c(0, 0)))\nclass(pt)\n#&gt; [1] \"XY\"    \"POINT\" \"sfg\"\n\n\n\n2.1.2 Line\n\n(line &lt;- sf::st_linestring(rbind(c(0, 0), c(1, 0))))\nclass(line)\n#&gt; [1] \"XY\"         \"LINESTRING\" \"sfg\"\n\n\n\n2.1.3 Polygon\nNote that the final point is a repeat of the first point in order to close the polygon.\n\n(plgn &lt;- sf::st_polygon(list(rbind(c(0,0), c(0,1), c(1,1), c(1,0), c(0,0)))))\nclass(plgn)\n#&gt; [1] \"XY\"      \"POLYGON\" \"sfg\"\n\n\n\n2.1.4 Plot\n\n\n\n\n\n\n\n\nFigure 2: Examples of simple feature geometries.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#sfc",
+    "href": "basics/01-basics.html#sfc",
+    "title": "Introduction",
+    "section": "2.2 SFC",
+    "text": "2.2 SFC\nNext a geometry is included in a simple feature column. A simple feature column is a column-list of sfg objects. It might be a little confusing because in the example below there is only a single sfg object that is then converted to a list-column.\n\nbeijing_sfg &lt;- sf::st_point(c(116.4, 39.9))\nclass(beijing_sfg)\n#&gt; [1] \"XY\"    \"POINT\" \"sfg\"\n(beijing_sfc &lt;- sf::st_sfc(list(beijing_sfg),crs = \"WGS84\"))\n#&gt; Geometry set for 1 feature \n#&gt; Geometry type: POINT\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: 116 ymin: 39.9 xmax: 116 ymax: 39.9\n#&gt; Geodetic CRS:  WGS 84\nclass(beijing_sfc)\n#&gt; [1] \"sfc_POINT\" \"sfc\"",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#sf",
+    "href": "basics/01-basics.html#sf",
+    "title": "Introduction",
+    "section": "2.3 SF",
+    "text": "2.3 SF\n\ncity &lt;- \"Beijing\"\ncountry &lt;- \"China\"\n(beijing_sf &lt;- sf::st_sf(city = city,\n                    country = country,\n                    beijing_sfc))\n#&gt; Simple feature collection with 1 feature and 2 fields\n#&gt; Geometry type: POINT\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: 116 ymin: 39.9 xmax: 116 ymax: 39.9\n#&gt; Geodetic CRS:  WGS 84\n#&gt;      city country      beijing_sfc\n#&gt; 1 Beijing   China POINT (116 39.9)",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#plot-2",
+    "href": "basics/01-basics.html#plot-2",
+    "title": "Introduction",
+    "section": "2.4 Plot",
+    "text": "2.4 Plot\n\nchn &lt;- rnaturalearth::ne_countries(country = \"China\")\nplot(chn$geometry, axes = T)\nplot(beijing_sfc, add = T, cex = 2, col = \"steelblue\", pch = 16)\n\n\n\n\n\n\n\nFigure 3: Map of China with Beijing shown as blue point.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#coordinate-reference-systems",
+    "href": "basics/01-basics.html#coordinate-reference-systems",
+    "title": "Introduction",
+    "section": "3.1 Coordinate Reference Systems",
+    "text": "3.1 Coordinate Reference Systems\n\nThe earth is not a perfectly round sphere. Matter of fact, if one measures the circumference of the earth between the North and South poles, the measurement would be 11.5 kilometers shorter than the circumference of the equator. The earth is an ellipsoid rather than a sphere. An accurate Coordinate Reference System must account for these nuances.\nCoordinate Reference System (CRS), which defines how the spatial elements of the data relate to the surface of the Earth (or other bodies). CRSs are either geographic or projected. (Lovelace et al., 2019; Moraga, 2023)\nGeographic CRS use latitude and longitude; projected CRS use Cartesian coordinates to reference a two-dimensional or flat representation of the earth.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#geographic-crs",
+    "href": "basics/01-basics.html#geographic-crs",
+    "title": "Introduction",
+    "section": "3.2 Geographic CRS",
+    "text": "3.2 Geographic CRS\n\nGeographic CRS use latitude and longitude to identify unique positions on the Earth’s surface. By way of reminder, the equator runs east and west, bisecting the Earth into the Northern and Southern hemispheres. It is halfway between the North and South poles. The equator’s latitude is equal to 0 degrees.\nLatitude values are the angle values north or south of the equator (0 degrees) and range from –90 degrees at the south pole to 90 degrees at the north pole.\nThe prime meridian is an arbitrarily-chosen meridian running North and South, dividing the Earth into Eastern and Western hemispheres.Earth’s current international standard prime meridian is the International IERS Reference Meridian. The current standard differs from the previous Greenwich Meridian.\nLongitude values range from –180 degrees when running west to 180 degrees when running east\nThe latitude and longitude values where the Equator and Prime Meridean insersect is (0, 0).\nLatitude and longitude coordinates may be expressed in degrees, minutes, and seconds, or in decimal degrees. In decimal form, northern latitudes are positive, and southern latitudes are negative. Also, eastern longitudes are positive, and western longitudes are negative.\n\n\n\n\nFormat\nLatitude\nLongitude\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n“Taken together, the geodetic datum (e.g, WGS84), the type of map projection (e.g., Mercator) and the parameters of the projection (e.g., location of the origin) specify a coordinate reference system, or CRS, a complete set of assumptions used to translate the latitude and longitude information into a two-dimensional map.” (hadley)\n\n#obtain CRS info from object \nsf::st_crs(us_map)\n\nThe WKT format will usually start with a PROJCRS[…] tag for a projected coordinate system, or a GEOGCRS[…] tag for a geographic coordinate system. The CRS output will also consist of a user defined CS definition which can be an EPSG code, or a string defining the datum and projection type. In the past, a coordinate system could be defined by its EPSG numeric code or the PROJ4 formatted string. Now, an sf object’s coordinate system can also be designated with Well Known Text (WTK/WTK2) format. “When possible, adopt an EPSG code which comes from a well established authority. However, if customizing a coordinate system, it may be easiest to adopt a PROJ4 syntax.”(Gimond, 2023)",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#projections",
+    "href": "basics/01-basics.html#projections",
+    "title": "Introduction",
+    "section": "3.3 Projections",
+    "text": "3.3 Projections\n\nAll projected CRSs are based on a geographic CRS. A projection takes a three-dimensional object, the earth, and reduces it to a two-dimensional object. The conversion always results in deformation.\nThere are three types of projections: conic, cylindrical, and planar (azimuthal). Conic projections are appropriate for maps of mid-latitude areas. Cylindrical projections are used when displaying the entire world. (The “Mercator” map, by Gerardus Mercator back in 1569, is an example). A planar projection is typically used in mapping polar regions.\n“Projections are often named based on a property they preserve: equal-area preserves area, azimuthal preserve direction, equidistant preserve distance, and conformal preserve local shape.”(Lovelace et al., 2019)\n\n\n“you will have to make choices about what distortions you are prepared to accept when drawing a map. This is the job of the map projection.”\n\n\n“North American Datum” (NAD83) is a good choice, whereas if your perspective is global the “World Geodetic System” (WGS84) is probably better.\n\n\nWhen selecting geographic CRSs, the answer is often WGS84. It is used not only for web mapping, but also because GPS datasets and thousands of raster and vector datasets are provided in this CRS by default. WGS84 is the most common CRS in the world, so it is worth knowing its EPSG code: 4326. Lovelace.\n\n# to see list of available projections\nsf_proj_info(type = \"proj\")\nUpon import, most objects will have a CRS already set. The challenge is to know what CRS you’re working with and for it to match in all layers of the map. Occassionally, a need to “transform” the CRS will arise. We’ll use the United States GIS data from the U.S Census bureau.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#query",
+    "href": "basics/01-basics.html#query",
+    "title": "Introduction",
+    "section": "3.4 Query",
+    "text": "3.4 Query\n\n3.4.1 User Input\nThe user input element can contain the AUTHORITY:CODE representation (e.g., EPSG:4326), the CRS’s name (e.g., WGS 84), or the proj-string definition (e.g., “+proj=lcc +lat_1=20 +lat_2=60 lon_0=-96 +datum=NAD83 +units=m”).\n\nsf::st_crs(us)[[1]]\n#&gt; [1] \"NAD83\"\nsf::st_crs(us)$IsGeographic # geographic or projected?\n#&gt; [1] TRUE\nsf::st_crs(us)$units_gdal # meters or degrees?\n#&gt; [1] \"degree\"\nsf::st_crs(us)$proj4string # proj string\n#&gt; [1] \"+proj=longlat +datum=NAD83 +no_defs\"\n\n\n\n3.4.2 WKT\n“WKT” is an abbreviation for “well known text string”.\n\ncat(sf::st_crs(us)[[2]], sep = \"\\n\")\n#&gt; GEOGCRS[\"NAD83\",\n#&gt;     DATUM[\"North American Datum 1983\",\n#&gt;         ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n#&gt;             LENGTHUNIT[\"metre\",1]]],\n#&gt;     PRIMEM[\"Greenwich\",0,\n#&gt;         ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     CS[ellipsoidal,2],\n#&gt;         AXIS[\"latitude\",north,\n#&gt;             ORDER[1],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;         AXIS[\"longitude\",east,\n#&gt;             ORDER[2],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     ID[\"EPSG\",4269]]",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#transform",
+    "href": "basics/01-basics.html#transform",
+    "title": "Introduction",
+    "section": "3.5 Transform",
+    "text": "3.5 Transform\nUse the CRS that is best for your work. However, keep this in mind prior to conversion:\n\nWhen selecting geographic CRSs, the answer is often WGS84. It is used not only for web mapping, but also because GPS datasets and thousands of raster and vector datasets are provided in this CRS by default. WGS84 is the most common CRS in the world, so it is worth knowing its EPSG code: 4326. This ‘magic number’ can be used to convert objects with unusual projected CRSs into something that is widely understood.(Lovelace et al., 2019)\n\n\n#|label: basics-crs-transform\nus_wgs84 &lt;- sf::st_transform(us, \"EPSG:4326\")\nsf::st_crs(us_wgs84)\n#&gt; Coordinate Reference System:\n#&gt;   User input: EPSG:4326 \n#&gt;   wkt:\n#&gt; GEOGCRS[\"WGS 84\",\n#&gt;     ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n#&gt;         MEMBER[\"World Geodetic System 1984 (Transit)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G730)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G873)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G1150)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G1674)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G1762)\"],\n#&gt;         MEMBER[\"World Geodetic System 1984 (G2139)\"],\n#&gt;         ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n#&gt;             LENGTHUNIT[\"metre\",1]],\n#&gt;         ENSEMBLEACCURACY[2.0]],\n#&gt;     PRIMEM[\"Greenwich\",0,\n#&gt;         ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     CS[ellipsoidal,2],\n#&gt;         AXIS[\"geodetic latitude (Lat)\",north,\n#&gt;             ORDER[1],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;         AXIS[\"geodetic longitude (Lon)\",east,\n#&gt;             ORDER[2],\n#&gt;             ANGLEUNIT[\"degree\",0.0174532925199433]],\n#&gt;     USAGE[\n#&gt;         SCOPE[\"Horizontal component of 3D system.\"],\n#&gt;         AREA[\"World.\"],\n#&gt;         BBOX[-90,-180,90,180]],\n#&gt;     ID[\"EPSG\",4326]]\n\n\n\n\n\n\n\nFinding CRS\n\n\n\nFinding the right CRS for your project can be a challenge. In researching this project, I discovered the crsuggest package, available here, and this website.\n\n\nA helpful package is the crsuggestpackage which can be installed from CRAN: install.packages(\"crsuggest\"). An example would be New Zealand. When exported from the rnaturalearth package, it is in the common “WGS 84” format. Because of its proximity to the South Pole, this can cause distortions and a better CRS may be available.\n\nrnaturalearth::ne_states(country = \"New Zealand\") |&gt; \n    crsuggest::suggest_crs()\n#&gt; # A tibble: 10 × 6\n#&gt;   crs_code crs_name                         crs_type crs_gcs crs_units crs_proj4\n#&gt;   &lt;chr&gt;    &lt;chr&gt;                            &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    \n#&gt; 1 3851     NZGD2000 / NZCS2000              project…    4167 m         +proj=lc…\n#&gt; 2 9191     WGS 84 / NIWA Albers             project…    4326 m         +proj=ae…\n#&gt; 3 3994     WGS 84 / Mercator 41             project…    4326 m         +proj=me…\n#&gt; 4 3857     WGS 84 / Pseudo-Mercator         project…    4326 m         +proj=me…\n#&gt; 5 6932     WGS 84 / NSIDC EASE-Grid 2.0 So… project…    4326 m         +proj=la…\n#&gt; # ℹ 5 more rows",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#drop-geometry",
+    "href": "basics/01-basics.html#drop-geometry",
+    "title": "Introduction",
+    "section": "4.1 Drop Geometry",
+    "text": "4.1 Drop Geometry\nThe original us dataframe has 10 columns, one of which is a geometry list column. Once dropped, the new dataframe has 9 columns.\n\n#basics-attr-drop\nsetequal(ncol(sf::st_drop_geometry(us)), ncol(us))\n#&gt; [1] FALSE",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#filter",
+    "href": "basics/01-basics.html#filter",
+    "title": "Introduction",
+    "section": "4.2 Filter",
+    "text": "4.2 Filter\n\nus |&gt; \n    dplyr::filter(NAME %in% c(\"Texas\", \"California\"))\n#&gt; Simple feature collection with 2 features and 9 fields\n#&gt; Geometry type: MULTIPOLYGON\n#&gt; Dimension:     XY\n#&gt; Bounding box:  xmin: -124 ymin: 25.8 xmax: -93.5 ymax: 42\n#&gt; Geodetic CRS:  NAD83\n#&gt;   STATEFP  STATENS     GEOIDFQ GEOID STUSPS       NAME LSAD    ALAND   AWATER\n#&gt; 1      48 01779801 0400000US48    48     TX      Texas   00 6.77e+11 1.90e+10\n#&gt; 2      06 01779778 0400000US06    06     CA California   00 4.04e+11 2.03e+10\n#&gt;                         geometry\n#&gt; 1 MULTIPOLYGON (((-107 31.9, ...\n#&gt; 2 MULTIPOLYGON (((-119 33.5, ...",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#select",
+    "href": "basics/01-basics.html#select",
+    "title": "Introduction",
+    "section": "4.3 Select",
+    "text": "4.3 Select\n\nus |&gt; \n    sf::st_drop_geometry() |&gt; \n    dplyr::filter(NAME %in% c(\"Texas\", \"California\")) |&gt; \n    dplyr::select(NAME, ALAND)\n#&gt;         NAME    ALAND\n#&gt; 1      Texas 6.77e+11\n#&gt; 2 California 4.04e+11",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#slice",
+    "href": "basics/01-basics.html#slice",
+    "title": "Introduction",
+    "section": "4.4 Slice",
+    "text": "4.4 Slice\n\nus |&gt; \n    sf::st_drop_geometry() |&gt; \n    dplyr::select(NAME, ALAND) |&gt; \n    dplyr::arrange(dplyr::desc(ALAND)) |&gt; \n    dplyr::slice_head(n = 5)\n#&gt;         NAME    ALAND\n#&gt; 1     Alaska 1.48e+12\n#&gt; 2      Texas 6.77e+11\n#&gt; 3 California 4.04e+11\n#&gt; 4    Montana 3.77e+11\n#&gt; 5 New Mexico 3.14e+11",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#summarize",
+    "href": "basics/01-basics.html#summarize",
+    "title": "Introduction",
+    "section": "4.5 Summarize",
+    "text": "4.5 Summarize\nThis example divides states into big and small depending if their area exceeds the average. Then, it computes the average by big and small. The geometry column stays with the dataframe until droped in the last line.\n\nlibrary(dplyr)\nlibrary(magrittr)\nus |&gt; \n    mutate(avg_lnd = mean(ALAND), .after = ALAND) |&gt; \n    mutate(typ_lnd = ifelse(ALAND &gt; avg_lnd, \"big\", \"small\"), .after = avg_lnd) |&gt;\n    group_by(typ_lnd) |&gt; \n    summarize(avg_lnd_typ = mean(ALAND)) |&gt; \n    sf::st_drop_geometry()\n#&gt; # A tibble: 2 × 2\n#&gt;   typ_lnd   avg_lnd_typ\n#&gt; * &lt;chr&gt;           &lt;dbl&gt;\n#&gt; 1 big     335454262870.\n#&gt; 2 small    84437535114.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#boundary",
+    "href": "basics/01-basics.html#boundary",
+    "title": "Introduction",
+    "section": "5.1 Boundary",
+    "text": "5.1 Boundary\nThe st_boundary function will convert the geometry type from multipolygon to linestring.\n\nswus &lt;- us[us$NAME %in% c(\"Texas\", \"Oklahoma\", \"New Mexico\"), \"geometry\"]\nbndry_swus &lt;- sf::st_boundary(us[us$NAME %in% c(\"Texas\", \"Oklahoma\", \"New Mexico\"), ])\nplot(swus$geometry, col = c(\"red\", \"steelblue\", \"yellow\"), main = \"Southwest US\", axes = T)\nplot(bndry_swus$geometry, add = T, lwd = 5, col = \"grey20\")\n\n\n\n\n\n\n\nFigure 4: Map of New Mexico, Oklahoma, and Texas with border layer widened for emphasis.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#buffer",
+    "href": "basics/01-basics.html#buffer",
+    "title": "Introduction",
+    "section": "5.2 Buffer",
+    "text": "5.2 Buffer\n\ntxs &lt;- us[us$NAME == \"Texas\", \"geometry\"]\ntxs_buffer &lt;- sf::st_buffer(txs, dist = 100000)\nplot(txs_buffer$geometry, axes = T, main = \"Texas\")\nplot(txs$geometry, add = T, col = \"steelblue\")\n\n\n\n\n\n\n\nFigure 5: Map of Texas with black outline showing buffer.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#centroids",
+    "href": "basics/01-basics.html#centroids",
+    "title": "Introduction",
+    "section": "5.3 Centroids",
+    "text": "5.3 Centroids\nThis function gets used frequently, especially for labels. The function returns the center, in the form of a point geometry, for a polygon. For labels, it works well for a polygon that’s symetrical along the xy axis like Nebraska.\n\nnbrsk &lt;- us[us$NAME == \"Nebraska\", \"geometry\"]\nnbrsk_ctr &lt;- st_centroid(nbrsk)\nplot(nbrsk$geometry, axes = T, main = \"Nebraska\")\nplot(nbrsk_ctr$geometry, add = T, cex = 2, pch = 16, col = \"steelblue\")\n\n\n\n\n\n\n\nFigure 6: Map of Nebraska with centroid/point displayed in blue.\n\n\n\n\n\nFor states that are not symetrical, like Florida, it will place the label in a seemingly odd location.\n\nflrd &lt;- us[us$NAME == \"Florida\", \"geometry\"]\nflrd_ctr &lt;- st_centroid(flrd)\nplot(flrd$geometry, axes = T, main = \"Florida\")\nplot(flrd_ctr$geometry, add = T, cex = 2, pch = 16, col = \"steelblue\")\n\n\n\n\n\n\n\nFigure 7: Map of Florida with centroid/point displayed in blue.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#convex-hull",
+    "href": "basics/01-basics.html#convex-hull",
+    "title": "Introduction",
+    "section": "5.4 Convex Hull",
+    "text": "5.4 Convex Hull\n\nplot(sf::st_convex_hull(us[us$NAME %in% c(\"Texas\", \"California\", \"Florida\", \"Michigan\"), \"NAME\"]), key.pos = NULL, main = \"CA, TX, FL and MI\")\n\n\n\n\n\n\n\nFigure 8: Map of California, Texas, Florida and Michigan displayed as convex hulls.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#simplification",
+    "href": "basics/01-basics.html#simplification",
+    "title": "Introduction",
+    "section": "5.5 Simplification",
+    "text": "5.5 Simplification\nSimplification can be appropriate when building a choropleth map of national boundaries, but not when deciding a which side of a boundary line a treasure is located. You should always simplify polygons to the point where they are recognizable and still perform the function intended. I usually simplify upon import so that plotting does not take excessive time. Reduced file sizes are a big benefit when pushing to repositories too.\nBelow is the United States Cartographic boundary file that we’ve been experimenting with. The file is subset to Alaska and then the bounding box was restried to the famous “Yukon” area with many small islands. Our original file was the smallest available at a scale of 1:20,000,000. Using the st_simplify function, the file is shrunk even further to the point where the details are becoming opaque.\nAnother great tool is the rmapshaper package and an accompanying website is offered that allows for experimentation.\n\nalsk &lt;- us[us$NAME == \"Alaska\", ]\nalsk_smplfy &lt;- sf::st_simplify(alsk, dTolerance = 5000)\npar(mfrow=c(1,2))\npar(mar=c(5,4,4,2))\nplot(alsk$geometry,\n     xlim = c(-137.985830, -130),\n    ylim = c(54.8, 59.3),\n    axes = T,\n    main = \"Original\"\n)\npar(mar=c(5,4,4,2))\nplot(alsk_smplfy$geometry,\n     xlim = c(-137.985830, -130),\n    ylim = c(54.8, 59.3),\n    axes = T,\n    main = \"Simplified\")\n\n\n\n\n\n\n\nFigure 9: Map of Yukon, Alaska, showing loss of detail from simplification.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#affine-transformations",
+    "href": "basics/01-basics.html#affine-transformations",
+    "title": "Introduction",
+    "section": "5.6 Affine Transformations",
+    "text": "5.6 Affine Transformations\nAffine transformations allow for shifting, rotating, and scaling. They can speed the generation of experimental objects to plot. This example is taken directly from the sf vignette: “3. Manipulating Simple Feature Geometries”.\n\n(p = st_point(c(0,2))) # create point\np + 1\np + c(-5, -5)\np * p\n\n\n(plgn &lt;- st_polygon(list(rbind(c(0, 0), c(0, 1), c(1, 1), c(1, 0), c(0, 0)))))\n(plgn_1 &lt;- (plgn + c(4, 0)) * 2)\nplgn_sfc &lt;- st_sfc(plgn, plgn_1)\nplgn_sf &lt;- st_sf(data.frame(name = c(\"A\", \"B\"), plgn_sfc))\nclass(plgn_sf)\n#&gt; [1] \"sf\"         \"data.frame\"\nplot(plgn_sf)\n\n\n\n\n\n\n\nFigure 10: Two polygons with “B” created via affine transfomation.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#clipping",
+    "href": "basics/01-basics.html#clipping",
+    "title": "Introduction",
+    "section": "5.7 Clipping",
+    "text": "5.7 Clipping\nThe traditional set operations can be used in clipping geospatial data. They are x or y, the difference between x and y, the intersection of x and y and the union of x and y. The example in Geocomputation for R inspired this plot with the only change being the state of Georgia is used as the polygon.(Lovelace et al., 2019)\n\n\n\n\n\n\n\n\nFigure 11: Illustration of two Georgias, the actual one and the one created after affine transformation.\n\n\n\n\n\n\nknitr::include_graphics(\"../images/venn_georgia_all.png\")\n\n\n\n\n\n\n\nFigure 12: Illustration of the difference between two Georgias using spatial clipping.\n\n\n\n\n\nThe next plot shows how to subset to a point that is shared by the two Georgias.\n\n\nCode\nga &lt;-\n    us |&gt; \n    dplyr::filter(NAME == \"Georgia\") |&gt;\n    dplyr::select(geometry)\n\n# pull geometry only\nga_orgnl &lt;- sf::st_geometry(ga)\n# affine transformation\nga_affn  &lt;- ga_orgnl * 1.03\n# reset CRS\nga_affn &lt;- sf::st_set_crs(ga_affn, value = \"EPSG:4269\")\n\n# convert back to sf and combine for bbox\nga_orgnl &lt;- sf::st_sf(name = \"original\", geometry = ga_orgnl)\nga_affn &lt;- sf::st_sf(name = \"transformed\", geometry = ga_affn)\n\n# combine\nga &lt;- dplyr::bind_rows(ga_affn, ga_orgnl)\n\n#subset to point within intersection\nx &lt;- ga[ga$name == \"original\", ]\ny &lt;- ga[ga$name == \"transformed\", ]\nbb = st_bbox(st_union(x, y))\nbox = st_as_sfc(bb)\nx_and_y = st_intersection(x, y)\nset.seed(2024)\np = st_sample(x = box, size = 10)\np_xy1 = p[x_and_y]\n\nplot.new()\npar(mar = c(0, 0, 0, 0))\nplot(box, border = \"grey\", lty = 2)\nplot(x$geometry, add = TRUE, border = \"grey\", lwd = 2)\nplot(y$geometry, add = TRUE, border = \"grey\", lwd = 2)\nplot(p, add = TRUE, cex = 2, pch = 20)\nplot(p_xy1, cex = 5, col = \"red\", add = TRUE)\ntext(x = c(-86, -82.8), y = 32.8, labels = c(\"x\", \"y\"), cex = 2)\n\n\n\n\n\n\n\n\n\nPoints subset to those, in this case one, shared by the actual Georgia and the transformed Georgia.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#union-by-grouping",
+    "href": "basics/01-basics.html#union-by-grouping",
+    "title": "Introduction",
+    "section": "5.8 Union by Grouping",
+    "text": "5.8 Union by Grouping\nThe first example uses simple points, while this examples uses a map of the US and simulated data.\n\nus_main &lt;- \n    us |&gt; \n    dplyr::filter(!(NAME %in% c(\"Alaska\", \"District of Columbia\",\n                                \"Hawaii\", \"Puerto Rico\"))) |&gt;\n    dplyr::select(NAME, geometry) |&gt;\n    dplyr::mutate(var_cont = rnorm(48))\n\nus_df &lt;-\n    us_main %&gt;%\n    st_centroid() %&gt;%\n    st_coordinates(ctr) %&gt;%\n    as_tibble() %&gt;%\n    rename(lon = X, lat = Y) %&gt;%\n    {bind_cols(us_main, .)} %&gt;%\n    mutate(avg_lon = mean(lon)) %&gt;%\n    mutate(coast = ifelse(lon &lt; avg_lon, \"West\", \"East\")) |&gt;\n    mutate(coast = factor(coast)) |&gt;\n    group_by(coast) |&gt;\n    summarise(var_cont = sum(var_cont))\n\npar(mfrow = c(1, 2))\npar(mar=c(5,4,4,2))\nplot(us_df[\"var_cont\"], main = \"Continous Variable\")\n\n\n\n\n\n\n\n\nIllustration of the continental US being grouped by a factor variable. Note that the internal state boundaries have dissolved.\n\n\n\npar(mar=c(5,4,4,2))\nplot(us_df[\"coast\"], main = \"Factor Variable\")\n\n\n\n\n\n\n\n\nIllustration of the continental US being grouped by a factor variable. Note that the internal state boundaries have dissolved.",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#area",
+    "href": "basics/01-basics.html#area",
+    "title": "Introduction",
+    "section": "6.1 Area",
+    "text": "6.1 Area\n\nsf::st_area(us[us$NAME %in% c(\"Alaska\", \"Rhode Island\"), ])\n#&gt; Units: [m^2]\n#&gt; [1] 3.20e+09 1.55e+12",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#distance",
+    "href": "basics/01-basics.html#distance",
+    "title": "Introduction",
+    "section": "6.2 Distance",
+    "text": "6.2 Distance\n\nsf::st_distance(us[us$NAME %in% c(\"Alaska\", \"Rhode Island\", \"New Jersey\"), ])\n#&gt; Units: [m]\n#&gt;         [,1]    [,2]    [,3]\n#&gt; [1,]       0 4370984  173573\n#&gt; [2,] 4370984       0 4236239\n#&gt; [3,]  173573 4236239       0",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#perimeter",
+    "href": "basics/01-basics.html#perimeter",
+    "title": "Introduction",
+    "section": "6.3 Perimeter",
+    "text": "6.3 Perimeter\n\nsf::st_perimeter(us[us$NAME %in% c(\"Alaska\", \"Rhode Island\"), ])\n#&gt; Units: [m]\n#&gt; [1]   292847 20133913",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/01-basics.html#length",
+    "href": "basics/01-basics.html#length",
+    "title": "Introduction",
+    "section": "6.4 Length",
+    "text": "6.4 Length\n\nsf::st_sfc(st_linestring(rbind(c(0, 0), c(0, 1))), crs = 4326) |&gt; \nsf::st_length()\n#&gt; 111195 [m]",
+    "crumbs": [
+      "Basics",
+      "Geospatial Stuff",
+      "01: Introduction"
+    ]
+  }
+]
