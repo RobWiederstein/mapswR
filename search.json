@@ -1,97 +1,38 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "\n            Welcome to Maps with R!\n        ",
+    "objectID": "advanced/01-advanced.html",
+    "href": "advanced/01-advanced.html",
+    "title": "Simplification",
     "section": "",
-    "text": "• Work with two-dimensional, geospatial data within R\n            • Learn about projections and coordinate reference systems\n            • Learn about map elements and visual aethetics\n            • Create maps with popular tools like ggplot2, tmap, and leaflet\n            \n        \n        \n            Overview\n            Introduction\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nPlotting\n\n\n\n\n  \n  \n    ggplot2\n    R's most popular plotting package can handle geospatial data with \"geom_sf()\" and the optional addition of \"coord_sf()\".\n    Start\n  \n\n\n\n\n  \n  \n    tmap\n    Flexible and layer-based, tmap can quickly generate thematic maps, such as chorpleths and bubble maps.\n    Start\n  \n\n\n\n\n  \n  \n    leaflet\n    Create and customize interactive maps using the popular 'Leaflet' JavaScript library. These maps can be used in web applications.\n    Start\n  \n\n\n\n\n  \n  \n    mapview\n    Render quick plots during the development phase with large datasets to view geometries and their attributes.\n    Start\n  \n\n\n\n\n  \n  \n    mapdeck\n    mapdeck is an R library which lets you plot really, really large data sets on interactive maps using Mapbox GL and Deck.gl\n    Start\n  \n\n\n\n\n  \n  \n    flowmapblue\n    Create interactive flow maps  to visualize commuting patterns, bicycle patterns, migration, paths and many other topics.\n    Start"
+    "text": "The rmapshaper was used to simplify the polygons. Since the states are assuming a value, there’s no need for intricate details. The reader will know that Alaska and all of its islands are one state and they have a single value. The author of the package uses the “Visvalingam” simplification “because it generally does a better job of removing details that are too small to be displayed clearly.” You can go to the website https://mapshaper.org and upload the map there, choose a algorithm to simplify and then use a slider for the level of simplification. For this project, Visvalingham was chosen at an 8% level. The 8% level dropped the Florida keys but gave decent resolution of the Hawaiian islands and the Aleutian island chain. File size was dramatically reduced.\n\n\n\n\n\n\n\nBefore\nAfter",
+    "crumbs": [
+      "Advanced",
+      "Overview",
+      "01: Advanced"
+    ]
   },
   {
-    "objectID": "basics/overview.html",
-    "href": "basics/overview.html",
-    "title": "Overview",
+    "objectID": "advanced/01-advanced.html#simplification",
+    "href": "advanced/01-advanced.html#simplification",
+    "title": "Simplification",
     "section": "",
-    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "text": "The rmapshaper was used to simplify the polygons. Since the states are assuming a value, there’s no need for intricate details. The reader will know that Alaska and all of its islands are one state and they have a single value. The author of the package uses the “Visvalingam” simplification “because it generally does a better job of removing details that are too small to be displayed clearly.” You can go to the website https://mapshaper.org and upload the map there, choose a algorithm to simplify and then use a slider for the level of simplification. For this project, Visvalingham was chosen at an 8% level. The 8% level dropped the Florida keys but gave decent resolution of the Hawaiian islands and the Aleutian island chain. File size was dramatically reduced.\n\n\n\n\n\n\n\nBefore\nAfter",
     "crumbs": [
-      "Basics",
-      "Overview"
+      "Advanced",
+      "Overview",
+      "01: Advanced"
     ]
   },
   {
-    "objectID": "basics/overview.html#welcome",
-    "href": "basics/overview.html#welcome",
-    "title": "Overview",
+    "objectID": "advanced/02-advanced.html",
+    "href": "advanced/02-advanced.html",
+    "title": "Chapter 2 Advanced",
     "section": "",
-    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "text": "1 One\n\n\n2 Two\n\n\n3 Three",
     "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#who-this-website-is-for",
-    "href": "basics/overview.html#who-this-website-is-for",
-    "title": "Overview",
-    "section": "2 Who this website is for",
-    "text": "2 Who this website is for\nThis website is for people who are comfortable working in R within the Rstudio environment. It assumes the reader has a working knowledge of the tidyverse, can install and load R packages and can plot data with ggplot2. While some code is in base, most of the code is in dplyr, sf and ggplot2. Programmers looking for how to plot spatial vector data and needing to perform some transformations on existing data sets will find this website helpful. Programmers looking to improve their proficiency with R should start with “R for Data Science (2e)” and a review of “ggplot2: Elegant Graphics for Data Analysis (3e)” is recommended too as much of the lexicon is repeated here.",
-    "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#what-you-wont-learn",
-    "href": "basics/overview.html#what-you-wont-learn",
-    "title": "Overview",
-    "section": "3 What you won’t learn",
-    "text": "3 What you won’t learn\nModelling.",
-    "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#prerequisites",
-    "href": "basics/overview.html#prerequisites",
-    "title": "Overview",
-    "section": "4 Prerequisites",
-    "text": "4 Prerequisites\nOne of the more intimidating aspects of geospatial data is the sheer number of packages that are loaded prior to writing a line of code. And working with spatial data in R requires lots of packages. The packages are in three categories: (1) manipulating geospatial data in R, (2) plotting interactive and static maps in R, and (3) data packages. If you’re looking for a specific package and its not included here, there is a github repo styled awesome-maps-r on GitHub.",
-    "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#conventions",
-    "href": "basics/overview.html#conventions",
-    "title": "Overview",
-    "section": "5 Conventions",
-    "text": "5 Conventions\n\nBooks and journals retain the title of a plot in the caption below the figure. This is a website that is similar to the book format. In the materials that follow, titles were sometimes placed in the plot and sometimes inserted in the caption.\nWhen packages or functions are referenced, they are enclosed with backticks and the font color is purple like in ggplot2 or cut_interval(). Some abiguity is created where the usage is both an R package and a javascript library. leaflet is a package in the R universe and “leaflet” is a javascript library.\nThe American Psychological Association, 7th Edition, Guidelines were followed, but only roughly. Citations were included to find the reference in the future and give credit to the original authors. However, page numbers to specific quotes were omitted.",
-    "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#terms",
-    "href": "basics/overview.html#terms",
-    "title": "Overview",
-    "section": "6 Terms",
-    "text": "6 Terms\nCoordinate Reference System (CRS) - defines how the spatial elements of the data relate to the surface of the Earth.\nDatum - a broader, more detailed description of a CRS that includes what ellipsoid to use. Datum can be geocentric like WGS84 or local like NAD83.\nEPSG - According to wikipedia, “EPSG Geodetic Parameter Dataset (also EPSG registry) is a public registry of geodetic datums, spatial reference systems, Earth ellipsoids, coordinate transformations and related units of measurement, originated by a member of the European Petroleum Survey Group (EPSG) in 1985.”\nGeocentric Datum - the center is located in the Earth’s center of gravity and is not optimized for a specific location.\nLocal Datum - the ellipsoidal surface is shifted to align with the surface at a particular location. A local datum allows local variations in the Earth’s surface like large mountain ranges.\nGeographic CRS - identify any location on the Earth’s surface using longitude and latitude. Distances are not measured in meters.\nPlate Carrée - The plate carrée map projection is an equidistant cylindrical projection with the standard parallel located at the equator. A grid of parallels and meridians forms perfect squares from east to west and from pole to pole.\nProjected CRS - All projected CRSs are based on a geographic CRS and must convert the three-dimensional surface of the Earth into X and Y values. Basically, you’re converting a globe to a map and it will result in deformations.\nWKT - well-known text string. The Open Geospatial Consortium, which also developed the simple features specification, developed the open standard format for describing CRSs.",
-    "crumbs": [
-      "Basics",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "basics/overview.html#acknowledgements",
-    "href": "basics/overview.html#acknowledgements",
-    "title": "Overview",
-    "section": "7 Acknowledgements",
-    "text": "7 Acknowledgements\nThere are many selfless individuals who contribute to improving the study of maps while remaining within the R environment. Thank you. Aside from compilation, organization and format, there is very little original material here. Rather, the inspirational and creative components were found in the many authors’ materials listed in the references. I’m indebted to them and the organizations that support them. If in review of the material, you find content that was taken beyond the scope of the original license or insufficient attribution, please open an issue on GitHub and it will be remedied promptly.",
-    "crumbs": [
-      "Basics",
-      "Overview"
+      "Advanced",
+      "Overview",
+      "02: Advanced"
     ]
   },
   {
@@ -452,6 +393,112 @@
       "Basics",
       "Geospatial Stuff",
       "01: Introduction"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html",
+    "href": "basics/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#welcome",
+    "href": "basics/overview.html#welcome",
+    "title": "Overview",
+    "section": "",
+    "text": "Welcome to Maps with R! This website is about creating maps in R. It fills the gap between comprehensive geospatial resources, like Geospatial Data in R, and cookbook approaches like the R-graph gallery. Geographic data is divided into vector and raster data. Vector data, which is the subject of this website, is “shape” data represented by polygons, lines and points. Raster data divides the surface of the earth into equal sized cells and is not covered here.\nWorking with geospatial data is a special and advanced use case for data analysis. The thing that makes geospatial data special is that while it looks like any other data frame/tibble/table, there is a special column, usually called “geometry”, where shapes are stored and a “coordinate reference system” assigned. These are the features that allow for maps to be created.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#who-this-website-is-for",
+    "href": "basics/overview.html#who-this-website-is-for",
+    "title": "Overview",
+    "section": "2 Who this website is for",
+    "text": "2 Who this website is for\nThis website is for people who are comfortable working in R within the Rstudio environment. It assumes the reader has a working knowledge of the tidyverse, can install and load R packages and can plot data with ggplot2. While some code is in base, most of the code is in dplyr, sf and ggplot2. Programmers looking for how to plot spatial vector data and needing to perform some transformations on existing data sets will find this website helpful. Programmers looking to improve their proficiency with R should start with “R for Data Science (2e)” and a review of “ggplot2: Elegant Graphics for Data Analysis (3e)” is recommended too as much of the lexicon is repeated here.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#what-you-wont-learn",
+    "href": "basics/overview.html#what-you-wont-learn",
+    "title": "Overview",
+    "section": "3 What you won’t learn",
+    "text": "3 What you won’t learn\nModelling.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#prerequisites",
+    "href": "basics/overview.html#prerequisites",
+    "title": "Overview",
+    "section": "4 Prerequisites",
+    "text": "4 Prerequisites\nOne of the more intimidating aspects of geospatial data is the sheer number of packages that are loaded prior to writing a line of code. And working with spatial data in R requires lots of packages. The packages are in three categories: (1) manipulating geospatial data in R, (2) plotting interactive and static maps in R, and (3) data packages. If you’re looking for a specific package and its not included here, there is a github repo styled awesome-maps-r on GitHub.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#conventions",
+    "href": "basics/overview.html#conventions",
+    "title": "Overview",
+    "section": "5 Conventions",
+    "text": "5 Conventions\n\nBooks and journals retain the title of a plot in the caption below the figure. This is a website that is similar to the book format. In the materials that follow, titles were sometimes placed in the plot and sometimes inserted in the caption.\nWhen packages or functions are referenced, they are enclosed with backticks and the font color is purple like in ggplot2 or cut_interval(). Some abiguity is created where the usage is both an R package and a javascript library. leaflet is a package in the R universe and “leaflet” is a javascript library.\nThe American Psychological Association, 7th Edition, Guidelines were followed, but only roughly. Citations were included to find the reference in the future and give credit to the original authors. However, page numbers to specific quotes were omitted.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#terms",
+    "href": "basics/overview.html#terms",
+    "title": "Overview",
+    "section": "6 Terms",
+    "text": "6 Terms\nCoordinate Reference System (CRS) - defines how the spatial elements of the data relate to the surface of the Earth.\nDatum - a broader, more detailed description of a CRS that includes what ellipsoid to use. Datum can be geocentric like WGS84 or local like NAD83.\nEPSG - According to wikipedia, “EPSG Geodetic Parameter Dataset (also EPSG registry) is a public registry of geodetic datums, spatial reference systems, Earth ellipsoids, coordinate transformations and related units of measurement, originated by a member of the European Petroleum Survey Group (EPSG) in 1985.”\nGeocentric Datum - the center is located in the Earth’s center of gravity and is not optimized for a specific location.\nLocal Datum - the ellipsoidal surface is shifted to align with the surface at a particular location. A local datum allows local variations in the Earth’s surface like large mountain ranges.\nGeographic CRS - identify any location on the Earth’s surface using longitude and latitude. Distances are not measured in meters.\nPlate Carrée - The plate carrée map projection is an equidistant cylindrical projection with the standard parallel located at the equator. A grid of parallels and meridians forms perfect squares from east to west and from pole to pole.\nProjected CRS - All projected CRSs are based on a geographic CRS and must convert the three-dimensional surface of the Earth into X and Y values. Basically, you’re converting a globe to a map and it will result in deformations.\nWKT - well-known text string. The Open Geospatial Consortium, which also developed the simple features specification, developed the open standard format for describing CRSs.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "basics/overview.html#acknowledgements",
+    "href": "basics/overview.html#acknowledgements",
+    "title": "Overview",
+    "section": "7 Acknowledgements",
+    "text": "7 Acknowledgements\nThere are many selfless individuals who contribute to improving the study of maps while remaining within the R environment. Thank you. Aside from compilation, organization and format, there is very little original material here. Rather, the inspirational and creative components were found in the many authors’ materials listed in the references. I’m indebted to them and the organizations that support them. If in review of the material, you find content that was taken beyond the scope of the original license or insufficient attribution, please open an issue on GitHub and it will be remedied promptly.",
+    "crumbs": [
+      "Basics",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "\n            Welcome to Maps with R!\n        ",
+    "section": "",
+    "text": "• Work with two-dimensional, geospatial data within R\n            • Learn about projections and coordinate reference systems\n            • Learn about map elements and visual aethetics\n            • Create maps with popular tools like ggplot2, tmap, and leaflet\n            \n        \n        \n            Overview\n            Introduction\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\n\nPlotting\n\n\n\n\n  \n  \n    ggplot2\n    R's most popular plotting package can handle geospatial data with \"geom_sf()\" and the optional addition of \"coord_sf()\".\n    Start\n  \n\n\n\n\n  \n  \n    tmap\n    Flexible and layer-based, tmap can quickly generate thematic maps, such as chorpleths and bubble maps.\n    Start\n  \n\n\n\n\n  \n  \n    leaflet\n    Create and customize interactive maps using the popular 'Leaflet' JavaScript library. These maps can be used in web applications.\n    Start\n  \n\n\n\n\n  \n  \n    mapview\n    Render quick plots during the development phase with large datasets to view geometries and their attributes.\n    Start\n  \n\n\n\n\n  \n  \n    mapdeck\n    mapdeck is an R library which lets you plot really, really large data sets on interactive maps using Mapbox GL and Deck.gl\n    Start\n  \n\n\n\n\n  \n  \n    flowmapblue\n    Create interactive flow maps  to visualize commuting patterns, bicycle patterns, migration, paths and many other topics.\n    Start"
+  },
+  {
+    "objectID": "advanced/index.html",
+    "href": "advanced/index.html",
+    "title": "Advanced",
+    "section": "",
+    "text": "This section deals with topics beyond simple plotting and file manipulation. In other words, these topics may not be necessary for producing output, but might be critical for optimization.",
+    "crumbs": [
+      "Advanced",
+      "Overview"
     ]
   }
 ]
